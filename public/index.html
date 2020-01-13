@@ -1,17 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>actores_juticalpa</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <!--METATAGS PARA LA PWA-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DC-Covers" />
+    <meta
+      name="msapplication-TileImage"
+      content="link to the image in static folder"
+    />
+    <meta name="msapplication-TileColor" content="#000" />
+    <!--MANIFIESTO DE LA PWA-->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Compiled and minified CSS -->
+
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link href="./src/principal_style.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" href="./img/logos/negro.png">
+      <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <title>Actores Juticalpa</title>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function() {
+        emailjs.init("user_FgSh8Eu71AuoSBTCRhHQO");
+      })();
+    </script>
   </head>
+
   <body>
     <noscript>
-      <strong>We're sorry but actores_juticalpa doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but santa_burga doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
     </noscript>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <!-- JS MATERIALIZE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
   </body>
 </html>
+
+<style scoped>
+  @import url("https://fonts.googleapis.com/css?family=Homemade+Apple&display=swap");
+  @import url("https://fonts.googleapis.com/css?family=Rancho&display=swap");
+  @import url("https://fonts.googleapis.com/css?family=Mr+Dafoe&display=swap");
+  @import url("https://fonts.googleapis.com/css?family=Arsenal&display=swap");
+  @import url("https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap");
+  html,
+  body {
+    margin: 0px;
+    height: 100%;
+    /*font-family: 'Homemade Apple', cursive;
+font-family: 'Rancho', cursive;
+font-family: 'Mr Dafoe', cursive;
+font-family: 'AR BONNIE';*/
+    font-family: "Julius Sans One", sans-serif;
+  }
+</style>
+
