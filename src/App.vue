@@ -1,51 +1,40 @@
 
 <template>
   <div id="app">
-    <div id="nav">
-    </div>
-    <table id="tabla_principal">
-      <tr  >
-        <td width="5%" id="menu_lateral">
-         
-        </td>
-        <td id="principal" >
-          <router-view />
-        </td>
-      </tr>
-    </table>
+    <navigation_bar></navigation_bar>
   </div>
 </template>
   
-  <script>
+
   /*RECORDA PONER LAS DESCRIPCIONES */
  // import { mapState, mapMutations } from "vuex";
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+
+<script>
+import navigation_bar from "./components/NavigationBar.vue";
+
 export default {
-   name: "app",
   components: {
- 
-  },  data: () => ({
-    
-    
-  }),
-  mounted() {
-
-   
-    
-    
-  }, 
-  /*computed: {
-
-  },
-  methods: {
-
-    
-  }*/
-
+    navigation_bar
+  }
 };
 </script>
 
+
+
+
+   
+
+
 <style scoped>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 #tabla_principal{
   height:100%;
   /*background-color: #fff8e1;*/
