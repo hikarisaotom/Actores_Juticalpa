@@ -48,7 +48,7 @@ export default {
 <style scoped>
 #tabla_principal{
   height:100%;
-  background-color: #fff8e1;
+  /*background-color: #fff8e1;*/
   padding: 0px;
   overflow-y: auto;
 
@@ -57,11 +57,11 @@ export default {
   margin:0px;
   height:100%;
   width: 100%;
-  background-color: #fff8e1;
+  /*background-color: #fff8e1;*/
   padding: 0px;
 }
 #principal{
-  background-color:#fff8e1  ;
+ /* background-color:#fff8e1  ;*/
   padding: 0px;
   overflow-y: auto;
   height: 100%;

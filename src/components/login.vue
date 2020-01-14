@@ -1,6 +1,7 @@
 <template>
   <div id="login-page" class="row">
-    <div class="col s12 z-depth-6 card-panel">
+
+    <div class="col s12 z-depth-6 card-panel arriba">
       <form class="login-form">
         <div class="row"></div>
         <div class="row">
@@ -570,4 +571,11 @@ document.addEventListener("DOMContentLoaded", function() {
 .otra_fuente {
   font-family: "Press Start 2P", cursive;
 }
+
+.arriba{
+
+  z-index:-1;
+}
+
+
 </style>
