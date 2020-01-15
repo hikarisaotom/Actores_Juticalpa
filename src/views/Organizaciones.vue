@@ -571,7 +571,7 @@ export default {
       this.logro_en_municipio = "";
       this.proyecto_en_municipio = "";
       this.socio_en_municipio = "";
-      thhis.funcion_en_municipio = "";
+      this.funcion_en_municipio = "";
       M.Modal.getInstance(modal_org).close();
     },
     mostrarOrganizacion() {
