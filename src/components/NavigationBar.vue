@@ -4,7 +4,7 @@
       <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:100px;">
           <a href="#" class="brand-logo">
-            <b>Logo</b>
+            <b>Juticalpa</b>
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li>
@@ -28,7 +28,7 @@
               </router-link>
             </li>
             <li class="tab">
-              <router-link to="/">
+              <router-link to="/noticias">
                 <b>Noticias</b>
               </router-link>
             </li>
@@ -36,7 +36,7 @@
         </div>
       </nav>
     </div>
-    <div id="contenido">
+    <div id="contenido" >
       <router-view />
     </div>
   </div>
@@ -86,7 +86,7 @@ export default {
 }
 
 #contenido {
-  height: 470px;
+  height: 590px;
   overflow: auto;
 }
 
