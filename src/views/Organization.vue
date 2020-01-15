@@ -181,14 +181,23 @@
 
     <!--<input placeholder="Search" v-model="filterOrganization"/>-->
     <div class="row" v-for="organization in organizations" :key="organization.ID"> 
-      <div class="col s6">
+      <div class="col s12 m3 l6">
           <br/>
           <div class="card">
+              <div
+            id="img_org"
+            class="card-image"
+            v-bind:style="{ backgroundImage: 'url(' + organization.imagen_organizacion + ')'}"
+          >
+            <a class="btn-floating halfway-fab waves-effect waves-light red">
+              <i class="material-icons">remove_red_eye</i>
+            </a>
+          </div>
           <div class="card-action">
-            <p><b>Nombre: {{organization.NOMBRE}}</b></p>
+            <span class="flow-text">{{organization.NOMBRE}}</span>
         </div>
         <div class="card-content">
-            Descripcion:{{organization.DESCRIPCION}}
+            Descripcion:{{organization.DESCRIPCION}} <br/>
             Ubicación: {{organization.UBICACION}}
           </div>
           </div>
@@ -275,7 +284,7 @@ export default {
                 TELEFONO: element.data().telefono,
                 TELEFONO_REPRESENTANTE: element.data().telefono_representante,
                 UBICACION: element.data().ubicacion,
-                URL: element.data().url_img
+                URL: element.data().imagen_organizacion
               });
             });
           })
