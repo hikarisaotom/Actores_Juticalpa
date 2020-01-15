@@ -1,6 +1,8 @@
 <template>
   <div class="organization">
-    <br>
+    <br />
+    <br />
+    <br />
     <div class="row">
       <div class="col s4">
         <a class="waves-light btn-small col s12 green" @click="btn_agregar_organization()">
@@ -178,13 +180,12 @@
       </div>
     </div>
 
-
     <!--<input placeholder="Search" v-model="filterOrganization"/>-->
-    <div class="row" v-for="organization in organizations" :key="organization.ID"> 
+    <div class="row" v-for="organization in organizations" :key="organization.ID">
       <div class="col s12 m3 l6">
-          <br/>
-          <div class="card">
-              <div
+        <br />
+        <div class="card">
+          <div
             id="img_org"
             class="card-image"
             v-bind:style="{ backgroundImage: 'url(' + organization.imagen_organizacion + ')'}"
@@ -195,16 +196,16 @@
           </div>
           <div class="card-action">
             <span class="flow-text">{{organization.NOMBRE}}</span>
-        </div>
-        <div class="card-content">
-            Descripcion:{{organization.DESCRIPCION}} <br/>
+          </div>
+          <div class="card-content">
+            Descripcion:{{organization.DESCRIPCION}}
+            <br />
             Ubicación: {{organization.UBICACION}}
           </div>
-          </div>
-          </div>
-          
         </div>
       </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -240,8 +241,8 @@ export default {
     m.options.dismissible = false;
     this.get_Organizations();
   },
-  computed:{
-      filter: function() {
+  computed: {
+    filter: function() {
       return this.organizations.filter(organization => {
         return organizations.NOMBRE.toUpperCase().match(
           this.filterOrganization.toUpperCase()
@@ -267,7 +268,7 @@ export default {
 
     get_Organizations() {
       console.log("here?");
-      this.organizations = [],
+      (this.organizations = []),
         firebase
           .firestore()
           .collection("Actor")
