@@ -23,7 +23,7 @@
               </router-link>|
             </li>
             <li class="tab">
-              <router-link to="/">
+              <router-link to="/organization">
                 <b>Organizaciones</b>
               </router-link>
             </li>
