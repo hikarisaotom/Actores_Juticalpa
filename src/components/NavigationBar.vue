@@ -22,11 +22,6 @@
                 <b>Acerca de Nosotros</b>
               </router-link>
             <li class="tab">
-              <router-link to="/organization">
-                <b>Organizations</b>
-              </router-link>
-            </li>
-            <li class="tab">
               <router-link to="/organizaciones">
                 <b>Organizaciones</b>
               </router-link>

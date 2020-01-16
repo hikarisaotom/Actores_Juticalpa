@@ -13,7 +13,7 @@
 
     <!--Cards de las organizaciones-->
     <div class="row">
-      <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.ID">
+      <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.id">
         <div class="card">
           <div
             id="img_org"
@@ -46,6 +46,7 @@
                 <div class="input-field">
                   <i class="material-icons prefix">face</i>
                   <input
+                    :disabled="editar"
                     v-model="nombre"
                     id="nombre_org"
                     type="text"
@@ -56,6 +57,7 @@
                 <div class="input-field">
                   <i class="material-icons prefix">chrome_reader_mode</i>
                   <textarea
+                    :disabled="editar"
                     v-model="descripcion"
                     id="descripcion"
                     type="text"
@@ -63,6 +65,18 @@
                   />
                   <label :class="active" for="descripcion">Descripcion</label>
                 </div>
+                <br />
+                <a href="#" @click="editar_Organizacion()" v-if="edit==true">
+                  <i class="material-icons orange-text left">edit</i>
+                </a>
+                <a v-else class="waves-light btn-small green" @click="guardar_Cambios()">
+                  <i class="material-icons left">save</i>
+                  Guardar
+                </a>
+                <a href="#">
+                  <i class="material-icons red-text right">delete_forever</i>
+                </a>
+                <br />
               </div>
             </div>
 
@@ -74,10 +88,10 @@
                 id="img_org"
               ></div>
               <div class="card-content">
-                <a href="#">
+                <a href="#" v-show="editarBtn">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
-                <a href="#">
+                <a href="#" v-show="editarBtn">
                   <i class="material-icons red-text right">delete_forever</i>
                 </a>
                 <br />
@@ -93,6 +107,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">location_on</i>
                 <textarea
+                  :disabled="editar"
                   v-model="ubicacion"
                   id="ubicacion_org"
                   type="text"
@@ -105,6 +120,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">local_phone</i>
                 <input
+                  :disabled="editar"
                   v-model="telefono"
                   id="telefono_org"
                   type="text"
@@ -117,6 +133,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">email</i>
                 <input
+                  :disabled="editar"
                   v-model="email_institucion"
                   id="email_org"
                   type="text"
@@ -129,6 +146,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">face</i>
                 <input
+                  :disabled="editar"
                   v-model="representante"
                   id="nombre_rep"
                   type="text"
@@ -141,6 +159,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">contact_phone</i>
                 <input
+                  :disabled="editar"
                   v-model="telefono_representante"
                   id="tel_rep"
                   type="text"
@@ -153,6 +172,7 @@
               <div class="input-field">
                 <i class="material-icons white-text prefix">contact_mail</i>
                 <input
+                  :disabled="editar"
                   v-model="email_encargado"
                   id="email_rep"
                   type="text"
@@ -173,43 +193,43 @@
                   <form action="#">
                     <p>
                       <label>
-                        <input v-model="t0" type="checkbox" />
+                        <input v-model="t0" type="checkbox" :disabled="editar" />
                         <span class="white-text">Gobierno central (secretaria de estado)</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t1" type="checkbox" />
+                        <input v-model="t1" type="checkbox" :disabled="editar" />
                         <span class="white-text">Gobierno Local (Municipalidad)</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t2" type="checkbox" />
+                        <input v-model="t2" type="checkbox" :disabled="editar" />
                         <span class="white-text">Micro y pequeña empresa</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t3" type="checkbox" />
+                        <input v-model="t3" type="checkbox" :disabled="editar" />
                         <span class="white-text">Cooperativa</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t4" type="checkbox" />
+                        <input v-model="t4" type="checkbox" :disabled="editar" />
                         <span class="white-text">Centro Educativo Público</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t5" type="checkbox" />
+                        <input v-model="t5" type="checkbox" :disabled="editar" />
                         <span class="white-text">Centro Educativo Privado</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="t6" type="checkbox" />
+                        <input v-model="t6" type="checkbox" :disabled="editar" />
                         <span
                           class="white-text"
                         >Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)</span>
@@ -223,43 +243,43 @@
             <!--Área de Trabajo-->
             <div class="card grey darken-3 col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
               <div class="card-content">
-                <span class="card-title white-text">Tipo de Organización</span>
+                <span class="card-title white-text">Área de Trabajo</span>
                 <!--Ubicación de Institución-->
                 <div align="left">
                   <form action="#">
                     <p>
                       <label>
-                        <input v-model="a0" type="checkbox" />
+                        <input v-model="a0" type="checkbox" :disabled="editar" />
                         <span class="white-text">Económica</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="a1" type="checkbox" />
+                        <input v-model="a1" type="checkbox" :disabled="editar" />
                         <span class="white-text">Social/Cultural</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="a2" type="checkbox" />
+                        <input v-model="a2" type="checkbox" :disabled="editar" />
                         <span class="white-text">Educativa</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="a3" type="checkbox" />
+                        <input v-model="a3" type="checkbox" :disabled="editar" />
                         <span class="white-text">Salud</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="a4" type="checkbox" />
+                        <input v-model="a4" type="checkbox" :disabled="editar" />
                         <span class="white-text">Ambiental</span>
                       </label>
                     </p>
                     <p>
                       <label>
-                        <input v-model="a5" type="checkbox" />
+                        <input v-model="a5" type="checkbox" :disabled="editar" />
                         <span class="white-text">Otra</span>
                       </label>
                     </p>
@@ -279,14 +299,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
-                    <a href="#!">
+                    <a href="#!" v-show="editarBtn">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{funcion}}
                 </p>
               </div>
-              <table width="100%">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -318,14 +338,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a href="#!">
+                    <a href="#!" v-show="editarBtn">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{logro}}
                 </p>
               </div>
-              <table width="100%">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -357,14 +377,17 @@
               <div class="collection">
                 <p class="collection-item" v-for="proyecto in proyectos" :key="proyecto">
                   <span class="badge">
-                    <a href="#!">
+                    <a href="#!" v-show="editarBtn">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
-                  {{proyecto}}
+                  <b>Nombre:</b>
+                  {{proyecto.nombre_proyecto}},
+                  <b>Descripción:</b>
+                  {{proyecto.descripción_proyecto}}
                 </p>
               </div>
-              <table width="100%">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -398,14 +421,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a href="#!">
+                    <a href="#!" v-show="editarBtn">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{socio}}
                 </p>
               </div>
-              <table width="100%">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -464,6 +487,7 @@ export default {
     //Datos de organizaicon - organizaciones
     organizaciones: [],
     organizacion_actual: {
+      id: "",
       nombre: "",
       area_trabajo: [],
       descripcion: "",
@@ -481,6 +505,7 @@ export default {
       url_img: ""
     },
     nombre: "",
+    id: "",
     area_trabajo: [],
     descripcion: "",
     email_encargado: "",
@@ -498,7 +523,12 @@ export default {
     telefono_representante: "",
     tipo_organizacion: [],
     ubicacion: "",
-    url_img: ""
+    url_img: "",
+
+    /*banderas*/
+    editar: true,
+    editarBtn: false,
+    edit: false
   }),
   components: {
     firebase,
@@ -521,7 +551,7 @@ export default {
           querySnapshot.forEach(doc => {
             //console.log(doc.id, " => ", doc.data());
             this.organizaciones.push({
-              ID: doc.id,
+              id: doc.id,
               nombre: doc.data().nombre,
               area_trabajo: doc.data().area_trabajo,
               descripcion: doc.data().descripcion,
@@ -552,6 +582,9 @@ export default {
       M.Modal.getInstance(modal_org).open();
     },
     cerrarModal() {
+      this.editarBtn = false;
+      this.editar = true;
+      this.edit = false;
       this.active = "deactive";
       this.nombre = "";
       this.area_trabajo = "";
@@ -576,7 +609,11 @@ export default {
     },
     mostrarOrganizacion() {
       this.active = "active";
+      this.editarBtn = false;
+      this.editar = true;
+      this.edit = true;
       this.abrirModal();
+      this.id = this.organizacion_actual.id;
       this.nombre = this.organizacion_actual.nombre;
       this.area_trabajo = this.organizacion_actual.area_trabajo;
       this.descripcion = this.organizacion_actual.descripcion;
@@ -643,6 +680,109 @@ export default {
     },
     agregarOrganizacion() {
       this.abrirModal();
+    },
+    editar_Organizacion() {
+      this.editar = false;
+      this.editarBtn = true;
+      this.edit = false;
+    },
+    guardar_Cambios() {
+      //tipo de organizacion
+      var tipoOrg = [];
+      if ( this.t0 === true){
+        tipoOrg.push("Gobierno central (secretaria de estado)");
+      }
+      if(this.t1 === true){
+        tipoOrg.push("Gobierno Local (Municipalidad)");
+      }
+      if(this.t2 === true){
+        tipoOrg.push("Micro y pequeña empresa");
+      }
+      if(this.t3 === true){
+        tipoOrg.push("Cooperativa");
+      }
+      if(this.t4 === true){
+        tipoOrg.push("Centro Educativo Público");
+      }
+      if(this.t5 === true){
+        tipoOrg.push("Centro Educativo Privado");
+      }
+      if(this.t6 === true){
+        tipoOrg.push(
+          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
+        );
+      }
+
+
+      /*área de trabajo */
+      var areaOrg = [];
+      if ( this.a0 === true){
+        areaOrg.push("Económica");
+      }
+      if(this.a1 === true){
+        areaOrg.push("Social/Cultural");
+      }
+      if(this.a2 === true){
+        areaOrg.push("Educativa");
+      }
+      if(this.a3 === true){
+        areaOrg.push("Salud");
+      }
+      if(this.a4 === true){
+        areaOrg.push("Ambiental");
+      }
+      if(this.a5 === true){
+        areaOrg.push("Otra");
+      }
+
+      firebase
+        .firestore()
+        .collection("Actor")
+        .doc(this.organizacion_actual.id)
+        .update({
+          nombre: this.nombre,
+          area_trabajo: areaOrg,
+          descripcion: this.descripcion,
+          email_encargado: this.email_encargado,
+          email_institucion: this.email_institucion,
+          funciones_en_municipio: this.funciones_en_municipio,
+          logros: this.logros,
+          proyectos: this.proyectos,
+          representante: this.representante,
+          socios: this.socios,
+          telefono: this.telefono,
+          telefono_representante: this.telefono_representante,
+          tipo_organizacion: tipoOrg,
+          ubicacion: this.ubicacion,
+          url_img: this.url_img
+        })
+        .then(() => {
+          this.edit = true;
+          this.editar = true;
+          this.editarBtn = false;
+          /*organizacion actual*/
+          this.organizacion_actual.nombre = this.nombre;
+          this.organizacion_actual.area_trabajo = areaOrg;
+          this.organizacion_actual.descripcion = this.descripcion;
+          this.organizacion_actual.email_encargado = this.email_encargado;
+          this.organizacion_actual.email_institucion = this.email_encargado;
+          this.organizacion_actual.funciones_en_municipio = this.funciones_en_municipio;
+          this.organizacion_actual.logros = this.logros;
+          this.organizacion_actual.proyectos = this.proyectos;
+          this.organizacion_actual.representante = this.representante;
+          this.organizacion_actual.socios = this.socios;
+          this.organizacion_actual.telefono = this.telefono;
+          this.organizacion_actual.telefono_representante = this.telefono_representante;
+          this.organizacion_actual.tipo_organizacion = tipoOrg;
+          this.organizacion_actual.ubicacion = this.ubicacion;
+          this.organizacion_actual.url_img = this.url_img;
+
+          console.log("Organization successfully updated!");
+          M.toast({ html: "Actualización realizada correctamente." });
+        })
+        .catch(error => {
+          console.error("Error updating product: ", error);
+        });
     }
   }
 };
