@@ -8,10 +8,10 @@
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li>
-              <a href="about.html">About</a>
+              <a >About</a>
             </li>
             <li>
-              <a href="home.html">Home</a>
+              <a >Log In</a>
             </li>
           </ul>
         </div>

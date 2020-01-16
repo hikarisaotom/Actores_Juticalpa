@@ -13,7 +13,6 @@
             <div class="card-image">
               <table width="100%">
                 <td width="10%" height="20%">
-                    
                   <img v-bind:src="noticia.Imagen" />
                 </td>
                 <td>
@@ -40,6 +39,7 @@
         </div>
       </div>
     </div>
+
     <!--INICIO DEL MODAL DE LAS NOTICIAS-->
     <div id="noticia" class="modal modal-fixed-footer letra">
       <div class="modal-content">
@@ -56,29 +56,22 @@
       </div>
     </div>
 
-
-
-
-
     <!--INICIO DEL MODAL DE CREAR NOTICIAS-->
     <div id="crear_noticia" class="modal modal-fixed-footer letra">
       <div class="modal-content">
         <h3>Crear Noticia</h3>
 
-
-
-<div class="row">
-              <div class="col s12">
-                <div class="card red darken-2" v-if="validation!=''">
-                  <div class="card-content white-text">{{validation}}</div>
-                  <div class="card-action">
-                    <a href="#" @click="validation=''">Aceptar</a>
-                  </div>
-                </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="card red darken-2" v-if="validation!=''">
+              <div class="card-content white-text">{{validation}}</div>
+              <div class="card-action">
+                <a href="#" @click="validation=''">Aceptar</a>
               </div>
             </div>
+          </div>
+        </div>
 
- 
         <!--FORMULARIO DE INFORMACION DE LA NOTICIA-->
         <form class="col s12">
           <div class="row">
@@ -130,13 +123,12 @@
           </div>
         </div>
 
-  
-<a class="waves-effect waves-light btn-large"   @click=" Add_Noticia()"><i class="material-icons right">cloud</i>button</a>
-        
+        <a class="waves-effect waves-light btn-large" @click=" Add_Noticia()">
+          <i class="material-icons right">cloud</i>button
+        </a>
       </div>
 
       <div class="modal-footer">
-          
         <a
           class="modal-close waves-effect waves-green btn-flat white-text text-accent-4 orange"
         >Salir</a>
@@ -172,7 +164,7 @@ export default {
   mounted: function() {
     this.Get_News();
     M.AutoInit();
-       //Hace que el de las noticias  no se cierre si da click afuera
+    //Hace que el de las noticias  no se cierre si da click afuera
     var m = M.Modal.getInstance(crear_noticia);
     m.options.dismissible = false;
   },
@@ -181,7 +173,6 @@ export default {
     validate_form: function() {
       if (this.nuevo_titulo === "") {
         this.validation = "Debe ingresar un Titulo para la noticia. ";
-        
       }
 
       if (this.nuevo_contenido === "") {
@@ -196,63 +187,88 @@ export default {
     },
     Add_Noticia() {
       if (this.validate_form()) {
-        var file = this.$refs.myFiles.files[0];
-        var storageRef = firebase.storage().ref();
-        var tempUrl="";
-        storageRef
-          .child("noticias/" + file.name)
-          .put(file)
-          .then(() => {
-            storageRef
-              .child("noticias/" + file.name)
-              .getDownloadURL()
-              .then(url => {
-                  tempUrl=url;
-                console.log("Imagen guardada con link: ", tempUrl);
-        
+        if (
+          this.Imagen != "http://www.globalservex.es/upload/news/news_12.png"
+        ) {
+          // SUBIO UNA IMAGEN
+          var file = this.$refs.myFiles.files[0];
+          var storageRef = firebase.storage().ref();
+          var tempUrl = "";
+          storageRef
+            .child("noticias/" + file.name)
+            .put(file)
+            .then(() => {
+              storageRef
+                .child("noticias/" + file.name)
+                .getDownloadURL()
+                .then(url => {
+                  tempUrl = url;
+                  console.log("Imagen guardada con link: ", tempUrl);
 
-                this.validation = "";
+                  this.validation = "";
 
-                firebase
-                  .firestore()
-                  .collection("Noticias")
-                  .add({
-                    Titulo: this.nuevo_titulo,
-                    Contenido: this.nuevo_contenido,
-                    Autor: "ANONIMO",
-                    Imagen: tempUrl,
-                    Fecha: new Date()
-                  })
-                  .then(doc => {
-                    console.log("categoria ", this.type);
-                    console.log("Agregado con Exito!", doc.id);
-
-                   /* this.noticias.push({
-                      ID: doc.id,
+                  firebase
+                    .firestore()
+                    .collection("Noticias")
+                    .add({
                       Titulo: this.nuevo_titulo,
                       Contenido: this.nuevo_contenido,
                       Autor: "ANONIMO",
-                      Image: tempUrl
-                    });*/
-                    this.Get_News();
+                      Imagen: tempUrl,
+                      Fecha: new Date()
+                    })
+                    .then(doc => {
+                      console.log("categoria ", this.type);
+                      console.log("Agregado con Exito!", doc.id);
+                      this.Get_News();
 
-                    M.toast({ html: "Agregado correctamente." });
-                    this.nuevo_titulo = "";
-                    this.nuevo_contenido = "";
-                    this.Imagen =
-                      "http://www.globalservex.es/upload/news/news_12.png";
-                  })
-                  .catch(function(error) {
-                    console.log("Error getting Classes: ", error);
-                  });
-              })
-              .catch(function(error) {
-                console.log("Error obteniendo imagen!.", error);
-              });
-          })
-          .catch(function(error) {
-            console.log("Error subiendo imagen!.");
-          });
+                      M.toast({ html: "Agregado correctamente." });
+                      this.nuevo_titulo = "";
+                      this.nuevo_contenido = "";
+                      this.Imagen =
+                        "http://www.globalservex.es/upload/news/news_12.png";
+                    })
+                    .catch(function(error) {
+                      console.log("Error getting Classes: ", error);
+                    });
+                })
+                .catch(function(error) {
+                  console.log("Error obteniendo imagen!.", error);
+                });
+            })
+            .catch(function(error) {
+              console.log("Error subiendo imagen!.");
+            });
+        } else {
+          // NO SUBIO NINGUNA IMAGEN
+          console.log(
+            "NO SELECCIONO UNA IMAGEN ANTES DE SUBIR, ENTONCES SE PONE POR DEFECTO"
+          );
+          firebase
+            .firestore()
+            .collection("Noticias")
+            .add({
+              Titulo: this.nuevo_titulo,
+              Contenido: this.nuevo_contenido,
+              Autor: "ANONIMO",
+              Imagen: "http://www.globalservex.es/upload/news/news_12.png",
+              Fecha: new Date()
+            })
+            .then(doc => {
+              console.log("categoria ", this.type);
+              console.log("Agregado con Exito!", doc.id);
+              this.Get_News();
+
+              M.toast({ html: "Agregado correctamente." });
+              this.nuevo_titulo = "";
+              this.nuevo_contenido = "";
+              this.Imagen =
+                "http://www.globalservex.es/upload/news/news_12.png";
+            })
+            .catch(function(error) {
+              console.log("Error getting Classes: ", error);
+            });
+        }
       }
     },
     open_file_selector: function() {
