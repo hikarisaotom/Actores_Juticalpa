@@ -11,16 +11,16 @@
     </center>
     <div class="carousel white">
       <a class="carousel-item" href="#one!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[0]" />
+        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-1].url" />
       </a>
       <a class="carousel-item" href="#one3!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[1]" />
+        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-2].url" />
       </a>
       <a class="carousel-item" href="#one1!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[2]" />
+        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-3].url" />
       </a>
       <a class="carousel-item" href="#one2!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[3]" />
+        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-4].url" />
       </a>
     </div>
     <br />
@@ -116,13 +116,12 @@ export default {
       Imagen: "http://www.globalservex.es/upload/news/news_12.png",
       Contenido: "hola",
       Contenido_viejo: "",
-      ID: "",
-      Imagenes: [
+     ID: "",
+      Imagenes: ["http://www.globalservex.es/upload/news/news_12.png",
         "http://www.globalservex.es/upload/news/news_12.png",
         "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png"
-      ]
+        "http://www.globalservex.es/upload/news/news_12.png"],
+    
     };
   },
   components: {
@@ -184,27 +183,13 @@ export default {
               .then(url => {
                 tempUrl = url;
                 console.log("Imagen guardada con link: ", tempUrl);
-                this.Imagenes.push(tempUrl);
+                this.Imagenes.push({
+                  url: tempUrl,
+                  fecha: new Date()
+                });
                 console.log("PUSHEADO: ", this.Imagenes);
                 this.validation = "";
-                //ACTUALIZANDO LA INFOR
-                /* firebase
-                  .firestore()
-                  .collection("AboutUs")
-                  .doc(this.ID)
-                  .update({
-                    Contenido: this.Contenido,
-                    Imagenes: this.Imagenes
-                  })
-                  .then(() => {
-                    console.log("Product successfully updated!");
-                    M.toast({ html: "Imagen subida exitosamente." });
-                    this.Imagen =
-                      "http://www.globalservex.es/upload/news/news_12.png";
-                  })
-                  .catch(error => {
-                    console.error("Error updating product: ", error);
-                  });*/
+           
                 this.Update_Contenido();
                 //FIN DE ATUALIZAR INFO
               })

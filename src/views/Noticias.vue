@@ -124,7 +124,7 @@
         </div>
 
         <a class="waves-effect waves-light btn-large" @click=" Add_Noticia()">
-          <i class="material-icons right">cloud</i>button
+          <i class="material-icons right">save</i>Guardar
         </a>
       </div>
 
@@ -213,7 +213,7 @@ export default {
                     .add({
                       Titulo: this.nuevo_titulo,
                       Contenido: this.nuevo_contenido,
-                      Autor: "ANONIMO",
+                      Autor: window.localStorage.getItem("Organizacion"),
                       Imagen: tempUrl,
                       Fecha: new Date()
                     })
@@ -289,7 +289,7 @@ export default {
       this.noticias = [];
       firebase
         .firestore()
-        .collection("Noticias")
+        .collection("Noticias").orderBy("Fecha", "desc")
         .get()
         .then(snap => {
           snap.forEach(element => {
@@ -305,6 +305,11 @@ export default {
         .catch(function(error) {
           console.log("Error getting Products: ", error);
         });
+       /*  _.sortBy(this.products, [
+              function(p) {
+                return p.CATEGORY;
+              }
+            ]);*/
     }
   }
 };
