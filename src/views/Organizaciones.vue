@@ -299,7 +299,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn">
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(funcion, 1)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -319,7 +319,7 @@
                   </div>
                 </td>
                 <td width="5%>">
-                  <a href="#!">
+                  <a href="#!" @click="agregar_elemento(1)">
                     <i
                       class="white-text material-icons right tooltipped"
                       data-position="top"
@@ -338,7 +338,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn">
+                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(logro, 2)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -357,7 +357,7 @@
                     <label for="funcion_org">Nuevo Logro</label>
                   </div>
                 </td>
-                <td width="5%>">
+                <td width="5%>" @click="agregar_elemento(2)">
                   <a href="#!">
                     <i
                       class="white-text material-icons right tooltipped"
@@ -377,7 +377,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="proyecto in proyectos" :key="proyecto">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn">
+                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(proyecto, 3)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -388,7 +388,7 @@
                 </p>
               </div>
               <table width="100%" v-show="editarBtn">
-                <td width="95%">
+                <td width="47%">
                   <div class="input-field">
                     <input
                       v-model="proyecto_en_municipio"
@@ -396,11 +396,22 @@
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="funcion_org">Nuevo Proyecto</label>
+                    <label for="funcion_org">Nuevo Proyecto NOMBRE</label>
+                  </div>
+                  </td>
+                   <td width="47%">
+                  <div class="input-field">
+                    <input
+                      v-model="proyecto_en_municipioD"
+                      id="proyecto_orgD"
+                      type="text"
+                      class="materialize-textarea white-text"
+                    />
+                    <label for="funcion_org">Nuevo Proyecto DESCRIPCIÓN</label>
                   </div>
                 </td>
-                <td width="5%>">
-                  <a href="#!">
+                <td width="6%>">
+                  <a href="#!" @click="agregar_elemento(3)">
                     <i
                       class="white-text material-icons right tooltipped"
                       data-position="top"
@@ -421,7 +432,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn">
+                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(socio, 4)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -441,7 +452,7 @@
                   </div>
                 </td>
                 <td width="5%>">
-                  <a href="#!">
+                  <a href="#!" @click="agregar_elemento(4)">
                     <i
                       class="white-text material-icons right tooltipped"
                       data-position="top"
@@ -516,6 +527,7 @@ export default {
     logro_en_municipio: "",
     proyectos: [],
     proyecto_en_municipio: "",
+    proyecto_en_municipioD: "",
     representante: "",
     socios: [],
     socio_en_municipio: "",
@@ -603,6 +615,7 @@ export default {
       this.url_img = "";
       this.logro_en_municipio = "";
       this.proyecto_en_municipio = "";
+      this.proyecto_en_municipioD = "";
       this.socio_en_municipio = "";
       this.funcion_en_municipio = "";
       M.Modal.getInstance(modal_org).close();
@@ -619,11 +632,35 @@ export default {
       this.descripcion = this.organizacion_actual.descripcion;
       this.email_encargado = this.organizacion_actual.email_encargado;
       this.email_institucion = this.organizacion_actual.email_institucion;
-      this.funciones_en_municipio = this.organizacion_actual.funciones_en_municipio;
-      this.logros = this.organizacion_actual.logros;
-      this.proyectos = this.organizacion_actual.proyectos;
+      /*arreglos*/
+      //this.funciones_en_municipio = this.organizacion_actual.funciones_en_municipio;
+      //la linea anterior no funciona porque al eliminar borra la referencia del el elemento actual
+
+      for (let index = 0; index < this.organizacion_actual.funciones_en_municipio.length; index++) {
+        this.funciones_en_municipio.push(
+          this.organizacion_actual.funciones_en_municipio[index]
+        );
+      }
+
+      for (let index = 0; index < this.organizacion_actual.logros.length; index++) {
+        this.logros.push(
+          this.organizacion_actual.logros[index]
+        );
+      }
+
+      for (let index = 0; index < this.organizacion_actual.proyectos.length; index++) {
+        this.proyectos.push(
+          this.organizacion_actual.proyectos[index]
+        );
+      }
+
+      for (let index = 0; index < this.organizacion_actual.socios.length; index++) {
+        this.socios.push(
+          this.organizacion_actual.socios[index]
+        );
+      }
+      //*fin */
       this.representante = this.organizacion_actual.representante;
-      this.socios = this.organizacion_actual.socios;
       this.telefono = this.organizacion_actual.telefono;
       this.telefono_representante = this.organizacion_actual.telefono_representante;
       this.tipo_organizacion = this.organizacion_actual.tipo_organizacion;
@@ -689,49 +726,48 @@ export default {
     guardar_Cambios() {
       //tipo de organizacion
       var tipoOrg = [];
-      if ( this.t0 === true){
+      if (this.t0 === true) {
         tipoOrg.push("Gobierno central (secretaria de estado)");
       }
-      if(this.t1 === true){
+      if (this.t1 === true) {
         tipoOrg.push("Gobierno Local (Municipalidad)");
       }
-      if(this.t2 === true){
+      if (this.t2 === true) {
         tipoOrg.push("Micro y pequeña empresa");
       }
-      if(this.t3 === true){
+      if (this.t3 === true) {
         tipoOrg.push("Cooperativa");
       }
-      if(this.t4 === true){
+      if (this.t4 === true) {
         tipoOrg.push("Centro Educativo Público");
       }
-      if(this.t5 === true){
+      if (this.t5 === true) {
         tipoOrg.push("Centro Educativo Privado");
       }
-      if(this.t6 === true){
+      if (this.t6 === true) {
         tipoOrg.push(
           "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
         );
       }
 
-
       /*área de trabajo */
       var areaOrg = [];
-      if ( this.a0 === true){
+      if (this.a0 === true) {
         areaOrg.push("Económica");
       }
-      if(this.a1 === true){
+      if (this.a1 === true) {
         areaOrg.push("Social/Cultural");
       }
-      if(this.a2 === true){
+      if (this.a2 === true) {
         areaOrg.push("Educativa");
       }
-      if(this.a3 === true){
+      if (this.a3 === true) {
         areaOrg.push("Salud");
       }
-      if(this.a4 === true){
+      if (this.a4 === true) {
         areaOrg.push("Ambiental");
       }
-      if(this.a5 === true){
+      if (this.a5 === true) {
         areaOrg.push("Otra");
       }
 
@@ -783,6 +819,63 @@ export default {
         .catch(error => {
           console.error("Error updating product: ", error);
         });
+    },
+    delete_elemento(elemento, opcion) {
+      if (opcion == 1) {
+        this.funciones_en_municipio.splice(
+          this.funciones_en_municipio.indexOf(elemento),
+          1
+        );
+        M.toast({ html: "Eliminado." });
+      }
+      else if (opcion == 2) {
+        this.logros.splice(
+          this.logros.indexOf(elemento),
+          1
+        );
+        M.toast({ html: "Eliminado." });
+      }
+      else if (opcion == 3) {
+        this.proyectos.splice(
+          this.proyectos.indexOf(elemento),
+          1
+        );
+        M.toast({ html: "Eliminado." });
+      }
+      else if (opcion == 4) {
+        this.socios.splice(
+          this.socios.indexOf(elemento),
+          1
+        );
+        M.toast({ html: "Eliminado." });
+      }
+      
+    },
+    agregar_elemento(opcion){
+      if(opcion==1){
+        this.funciones_en_municipio.push(this.funcion_en_municipio);
+        this.funcion_en_municipio="";
+        M.toast({ html: "Agregado." });
+      }
+      else if(opcion==2){
+        this.logros.push(this.logro_en_municipio);
+        this.logro_en_municipio= "";
+        M.toast({ html: "Agregado." });
+      }
+      else if(opcion==3){
+        this.proyectos.push({
+          descripción_proyecto: this.proyecto_en_municipioD,
+          nombre_proyecto: this.proyecto_en_municipio
+          });
+        this.proyecto_en_municipio="";
+        this.proyecto_en_municipioD="";
+        M.toast({ html: "Agregado." });
+      }
+      else if(opcion==4){
+        this.socios.push(this.socio_en_municipio);
+        this.socio_en_municipio="";
+        M.toast({ html: "Agregado." });
+      }
     }
   }
 };
