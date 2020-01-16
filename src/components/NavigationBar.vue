@@ -17,6 +17,10 @@
         </div>
         <div class="nav-content">
           <ul class="tabs tabs-transparent">
+              <li class="tab">
+              <router-link to="/about">
+                <b>Acerca de Nosotros</b>
+              </router-link>
             <li class="tab">
               <router-link to="/organization">
                 <b>Organizations</b>

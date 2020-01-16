@@ -6,7 +6,9 @@
       href="#crear_noticia"
       style="float:right"
     >Agregar imagen</a>
-    <center><h2>Con el apoyo de:</h2></center>
+    <center>
+      <h2>Con el apoyo de:</h2>
+    </center>
     <div class="carousel white">
       <a class="carousel-item" href="#one!">
         <img width="300px" height="300px" v-bind:src="Imagenes[0]" />
@@ -22,7 +24,30 @@
       </a>
     </div>
     <br />
-   <center> <div class="input-field col s8 contenido">{{Contenido}}</div></center>
+    <center>
+      <i
+        style="float:right"
+        class="material-icons"
+        @click="(Contenido_viejo = Contenido), (Bandera_Mostrar = false)"
+      >create</i>
+      <div class="input-field col s8 contenido">
+        <div v-show="Bandera_Mostrar == true">{{ Contenido }}</div>
+        <div v-show="Bandera_Mostrar == false">
+          <textarea rows="60" cols="90" class="textarea_contenido" heigth v-model="Contenido"></textarea>
+          <center>
+            <a
+              class="waves-effect waves-light btn red"
+              @click="(Contenido = Contenido_viejo), (Bandera_Mostrar = true)"
+            >
+              <i class="material-icons left">cloud</i>Cancelar
+            </a>
+            <a class="waves-effect waves-light btn" @click="Update_Contenido()">
+              <i class="material-icons right">cloud</i>Guardar
+            </a>
+          </center>
+        </div>
+      </div>
+    </center>
 
     <!--ABOUT US MODAL PARA UPLOAD IMAGEN-->
 
@@ -62,7 +87,7 @@
           </div>
         </div>
 
-        <a class="waves-effect waves-light btn-large" @click=" Add_Img()">
+        <a class="waves-effect waves-light btn-large" @click="Add_Img()">
           <i class="material-icons right">cloud</i>Subir
         </a>
       </div>
@@ -70,6 +95,7 @@
       <div class="modal-footer">
         <a
           class="modal-close waves-effect waves-green btn-flat white-text text-accent-4 orange"
+          @click="Imagen = 'http://www.globalservex.es/upload/news/news_12.png'"
         >Salir</a>
       </div>
     </div>
@@ -86,8 +112,10 @@ export default {
   name: "noticias",
   data() {
     return {
+      Bandera_Mostrar: true,
       Imagen: "http://www.globalservex.es/upload/news/news_12.png",
       Contenido: "hola",
+      Contenido_viejo: "",
       ID: "",
       Imagenes: [
         "http://www.globalservex.es/upload/news/news_12.png",
@@ -114,6 +142,33 @@ export default {
     });
   },
   methods: {
+    Update_Contenido() {
+      firebase
+        .firestore()
+        .collection("AboutUs")
+        .doc(this.ID)
+        .update({
+          Contenido: this.Contenido,
+          Imagenes: this.Imagenes
+        })
+        .then(() => {
+          console.log("Product successfully updated!");
+          if (
+            this.Imagen == "http://www.globalservex.es/upload/news/news_12.png"
+          ) {
+            this.Contenido_viejo = "";
+            this.Bandera_Mostrar = true;
+            M.toast({ html: "Contenido Actualizado exitosamente." });
+          } else {
+            M.toast({ html: "La imagen ha sido subida exitosamente." });
+          }
+
+          this.Imagen = "http://www.globalservex.es/upload/news/news_12.png";
+        })
+        .catch(error => {
+          console.error("Error updating product: ", error);
+        });
+    },
     Add_Img() {
       if (this.Imagen != "http://www.globalservex.es/upload/news/news_12.png") {
         var file = this.$refs.myFiles.files[0];
@@ -133,7 +188,7 @@ export default {
                 console.log("PUSHEADO: ", this.Imagenes);
                 this.validation = "";
                 //ACTUALIZANDO LA INFOR
-                firebase
+                /* firebase
                   .firestore()
                   .collection("AboutUs")
                   .doc(this.ID)
@@ -149,7 +204,8 @@ export default {
                   })
                   .catch(error => {
                     console.error("Error updating product: ", error);
-                  });
+                  });*/
+                this.Update_Contenido();
                 //FIN DE ATUALIZAR INFO
               })
               .catch(function(error) {
@@ -206,5 +262,10 @@ export default {
   text-align: justify;
   font-size: 20px;
   width: 80%;
+}
+.textarea_contenido {
+  height: 400px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 </style>
