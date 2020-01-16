@@ -18,12 +18,12 @@
         <div class="nav-content">
           <ul class="tabs tabs-transparent">
             <li class="tab">
-              <router-link to="/about">
-                <b>Nosotros</b>
-              </router-link>|
+              <router-link to="/organization">
+                <b>Organizations</b>
+              </router-link>
             </li>
             <li class="tab">
-              <router-link to="/organization">
+              <router-link to="/organizaciones">
                 <b>Organizaciones</b>
               </router-link>
             </li>
@@ -36,7 +36,7 @@
         </div>
       </nav>
     </div>
-    <div id="contenido" >
+    <div id="contenido">
       <router-view />
     </div>
   </div>
@@ -86,7 +86,7 @@ export default {
 }
 
 #contenido {
-  height: 590px;
+  height: 470px;
   overflow: auto;
 }
 
