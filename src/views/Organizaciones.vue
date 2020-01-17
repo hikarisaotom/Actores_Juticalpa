@@ -36,8 +36,50 @@
 
     <!--Modal de Organizacion-->
     <div id="modal_org" class="modal bottom-sheet">
-      <div class="modal-content">
-        <h4>{{nombre}}</h4>
+      <div class="modal-content" v-if="loader==true">
+        <loading></loading>
+      </div>
+      <div class="modal-content" v-if="loader==false">
+        <div class="row">
+          <div class="cols s12 m12 l12">
+            <nav>
+              <div class="nav-wrapper grey darken-3">
+                <a href="#" class="brand-logo">{{nombre}}</a>
+              </div>
+            </nav>
+          </div>
+          <br />
+          <div class="cols s6 m6 l6">
+            <a
+              class="waves-effect waves-light btn orange left"
+              href="#"
+              @click="editar_Organizacion()"
+              v-if="edit==true"
+            >
+              <i class="material-icons white-text left">edit</i>
+              <span class="white-text">Editar</span>
+            </a>
+          </div>
+          <div class="cols s6 m6 l6">
+            <a class="waves-effect waves-light btn red right" href="#" v-if="edit==true">
+              <i class="material-icons white-text right">delete_forever</i>
+              <span class="white-text">Eliminar</span>
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cols s12">
+            <a
+              v-if="edit==false"
+              class="waves-light btn-small green btn-block"
+              @click="guardar_Cambios()"
+            >
+              <i class="material-icons left">save</i>
+              Guardar
+              <i class="material-icons right">save</i>
+            </a>
+          </div>
+        </div>
         <div class="row">
           <div class="row">
             <!--Nombre y Descripcion-->
@@ -65,18 +107,6 @@
                   />
                   <label :class="active" for="descripcion">Descripcion</label>
                 </div>
-                <br />
-                <a href="#" @click="editar_Organizacion()" v-if="edit==true">
-                  <i class="material-icons orange-text left">edit</i>
-                </a>
-                <a v-else class="waves-light btn-small green" @click="guardar_Cambios()">
-                  <i class="material-icons left">save</i>
-                  Guardar
-                </a>
-                <a href="#">
-                  <i class="material-icons red-text right">delete_forever</i>
-                </a>
-                <br />
               </div>
             </div>
 
@@ -84,14 +114,14 @@
             <div class="card col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
               <div
                 class="card-image waves-effect waves-block waves-light"
-                :style="{ backgroundImage: 'url(' + url_img + ')'}"
+                :style="{ backgroundImage: 'url(' + url_img + ')', height:'200px'}"
                 id="img_org"
               ></div>
-              <div class="card-content">
-                <a href="#" v-show="editarBtn">
+              <div class="card-content" v-show="editarBtn">
+                <a href="#">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
-                <a href="#" v-show="editarBtn">
+                <a href="#">
                   <i class="material-icons red-text right">delete_forever</i>
                 </a>
                 <br />
@@ -338,7 +368,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(logro, 2)">
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(logro, 2)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -354,7 +384,7 @@
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="funcion_org">Nuevo Logro</label>
+                    <label for="logro_org">Nuevo Logro</label>
                   </div>
                 </td>
                 <td width="5%>" @click="agregar_elemento(2)">
@@ -375,9 +405,13 @@
             <div class="card-content">
               <span class="card-title white-text">Proyectos Desarrollándose en el Municipio</span>
               <div class="collection">
-                <p class="collection-item" v-for="proyecto in proyectos" :key="proyecto">
+                <p
+                  class="collection-item"
+                  v-for="proyecto in proyectos"
+                  :key="proyecto.nombre_proyecto"
+                >
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(proyecto, 3)">
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(proyecto, 3)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -396,18 +430,18 @@
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="funcion_org">Nuevo Proyecto NOMBRE</label>
+                    <label for="proyecto_org">Nombre Proyecto</label>
                   </div>
-                  </td>
-                   <td width="47%">
-                  <div class="input-field">
+                </td>
+                <td width="47%">
+                  <div class="input-field s12 m6 l6">
                     <input
                       v-model="proyecto_en_municipioD"
                       id="proyecto_orgD"
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="funcion_org">Nuevo Proyecto DESCRIPCIÓN</label>
+                    <label for="proyecto_orgD">Descripción Proyecto</label>
                   </div>
                 </td>
                 <td width="6%>">
@@ -432,7 +466,7 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn"  @click="delete_elemento(socio, 4)">
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(socio, 4)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -448,7 +482,7 @@
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="funcion_org">Nuevo Socio</label>
+                    <label for="socio_org">Nuevo Socio</label>
                   </div>
                 </td>
                 <td width="5%>">
@@ -469,10 +503,12 @@
         <a class="waves-effect red btn" @click="cerrarModal()">Salir</a>
       </div>
     </div>
+    <loading v-if="loader==true"></loading>
   </div>
 </template>
 
 <script>
+import loading from "../components/Loading.vue";
 import { firebase } from "../firebase";
 import { firestore } from "../firebase";
 import { mask } from "vue-the-mask";
@@ -480,6 +516,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
+    loader: false,
     active: "deactive",
     t0: false,
     t1: false,
@@ -541,13 +578,14 @@ export default {
     editar: true,
     editarBtn: false,
     edit: false
-  }),computed: {
+  }),
+  computed: {
     ...mapState(["bandera_Log"])
- 
   },
   components: {
     firebase,
-    firestore
+    firestore,
+    loading
   },
   directives: { mask },
   mounted: function() {
@@ -559,6 +597,7 @@ export default {
   },
   methods: {
     getOrganizaciones: function() {
+      this.loader = true;
       firestore
         .collection("Actor")
         .get()
@@ -588,8 +627,10 @@ export default {
               a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
             );
           });
+          this.loader = false;
         })
         .catch(function(error) {
+          this.loader = false;
           console.log("Error getting Organizaciones: ", error);
         });
     },
@@ -639,28 +680,38 @@ export default {
       //this.funciones_en_municipio = this.organizacion_actual.funciones_en_municipio;
       //la linea anterior no funciona porque al eliminar borra la referencia del el elemento actual
 
-      for (let index = 0; index < this.organizacion_actual.funciones_en_municipio.length; index++) {
+      for (
+        let index = 0;
+        index < this.organizacion_actual.funciones_en_municipio.length;
+        index++
+      ) {
         this.funciones_en_municipio.push(
           this.organizacion_actual.funciones_en_municipio[index]
         );
       }
 
-      for (let index = 0; index < this.organizacion_actual.logros.length; index++) {
-        this.logros.push(
-          this.organizacion_actual.logros[index]
-        );
+      for (
+        let index = 0;
+        index < this.organizacion_actual.logros.length;
+        index++
+      ) {
+        this.logros.push(this.organizacion_actual.logros[index]);
       }
 
-      for (let index = 0; index < this.organizacion_actual.proyectos.length; index++) {
-        this.proyectos.push(
-          this.organizacion_actual.proyectos[index]
-        );
+      for (
+        let index = 0;
+        index < this.organizacion_actual.proyectos.length;
+        index++
+      ) {
+        this.proyectos.push(this.organizacion_actual.proyectos[index]);
       }
 
-      for (let index = 0; index < this.organizacion_actual.socios.length; index++) {
-        this.socios.push(
-          this.organizacion_actual.socios[index]
-        );
+      for (
+        let index = 0;
+        index < this.organizacion_actual.socios.length;
+        index++
+      ) {
+        this.socios.push(this.organizacion_actual.socios[index]);
       }
       //*fin */
       this.representante = this.organizacion_actual.representante;
@@ -728,6 +779,7 @@ export default {
     },
     guardar_Cambios() {
       //tipo de organizacion
+      this.loader = true;
       var tipoOrg = [];
       if (this.t0 === true) {
         tipoOrg.push("Gobierno central (secretaria de estado)");
@@ -817,9 +869,11 @@ export default {
           this.organizacion_actual.url_img = this.url_img;
 
           console.log("Organization successfully updated!");
+          this.loader = false;
           M.toast({ html: "Actualización realizada correctamente." });
         })
         .catch(error => {
+          this.loader = false;
           console.error("Error updating product: ", error);
         });
     },
@@ -830,53 +884,37 @@ export default {
           1
         );
         M.toast({ html: "Eliminado." });
-      }
-      else if (opcion == 2) {
-        this.logros.splice(
-          this.logros.indexOf(elemento),
-          1
-        );
+      } else if (opcion == 2) {
+        this.logros.splice(this.logros.indexOf(elemento), 1);
+        M.toast({ html: "Eliminado." });
+      } else if (opcion == 3) {
+        this.proyectos.splice(this.proyectos.indexOf(elemento), 1);
+        M.toast({ html: "Eliminado." });
+      } else if (opcion == 4) {
+        this.socios.splice(this.socios.indexOf(elemento), 1);
         M.toast({ html: "Eliminado." });
       }
-      else if (opcion == 3) {
-        this.proyectos.splice(
-          this.proyectos.indexOf(elemento),
-          1
-        );
-        M.toast({ html: "Eliminado." });
-      }
-      else if (opcion == 4) {
-        this.socios.splice(
-          this.socios.indexOf(elemento),
-          1
-        );
-        M.toast({ html: "Eliminado." });
-      }
-      
     },
-    agregar_elemento(opcion){
-      if(opcion==1){
+    agregar_elemento(opcion) {
+      if (opcion == 1) {
         this.funciones_en_municipio.push(this.funcion_en_municipio);
-        this.funcion_en_municipio="";
+        this.funcion_en_municipio = "";
         M.toast({ html: "Agregado." });
-      }
-      else if(opcion==2){
+      } else if (opcion == 2) {
         this.logros.push(this.logro_en_municipio);
-        this.logro_en_municipio= "";
+        this.logro_en_municipio = "";
         M.toast({ html: "Agregado." });
-      }
-      else if(opcion==3){
+      } else if (opcion == 3) {
         this.proyectos.push({
           descripción_proyecto: this.proyecto_en_municipioD,
           nombre_proyecto: this.proyecto_en_municipio
-          });
-        this.proyecto_en_municipio="";
-        this.proyecto_en_municipioD="";
+        });
+        this.proyecto_en_municipio = "";
+        this.proyecto_en_municipioD = "";
         M.toast({ html: "Agregado." });
-      }
-      else if(opcion==4){
+      } else if (opcion == 4) {
         this.socios.push(this.socio_en_municipio);
-        this.socio_en_municipio="";
+        this.socio_en_municipio = "";
         M.toast({ html: "Agregado." });
       }
     }

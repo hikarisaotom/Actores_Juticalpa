@@ -3,7 +3,7 @@
     <div>
       <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:100px;">
-          <p class="black-text">Bienvenido: {{usuario}}</p>
+          <!--p class="black-text">Bienvenido: {{usuario}}</p-->
 
           <a href="#" class="brand-logo">
             <b>Juticalpa</b>
