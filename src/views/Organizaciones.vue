@@ -2,7 +2,7 @@
   <div class="organizaciones">
     <!--Agregar Organizacion-->
     <br />
-    <div class="row">
+    <div class="row" v-show="bandera_Log==true">
       <div class="col s12">
         <a class="waves-light btn-small green" @click="agregarOrganizacion()">
           <i class="material-icons left">add_box</i>
@@ -476,7 +476,7 @@
 import { firebase } from "../firebase";
 import { firestore } from "../firebase";
 import { mask } from "vue-the-mask";
-
+import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
@@ -541,7 +541,10 @@ export default {
     editar: true,
     editarBtn: false,
     edit: false
-  }),
+  }),computed: {
+    ...mapState(["bandera_Log"])
+ 
+  },
   components: {
     firebase,
     firestore

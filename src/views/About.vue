@@ -1,7 +1,7 @@
 <template>
   <div class="about letra">
     <!-- Modal Trigger -->
-    <a
+    <a v-show="bandera_Log==true"
       class="waves-effect waves-light btn modal-trigger"
       href="#crear_noticia"
       style="float:right"
@@ -25,7 +25,7 @@
     </div>
     <br />
     <center>
-      <i
+      <i v-show="bandera_Log==true"
         style="float:right"
         class="material-icons"
         @click="(Contenido_viejo = Contenido), (Bandera_Mostrar = false)"
@@ -108,6 +108,7 @@
 <script>
 import { firebase, database } from "../firebase";
 import { firestore } from "firebase";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "noticias",
   data() {
@@ -123,6 +124,9 @@ export default {
         "http://www.globalservex.es/upload/news/news_12.png"],
     
     };
+  },computed: {
+    ...mapState(["bandera_Log"])
+ 
   },
   components: {
     firebase,

@@ -1,10 +1,10 @@
 <template>
   <div class="about" height="100%">
-    <a
+  <div v-show="bandera_Log==true">  <a 
       class="waves-effect waves-light btn-large modal-trigger"
       href="#crear_noticia"
       style="float:right"
-    >Crear Noticia</a>
+    >Crear Noticia</a></div>
 
     <div v-for="noticia in noticias" :key="noticia.ID">
       <div class="row">
@@ -141,6 +141,7 @@
 <script>
 import { firebase, database } from "../firebase";
 import { firestore } from "firebase";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "noticias",
   data() {
@@ -156,6 +157,9 @@ export default {
       validation: "",
       mostrar_advertencia: false
     };
+  },computed: {
+    ...mapState(["bandera_Log"])
+ 
   },
   components: {
     firebase,
