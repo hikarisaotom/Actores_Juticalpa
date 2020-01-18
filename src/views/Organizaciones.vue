@@ -540,7 +540,8 @@ export default {
     /*banderas*/
     editar: true,
     editarBtn: false,
-    edit: false
+    edit: false,
+    agregarOrga:false,
   }),
   components: {
     firebase,
@@ -716,6 +717,8 @@ export default {
       });
     },
     agregarOrganizacion() {
+      this.aregarOrga = true;
+      this.editar = false;
       this.abrirModal();
     },
     editar_Organizacion() {
