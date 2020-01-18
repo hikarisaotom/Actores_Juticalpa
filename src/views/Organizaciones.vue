@@ -1,6 +1,6 @@
 <template>
   <div class="organizaciones">
-    <br>
+    <br />
     <!--Cards inicial para agregar-->
     <div class="row">
       <div class="col s12 m3 l2">
@@ -11,7 +11,7 @@
             v-bind:style="{ backgroundImage: 'url(https://drogaspoliticacultura.net/wp-content/uploads/2017/09/placeholder-user.jpg)'}"
           >
             <a
-               @click="agregarOrganizacion()"
+              @click="agregarOrganizacion()"
               class="btn-floating halfway-fab waves-effect waves-light red"
             >
               <i class="material-icons">add</i>
@@ -24,9 +24,19 @@
       </div>
     </div>
 
+    <!-- Barra de busqueda por nombre -->
+    <div class="row">
+      <div class="col s6">
+        <div class="input-field">
+          <i class="material-icons prefix">search</i>
+          <input type="text" id="busqueda" v-model="filter_organizacion" />
+          <label :class="active" for="nombre_org">Buscar</label>
+        </div>
+      </div>
+    </div>
     <!--Cards de las organizaciones-->
     <div class="row">
-      <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.id">
+      <div class="col s12 m3 l2" v-for="organizacion in filter" :key="organizacion.id">
         <div class="card">
           <div
             id="img_org"
@@ -366,7 +376,11 @@
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(funcion, 1)">
+                    <a
+                      href="#!"
+                      v-show="editarBtn || agregar_Organizacion"
+                      @click="delete_elemento(funcion, 1)"
+                    >
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -405,7 +419,11 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(logro, 2)">
+                    <a
+                      href="#!"
+                      v-show="editarBtn || agregar_Organizacion"
+                      @click="delete_elemento(logro, 2)"
+                    >
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -448,7 +466,11 @@
                   :key="proyecto.nombre_proyecto"
                 >
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(proyecto, 3)">
+                    <a
+                      href="#!"
+                      v-show="editarBtn || agregar_Organizacion"
+                      @click="delete_elemento(proyecto, 3)"
+                    >
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -503,7 +525,11 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(socio, 4)">
+                    <a
+                      href="#!"
+                      v-show="editarBtn || agregar_Organizacion"
+                      @click="delete_elemento(socio, 4)"
+                    >
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -553,6 +579,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
+    filter_organizacion: "",
     loader: false,
     active: "deactive",
     t0: false,
@@ -610,17 +637,17 @@ export default {
     tipo_organizacion: [],
     ubicacion: "",
     url_img: "",
-    contrasena:"",
-    
+    contrasena: "",
+
     /*areglos auxiliares*/
-    tipoOrg:[],
-    areaOrg:[],
+    tipoOrg: [],
+    areaOrg: [],
 
     /*banderas*/
     editar: true,
     editarBtn: false,
     edit: false,
-    agregar_Organizacion:false,
+    agregar_Organizacion: false
   }),
   computed: {
     ...mapState(["bandera_Log"])
@@ -631,6 +658,15 @@ export default {
     loading
   },
   directives: { mask },
+  computed: {
+    filter: function() {
+      return this.organizaciones.filter(organizacion => {
+        return organizacion.nombre
+          .toUpperCase()
+          .match(this.filter_organizacion.toUpperCase());
+      });
+    }
+  },
   mounted: function() {
     M.AutoInit();
     //Hace que el Modal1 no se cierre si da click afuera
@@ -640,7 +676,7 @@ export default {
   },
   methods: {
     getOrganizaciones: function() {
-      this.organizaciones= [];
+      this.organizaciones = [];
       this.loader = true;
       firestore
         .collection("Actor")
@@ -682,6 +718,7 @@ export default {
       M.Modal.getInstance(modal_org).open();
     },
     cerrarModal() {
+      this.filter_organizacion = "";
       this.agregar_Organizacion = false;
       this.editarBtn = false;
       this.editar = true;
@@ -816,19 +853,19 @@ export default {
       });
     },
     agregarOrganizacion() {
-      this.a0=false;
-      this.a1=false;
-      this.a2=false;
-      this.a3=false;
-      this.a4=false;
-      this.a5=false;
-      this.t0=false;
-      this.t1=false;
-      this.t2=false;
-      this.t3=false;
-      this.t4=false;
-      this.t5=false;
-      this.t6=false;
+      this.a0 = false;
+      this.a1 = false;
+      this.a2 = false;
+      this.a3 = false;
+      this.a4 = false;
+      this.a5 = false;
+      this.t0 = false;
+      this.t1 = false;
+      this.t2 = false;
+      this.t3 = false;
+      this.t4 = false;
+      this.t5 = false;
+      this.t6 = false;
       this.agregar_Organizacion = true;
       this.editar = false;
       this.abrirModal();
@@ -936,7 +973,7 @@ export default {
         M.toast({ html: "Agregado." });
       }
     },
-    Agregar(){
+    Agregar() {
       this.loader = true;
       // arreglos para tipo y area de la organización
       this.Arreglos();
@@ -946,7 +983,7 @@ export default {
         .collection("Actor")
         .add({
           nombre: this.nombre,
-          contrasena:this.contrasena,
+          contrasena: this.contrasena,
           area_trabajo: this.areaOrg,
           descripcion: this.descripcion,
           email_encargado: this.email_encargado,
@@ -978,24 +1015,22 @@ export default {
             telefono_representante: this.telefono_representante,
             tipo_organizacion: this.tipoOrg,
             ubicacion: this.ubicacion,
-            url_img: this.url_img 
+            url_img: this.url_img
           });
 
           this.organizaciones.sort((a, b) =>
             a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
-            );
-        
+          );
+
           this.loader = false;
           M.toast({ html: "Organización Agregada correctamente." });
-          
         })
         .catch(function(error) {
           console.error("Error adding Organization: ", error);
           M.toast({ html: "Error Agregando Orden." });
         });
-
     },
-    Arreglos(){
+    Arreglos() {
       this.tipoOrg = [];
       if (this.t0 === true) {
         this.tipoOrg.push("Gobierno central (secretaria de estado)");
