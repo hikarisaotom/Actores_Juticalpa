@@ -1,13 +1,26 @@
 <template>
   <div class="organizaciones">
-    <!--Agregar Organizacion-->
-    <br />
-    <div class="row" v-show="bandera_Log==true">
-      <div class="col s12">
-        <a class="waves-light btn-small green" @click="agregarOrganizacion()">
-          <i class="material-icons left">add_box</i>
-          Agregar Organización
-        </a>
+    <br>
+    <!--Cards inicial para agregar-->
+    <div class="row">
+      <div class="col s12 m3 l2">
+        <div class="card">
+          <div
+            id="img_org"
+            class="card-image"
+            v-bind:style="{ backgroundImage: 'url(https://drogaspoliticacultura.net/wp-content/uploads/2017/09/placeholder-user.jpg)'}"
+          >
+            <a
+               @click="agregarOrganizacion()"
+              class="btn-floating halfway-fab waves-effect waves-light red"
+            >
+              <i class="material-icons">add</i>
+            </a>
+          </div>
+          <div class="card-content">
+            <span class="flow-text">Nuevo</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -70,12 +83,25 @@
         <div class="row">
           <div class="cols s12">
             <a
-              v-if="edit==false"
+              v-if="edit==false && agregar_Organizacion==false"
               class="waves-light btn-small green btn-block"
               @click="guardar_Cambios()"
             >
               <i class="material-icons left">save</i>
               Guardar
+              <i class="material-icons right">save</i>
+            </a>
+          </div>
+
+          <!-- agregar organizacion -->
+          <div class="cols s12">
+            <a
+              v-if="agregar_Organizacion==true"
+              class="waves-light btn-small green btn-block"
+              @click="Agregar()"
+            >
+              <i class="material-icons left">save</i>
+              Agregar
               <i class="material-icons right">save</i>
             </a>
           </div>
@@ -95,6 +121,17 @@
                     class="materialize-textarea white-text"
                   />
                   <label :class="active" for="nombre_org">Nombre de la Institución</label>
+                </div>
+                <div class="input-field" v-show="agregar_Organizacion==true">
+                  <i class="material-icons prefix">lock</i>
+                  <input
+                    :disabled="editar"
+                    v-model="contrasena"
+                    id="contrasena_org"
+                    type="password"
+                    class="materialize-textarea white-text"
+                  />
+                  <label :class="active" for="nombre_org">Contraseña</label>
                 </div>
                 <div class="input-field">
                   <i class="material-icons prefix">chrome_reader_mode</i>
@@ -117,7 +154,7 @@
                 :style="{ backgroundImage: 'url(' + url_img + ')', height:'200px'}"
                 id="img_org"
               ></div>
-              <div class="card-content" v-show="editarBtn">
+              <div class="card-content" v-show="editarBtn || agregar_Organizacion">
                 <a href="#">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
@@ -329,14 +366,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn" @click="delete_elemento(funcion, 1)">
+                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(funcion, 1)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{funcion}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn">
+              <table width="100%" v-show="editarBtn || agregar_Organizacion">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -368,14 +405,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn" @click="delete_elemento(logro, 2)">
+                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(logro, 2)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{logro}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn">
+              <table width="100%" v-show="editarBtn || agregar_Organizacion">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -411,7 +448,7 @@
                   :key="proyecto.nombre_proyecto"
                 >
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn" @click="delete_elemento(proyecto, 3)">
+                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(proyecto, 3)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -421,7 +458,7 @@
                   {{proyecto.descripción_proyecto}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn">
+              <table width="100%" v-show="editarBtn || agregar_Organizacion">
                 <td width="47%">
                   <div class="input-field">
                     <input
@@ -466,14 +503,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a href="#!" v-show="editarBtn" @click="delete_elemento(socio, 4)">
+                    <a href="#!" v-show="editarBtn || agregar_Organizacion" @click="delete_elemento(socio, 4)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{socio}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn">
+              <table width="100%" v-show="editarBtn || agregar_Organizacion">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -573,12 +610,17 @@ export default {
     tipo_organizacion: [],
     ubicacion: "",
     url_img: "",
+    contrasena:"",
+    
+    /*areglos auxiliares*/
+    tipoOrg:[],
+    areaOrg:[],
 
     /*banderas*/
     editar: true,
     editarBtn: false,
     edit: false,
-    agregarOrga:false,
+    agregar_Organizacion:false,
   }),
   computed: {
     ...mapState(["bandera_Log"])
@@ -598,6 +640,7 @@ export default {
   },
   methods: {
     getOrganizaciones: function() {
+      this.organizaciones= [];
       this.loader = true;
       firestore
         .collection("Actor")
@@ -639,6 +682,7 @@ export default {
       M.Modal.getInstance(modal_org).open();
     },
     cerrarModal() {
+      this.agregar_Organizacion = false;
       this.editarBtn = false;
       this.editar = true;
       this.edit = false;
@@ -668,6 +712,7 @@ export default {
     mostrarOrganizacion() {
       this.active = "active";
       this.editarBtn = false;
+      this.agregar_Organizacion = false;
       this.editar = true;
       this.edit = true;
       this.abrirModal();
@@ -771,63 +816,33 @@ export default {
       });
     },
     agregarOrganizacion() {
-      this.aregarOrga = true;
+      this.a0=false;
+      this.a1=false;
+      this.a2=false;
+      this.a3=false;
+      this.a4=false;
+      this.a5=false;
+      this.t0=false;
+      this.t1=false;
+      this.t2=false;
+      this.t3=false;
+      this.t4=false;
+      this.t5=false;
+      this.t6=false;
+      this.agregar_Organizacion = true;
       this.editar = false;
       this.abrirModal();
     },
     editar_Organizacion() {
       this.editar = false;
       this.editarBtn = true;
+      this.agregar_Organizacion = false;
       this.edit = false;
     },
     guardar_Cambios() {
-      //tipo de organizacion
       this.loader = true;
-      var tipoOrg = [];
-      if (this.t0 === true) {
-        tipoOrg.push("Gobierno central (secretaria de estado)");
-      }
-      if (this.t1 === true) {
-        tipoOrg.push("Gobierno Local (Municipalidad)");
-      }
-      if (this.t2 === true) {
-        tipoOrg.push("Micro y pequeña empresa");
-      }
-      if (this.t3 === true) {
-        tipoOrg.push("Cooperativa");
-      }
-      if (this.t4 === true) {
-        tipoOrg.push("Centro Educativo Público");
-      }
-      if (this.t5 === true) {
-        tipoOrg.push("Centro Educativo Privado");
-      }
-      if (this.t6 === true) {
-        tipoOrg.push(
-          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
-        );
-      }
-
-      /*área de trabajo */
-      var areaOrg = [];
-      if (this.a0 === true) {
-        areaOrg.push("Económica");
-      }
-      if (this.a1 === true) {
-        areaOrg.push("Social/Cultural");
-      }
-      if (this.a2 === true) {
-        areaOrg.push("Educativa");
-      }
-      if (this.a3 === true) {
-        areaOrg.push("Salud");
-      }
-      if (this.a4 === true) {
-        areaOrg.push("Ambiental");
-      }
-      if (this.a5 === true) {
-        areaOrg.push("Otra");
-      }
+      // arreglos para tipo y area de la organización
+      this.Arreglos();
 
       firebase
         .firestore()
@@ -835,7 +850,7 @@ export default {
         .doc(this.organizacion_actual.id)
         .update({
           nombre: this.nombre,
-          area_trabajo: areaOrg,
+          area_trabajo: this.areaOrg,
           descripcion: this.descripcion,
           email_encargado: this.email_encargado,
           email_institucion: this.email_institucion,
@@ -846,7 +861,7 @@ export default {
           socios: this.socios,
           telefono: this.telefono,
           telefono_representante: this.telefono_representante,
-          tipo_organizacion: tipoOrg,
+          tipo_organizacion: this.tipoOrg,
           ubicacion: this.ubicacion,
           url_img: this.url_img
         })
@@ -856,7 +871,7 @@ export default {
           this.editarBtn = false;
           /*organizacion actual*/
           this.organizacion_actual.nombre = this.nombre;
-          this.organizacion_actual.area_trabajo = areaOrg;
+          this.organizacion_actual.area_trabajo = this.areaOrg;
           this.organizacion_actual.descripcion = this.descripcion;
           this.organizacion_actual.email_encargado = this.email_encargado;
           this.organizacion_actual.email_institucion = this.email_encargado;
@@ -867,7 +882,7 @@ export default {
           this.organizacion_actual.socios = this.socios;
           this.organizacion_actual.telefono = this.telefono;
           this.organizacion_actual.telefono_representante = this.telefono_representante;
-          this.organizacion_actual.tipo_organizacion = tipoOrg;
+          this.organizacion_actual.tipo_organizacion = this.tipoOrg;
           this.organizacion_actual.ubicacion = this.ubicacion;
           this.organizacion_actual.url_img = this.url_img;
 
@@ -919,6 +934,112 @@ export default {
         this.socios.push(this.socio_en_municipio);
         this.socio_en_municipio = "";
         M.toast({ html: "Agregado." });
+      }
+    },
+    Agregar(){
+      this.loader = true;
+      // arreglos para tipo y area de la organización
+      this.Arreglos();
+
+      firebase
+        .firestore()
+        .collection("Actor")
+        .add({
+          nombre: this.nombre,
+          contrasena:this.contrasena,
+          area_trabajo: this.areaOrg,
+          descripcion: this.descripcion,
+          email_encargado: this.email_encargado,
+          email_institucion: this.email_institucion,
+          funciones_en_municipio: this.funciones_en_municipio,
+          logros: this.logros,
+          proyectos: this.proyectos,
+          representante: this.representante,
+          socios: this.socios,
+          telefono: this.telefono,
+          telefono_representante: this.telefono_representante,
+          tipo_organizacion: this.tipoOrg,
+          ubicacion: this.ubicacion,
+          url_img: this.url_img
+        })
+        .then(doc => {
+          this.organizaciones.push({
+            nombre: this.nombre,
+            area_trabajo: this.areaOrg,
+            descripcion: this.descripcion,
+            email_encargado: this.email_encargado,
+            email_institucion: this.email_institucion,
+            funciones_en_municipio: this.funciones_en_municipio,
+            logros: this.logros,
+            proyectos: this.proyectos,
+            representante: this.representante,
+            socios: this.socios,
+            telefono: this.telefono,
+            telefono_representante: this.telefono_representante,
+            tipo_organizacion: this.tipoOrg,
+            ubicacion: this.ubicacion,
+            url_img: this.url_img 
+          });
+
+          this.organizaciones.sort((a, b) =>
+            a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
+            );
+        
+          this.loader = false;
+          M.toast({ html: "Organización Agregada correctamente." });
+          
+        })
+        .catch(function(error) {
+          console.error("Error adding Organization: ", error);
+          M.toast({ html: "Error Agregando Orden." });
+        });
+
+    },
+    Arreglos(){
+      this.tipoOrg = [];
+      if (this.t0 === true) {
+        this.tipoOrg.push("Gobierno central (secretaria de estado)");
+      }
+      if (this.t1 === true) {
+        this.tipoOrg.push("Gobierno Local (Municipalidad)");
+      }
+      if (this.t2 === true) {
+        this.tipoOrg.push("Micro y pequeña empresa");
+      }
+      if (this.t3 === true) {
+        this.tipoOrg.push("Cooperativa");
+      }
+      if (this.t4 === true) {
+        this.tipoOrg.push("Centro Educativo Público");
+      }
+      if (this.t5 === true) {
+        this.tipoOrg.push("Centro Educativo Privado");
+      }
+      if (this.t6 === true) {
+        this.tipoOrg.push(
+          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
+        );
+      }
+
+      /*área de trabajo */
+      this.areaOrg = [];
+      if (this.a0 === true) {
+        this.areaOrg.push("Económica");
+      }
+      if (this.a1 === true) {
+        this.areaOrg.push("Social/Cultural");
+      }
+      if (this.a2 === true) {
+        this.areaOrg.push("Educativa");
+      }
+      if (this.a3 === true) {
+        this.areaOrg.push("Salud");
+      }
+      if (this.a4 === true) {
+        this.areaOrg.push("Ambiental");
+      }
+      if (this.a5 === true) {
+        this.areaOrg.push("Otra");
       }
     }
   }
