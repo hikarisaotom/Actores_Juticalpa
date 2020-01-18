@@ -3,7 +3,7 @@
     <div>
       <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:100px;">
-          <p class="black-text">Bienvenido: {{usuario}}</p>
+          <!--p class="black-text">Bienvenido: {{usuario}}</p-->
 
           <a href="#" class="brand-logo">
             <b>Juticalpa</b>
@@ -152,9 +152,8 @@ export default {
     ...mapState(["Organizacion"])*/
   },
   methods: {
-    ...mapMutations(["Estado_Bandera"]),
-    ...mapMutations(["Get_datos"]),
-    ...mapMutations(["Set_datos"]),
+    ...mapMutations(["cambiar_bandera"]),
+
 
     ChangeBackground() {
       var x = document.getElementById("navigation_bar_logo");
@@ -248,6 +247,8 @@ export default {
       window.localStorage.removeItem("login");
       this.usuario = "invitado";
       this.bandera_Log=false;
+      console.log("SALIENDO LA BANDERA DEBERIA SER FALSE");
+      this.$store.commit("cambiar_bandera", false);
       M.toast({
         html: "Saliendo del sistema..."
       });
@@ -259,11 +260,15 @@ export default {
         this.usuario = window.localStorage.getItem("usuario");
         this.organizacion = window.localStorage.getItem("Organizacion");
         this.bandera_Log = true;
+        console.log("AUTENTICADO, LOS DATOS DEBERIAN SER TRUE");
+        this.$store.commit("cambiar_bandera", true);
       } else {
         this.role = "invitado";
         this.usuario = "invitado";
         this.organizacion = "invitado";
         this.bandera_Log = false;
+        console.log("SIN AUTENTICAR, LOS DATOS DEBERIAN SER FALSE");
+        this.$store.commit("cambiar_bandera", false);
       }
     },
     Sign_in() {
@@ -303,7 +308,8 @@ export default {
                     doc.data().nombre
                   );
                   window.localStorage.setItem("login", true);
-
+                  console.log("SE AUTENTICO DEBERIA SER TRUE");
+                   this.$store.commit("cambiar_bandera", true);
                   M.toast({ html: "Bienvenido" });
                   M.Modal.getInstance(login).close();
                   this.email = "";
@@ -468,6 +474,7 @@ export default {
     M.AutoInit();
     this.ChangeBackground();
     this.traer();
+    
 
     /*
  var m = M.Modal.getInstance(modal_restablecer_password);

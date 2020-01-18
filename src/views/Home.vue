@@ -1,7 +1,7 @@
 <template>
   <div class="home">
    
-    <login />
+
   </div>
 </template>
 
@@ -13,6 +13,8 @@ export default {
   name: 'home',
   components: {
     login
+  } , mounted: function() {
+    this.$router.push("/about");
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="about" height="100%">
-    <a
+  <div v-show="bandera_Log==true">  <a 
       class="waves-effect waves-light btn-large modal-trigger"
       href="#crear_noticia"
       style="float:right"
-    >Crear Noticia</a>
+    >Crear Noticia</a></div>
 
     <div v-for="noticia in noticias" :key="noticia.ID">
       <div class="row">
@@ -124,7 +124,7 @@
         </div>
 
         <a class="waves-effect waves-light btn-large" @click=" Add_Noticia()">
-          <i class="material-icons right">cloud</i>button
+          <i class="material-icons right">save</i>Guardar
         </a>
       </div>
 
@@ -141,6 +141,7 @@
 <script>
 import { firebase, database } from "../firebase";
 import { firestore } from "firebase";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "noticias",
   data() {
@@ -156,6 +157,9 @@ export default {
       validation: "",
       mostrar_advertencia: false
     };
+  },computed: {
+    ...mapState(["bandera_Log"])
+ 
   },
   components: {
     firebase,
@@ -213,7 +217,7 @@ export default {
                     .add({
                       Titulo: this.nuevo_titulo,
                       Contenido: this.nuevo_contenido,
-                      Autor: "ANONIMO",
+                      Autor: window.localStorage.getItem("Organizacion"),
                       Imagen: tempUrl,
                       Fecha: new Date()
                     })
@@ -289,7 +293,7 @@ export default {
       this.noticias = [];
       firebase
         .firestore()
-        .collection("Noticias")
+        .collection("Noticias").orderBy("Fecha", "desc")
         .get()
         .then(snap => {
           snap.forEach(element => {
@@ -305,6 +309,11 @@ export default {
         .catch(function(error) {
           console.log("Error getting Products: ", error);
         });
+       /*  _.sortBy(this.products, [
+              function(p) {
+                return p.CATEGORY;
+              }
+            ]);*/
     }
   }
 };
