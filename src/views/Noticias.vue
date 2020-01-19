@@ -14,7 +14,7 @@
                  data-tooltip="Crear Noticia"
                 href="#crear_noticia"
                
-              >add_circle</i>
+              >add</i>
             </a>
           </li>
         </ul>
@@ -32,10 +32,10 @@
                   <img v-bind:src="noticia.Imagen" />
                 </td>
                 <td>
-                  <b>
-                    <h4>{{noticia.Titulo}}</h4>
-                    <p class="blue-text">{{noticia.Autor}}</p>
-                  </b>
+                   <b> 
+                     <h4 class="extra">{{noticia.Titulo}}</h4>
+                     <p class="blue-text">{{noticia.Autor}}</p></b>
+                  
                 </td>
               </table>
             </div>
@@ -45,11 +45,11 @@
             </div>
 
             <div align="right">
-              <a
+             <b> <a
                 @click="noticia_actual=noticia"
-                class="modal-trigger posicion"
-                href="#noticia"
-              >Seguir Leyendo....</a>
+                class="modal-trigger posicion blue-text"
+                href="#noticia" style="font-size:20px;SSS"
+              >Seguir Leyendo....</a></b>
             </div>
           </div>
         </div>
@@ -58,25 +58,27 @@
     </div>
 
     <!--INICIO DEL MODAL DE LAS NOTICIAS-->
-    <div id="noticia" class="modal modal-fixed-footer letra">
-      <div class="modal-content">
-        <h3>{{noticia_actual.Titulo}}</h3>
-        <p class="tamano2">Autor: {{noticia_actual.Autor}}</p>
+    <div id="noticia" class="modal modal-fixed-footer letra tamano_modal">
+      <div class="modal-content ">
+        <h3 class="grey lighten-3">{{noticia_actual.Titulo}}</h3>
+        <p class="tamano2 blue-text">Autor: {{noticia_actual.Autor}}</p>
         <br />
         <img v-bind:src="noticia_actual.Imagen" width="50%" height="50%" />
         <br />
         <br />
-        <div class="contenido">{{ noticia_actual.Contenido}}</div>
+        <textarea rows="60" cols="90" class="contenido" readonly  style="border: none;" v-model="noticia_actual.Contenido" disabled></textarea>
+
+       
       </div>
-      <div class="modal-footer">
-        <a class="modal-close waves-effect waves-green btn-flat">Salir</a>
+      <div class="modal-footer grey lighten-1">
+        <a class="modal-close waves-effect waves-green green btn-flat" style="font-size:20px;"><b>Salir</b></a>
       </div>
     </div>
 
     <!--INICIO DEL MODAL DE CREAR NOTICIAS-->
     <div id="crear_noticia" class="modal modal-fixed-footer letra">
       <div class="modal-content">
-        <h3>Crear Noticia</h3>
+        <h3 class="grey lighten-3 green-text">Crear Noticia</h3>
 
         <div class="row">
           <div class="col s12">
@@ -92,17 +94,14 @@
         <!--FORMULARIO DE INFORMACION DE LA NOTICIA-->
         <form class="col s12">
           <div class="row">
-            <div class="input-field col s6">
-              <input id="Titulo" type="text" v-model="nuevo_titulo" class="validate datos" />
-              <label for="Titulo" class="orange-text text-accent-4">
-                <h6>Titulo de la Noticia</h6>
-              </label>
+          
+            <div class="input_titulo">
+                <center><h4 class="green-text">Titulo de la Noticia</h4></center>
+          <input id="Titulo" type="text" v-model="nuevo_titulo" class="validate input_titulo" />
             </div>
-            <div class="input-field col s12">
-              <textarea id="Contenido" class="materialize-textarea datos" v-model="nuevo_contenido"></textarea>
-              <label for="Contenido" class="orange-text text-accent-4">
-                <h6>Contenido</h6>
-              </label>
+            <div class="input-field ">
+               <h4 class="green-text">Contenido</h4>
+              <textarea id="Contenido" class="datos " v-model="nuevo_contenido"></textarea>
             </div>
           </div>
         </form>
@@ -110,10 +109,10 @@
         <!--IMAGEN DE LA NOTICIA-->
         <label class="active" for="card_img">
           <h5>
-            <b class="orange-text text-accent-4">Imagen</b>
+            <b class="green-text ">Imagen</b>
           </h5>
         </label>
-        <div class="card" id="card_img">
+        <div class="card " id="card_img">
           <div class="card-image" width="50%" height="50%">
             <img
               class="materialboxed"
@@ -124,8 +123,8 @@
               height="300px"
             />
             <a @click="open_file_selector()">
-              <center class="orange-text">
-                <b>Adjuntar Imagen</b>
+              <center class="red-text">
+                <b style="font-size:20px;">Adjuntar Imagen</b>
               </center>
             </a>
             <input
@@ -140,15 +139,14 @@
           </div>
         </div>
 
-        <a class="waves-effect waves-light btn-large" @click=" Add_Noticia()">
+        <a class="waves-effect waves-light btn-large green" @click=" Add_Noticia()">
           <i class="material-icons right">save</i>Guardar
         </a>
       </div>
 
-      <div class="modal-footer">
-        <a
-          class="modal-close waves-effect waves-green btn-flat white-text text-accent-4 orange"
-        >Salir</a>
+      <div class="modal-footer grey lighten-1">
+          <a class="modal-close waves-effect waves-green green btn-flat white-text" style="font-size:20px;"><b>Salir</b></a>
+        
       </div>
     </div>
   </div>
@@ -245,7 +243,8 @@ export default {
                       console.log("Agregado con Exito!", doc.id);
                       this.Get_News();
 
-                      M.toast({ html: "Agregado correctamente." });
+                    M.Modal.getInstance(crear_noticia).close();
+                      M.toast({ html: "Noticia Publicada Exitosamente." });
                       this.nuevo_titulo = "";
                       this.nuevo_contenido = "";
                       this.Imagen =
@@ -273,7 +272,7 @@ export default {
             .add({
               Titulo: this.nuevo_titulo,
               Contenido: this.nuevo_contenido,
-              Autor: "ANONIMO",
+              Autor: window.localStorage.getItem('Organizacion'),
               Imagen: "http://www.globalservex.es/upload/news/news_12.png",
               Fecha: new Date()
             })
@@ -281,8 +280,8 @@ export default {
               console.log("categoria ", this.type);
               console.log("Agregado con Exito!", doc.id);
               this.Get_News();
-
-              M.toast({ html: "Agregado correctamente." });
+              M.Modal.getInstance(crear_noticia).close();
+              M.toast({ html: "Noticia Publicada Exitosamente." });
               this.nuevo_titulo = "";
               this.nuevo_contenido = "";
               this.Imagen =
@@ -354,7 +353,15 @@ export default {
 
 .contenido {
   text-align: justify;
-  font-size: 20px;
+  width: 95%;
+  margin-left: 2.5%;
+  font-size: 24px;
+  color:black;
+    height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+color: black;
+font-family: "Gelasio", serif;
 }
 .letra {
   font-family: "Gelasio", serif;
@@ -365,12 +372,40 @@ export default {
   color: #616161;
 }
 
+.input_titulo{
+ text-align: justify;
+ width: 95%;
+  margin-left: 2.5%;
+  font-size: 24px;
+  color:black;
+color: black;
+font-family: "Gelasio", serif;
+}
+
 .datos {
-  font-size: 50px;
-  font-family: "Gelasio", serif;
+ text-align: justify;
+  width: 95%;
+  margin-left: 2.5%;
+  font-size: 24px;
+  color:black;
+    height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+color: black;
+font-family: "Gelasio", serif;
+  
 }
 
 .position{
   margin-left: 20%;
+}
+
+.extra{
+ font-weight : 900;
+}
+
+.tamano_modal{
+  width: 70%;
+  height: 900px;
 }
 </style>
