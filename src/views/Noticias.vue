@@ -1,18 +1,34 @@
 <template>
   <div class="about" height="100%">
-  <div v-show="bandera_Log==true">  <a 
-      class="waves-effect waves-light btn-large modal-trigger"
-      href="#crear_noticia"
-      style="float:right"
-    >Crear Noticia</a></div>
+        <div class="fixed-action-btn"  v-show="bandera_Log==true">
+        <a class="btn-floating btn-large red">
+          <i class="large material-icons">add_circle_outline</i>
+        </a>
+        <ul>
+          <li></li>
+          <li>
+            <a class="btn-floating blue">
+              <i
+                class="material-icons tooltipped modal-trigger"
+                data-position="left"
+                 data-tooltip="Crear Noticia"
+                href="#crear_noticia"
+               
+              >add_circle</i>
+            </a>
+          </li>
+        </ul>
+      </div>
 
+
+ 
     <div v-for="noticia in noticias" :key="noticia.ID">
-      <div class="row">
-        <div class="col s12 m12">
-          <div class="card letra">
-            <div class="card-image">
+   <div class="row position">
+        <div class="col s10 m10 ">
+          <div class="card letra grey lighten-3">
+            <div class="card-image white">
               <table width="100%">
-                <td width="10%" height="20%">
+                <td width="30%" height="40%">
                   <img v-bind:src="noticia.Imagen" />
                 </td>
                 <td>
@@ -24,7 +40,7 @@
               </table>
             </div>
 
-            <div class="short">
+            <div class="short ">
               <p class="ellipsis">{{noticia.Contenido}}</p>
             </div>
 
@@ -38,6 +54,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <!--INICIO DEL MODAL DE LAS NOTICIAS-->
@@ -171,6 +188,8 @@ export default {
     //Hace que el de las noticias  no se cierre si da click afuera
     var m = M.Modal.getInstance(crear_noticia);
     m.options.dismissible = false;
+     var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
   },
 
   methods: {
@@ -349,5 +368,9 @@ export default {
 .datos {
   font-size: 50px;
   font-family: "Gelasio", serif;
+}
+
+.position{
+  margin-left: 20%;
 }
 </style>

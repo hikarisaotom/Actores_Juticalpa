@@ -1,21 +1,19 @@
 <template>
-  <div>
+  <div class="letra">
     <div>
       <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:100px;">
           <!--p class="black-text">Bienvenido: {{usuario}}</p-->
-
-          <a href="#" class="brand-logo">
-            <b>Juticalpa</b>
+   <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
+          <a  >
+            <b>Plataforma de Actores de Juticalpa</b>
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li>
-              <a>About</a>
-            </li>
+           
             <li>
               <a
                 v-show="bandera_Log==false"
-                class="waves-effect waves-light modal-trigger"
+                class="waves-effect waves-light modal-trigger enfasis"
                 href="#login"
               >Log In</a>
               <a
@@ -486,6 +484,14 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Gelasio&display=swap");
+.letra {
+  font-family: "Gelasio", serif;
+}
+.enfasis{
+
+font-size: 20px;
+}
 #navigation_bar_logo {
   transition: background 1s;
   background-repeat: no-repeat;
@@ -494,8 +500,11 @@ export default {
 }
 
 #contenido {
-  height: 470px;
+  height: 700px;
   overflow: auto;
+  /*background-color:#f3f3e3 ;*/
+  background-image: url(https://avante.biz/wp-content/uploads/Minimal-Wallpaper/Minimal-Wallpaper-001.jpg);
+ 
 }
 
 .x {

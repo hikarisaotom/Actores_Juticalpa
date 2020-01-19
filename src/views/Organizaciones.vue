@@ -1,8 +1,9 @@
 <template>
   <div class="organizaciones">
     <br />
+  
     <!--Cards inicial para agregar-->
-    <div class="row">
+    <div class="row" v-show="bandera_Log==true">
       <div class="col s12 m3 l2">
         <div class="card">
           <div
@@ -72,7 +73,7 @@
             </nav>
           </div>
           <br />
-          <div class="cols s6 m6 l6">
+          <div class="cols s6 m6 l6"  v-show="bandera_Log==true">
             <a
               class="waves-effect waves-light btn orange left"
               href="#"
@@ -83,8 +84,8 @@
               <span class="white-text">Editar</span>
             </a>
           </div>
-          <div class="cols s6 m6 l6">
-            <a class="waves-effect waves-light btn red right" href="#" v-if="edit==true">
+          <div class="cols s6 m6 l6" v-show="bandera_Log==true">
+            <a  class="waves-effect waves-light btn red right" href="#" v-if="edit==true">
               <i class="material-icons white-text right">delete_forever</i>
               <span class="white-text">Eliminar</span>
             </a>
@@ -595,7 +596,6 @@ export default {
     a3: false,
     a4: false,
     a5: false,
-
     //Datos de organizaicon - organizaciones
     organizaciones: [],
     organizacion_actual: {
@@ -649,9 +649,6 @@ export default {
     edit: false,
     agregar_Organizacion: false
   }),
-  computed: {
-    ...mapState(["bandera_Log"])
-  },
   components: {
     firebase,
     firestore,
@@ -659,6 +656,7 @@ export default {
   },
   directives: { mask },
   computed: {
+    ...mapState(["bandera_Log"]),
     filter: function() {
       return this.organizaciones.filter(organizacion => {
         return organizacion.nombre
@@ -673,6 +671,10 @@ export default {
     var m = M.Modal.getInstance(modal_org);
     m.options.dismissible = false;
     this.getOrganizaciones();
+    /*MOSTRAR Y OCULTAR...NO SE POR QUE NO AGARRA LOS DEL STATE */
+
+    
+  
   },
   methods: {
     getOrganizaciones: function() {
