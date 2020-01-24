@@ -34,6 +34,18 @@
       </div>
     </div>
 
+    <!--Input File-->
+    <input
+      id="file-input"
+      :disabled="editarBtn==false"
+      type="file"
+      ref="myFiles"
+      @change="changeImg()"
+      name="name"
+      accept="image/x-png, image/gif, image/jpeg"
+      style="display: none;"
+    />
+
     <!--Modal de Organizacion-->
     <div id="modal_org" class="modal bottom-sheet">
       <div class="modal-content" v-if="loader==true">
@@ -118,11 +130,11 @@
                 id="img_org"
               ></div>
               <div class="card-content" v-show="editarBtn">
-                <a href="#">
+                <a href="#" @click="openFileSelector()">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
                 <a href="#">
-                  <i class="material-icons red-text right">delete_forever</i>
+                  <i class="material-icons red-text right" @click="url_img=''">delete_forever</i>
                 </a>
                 <br />
               </div>
@@ -509,6 +521,7 @@
 
 <script>
 import loading from "../components/Loading.vue";
+import "firebase/storage"; // <----
 import { firebase } from "../firebase";
 import { firestore } from "../firebase";
 import { mask } from "vue-the-mask";
@@ -573,7 +586,6 @@ export default {
     tipo_organizacion: [],
     ubicacion: "",
     url_img: "",
-
     /*banderas*/
     editar: true,
     editarBtn: false,
@@ -636,6 +648,59 @@ export default {
     },
     abrirModal() {
       M.Modal.getInstance(modal_org).open();
+    },
+    openFileSelector() {
+      document.getElementById("file-input").click();
+    },
+    changeImg() {
+      var file = this.$refs.myFiles.files[0];
+      this.url_img = URL.createObjectURL(file);
+    },
+    deleteIMG() {
+      if (this.organizacion_actual.url_img != "") {
+        // Delete the file
+        var storage = firebase.storage();
+        const u = this.organizacion_actual.url_img;
+        var desertRef = storage.refFromURL(u);
+        desertRef
+          .delete()
+          .then(function() {
+            console.log("Borrado");
+            this.url_img = "";
+          })
+          .catch(function(error) {
+            console.log("Uh-oh, an error occurred!");
+          });
+      }
+    },
+    editarImg() {
+      if (this.url_img != "") {
+        var file = this.$refs.myFiles.files[0];
+        if (typeof file === "undefined") {
+          this.url_img = organizacion_actual.url_img;
+        } else {
+          var storage = firebase.storage();
+          var storageRef = storage.ref();
+          storageRef
+            .child("organizaciones_img/" + file.name)
+            .put(file)
+            .then(() => {
+              storageRef
+                .child("organizaciones_img/" + file.name)
+                .getDownloadURL()
+                .then(url => {
+                  this.url_img = url;
+                  console.log("Imagen guardada con link: ", url);
+                })
+                .catch(function(error) {
+                  console.log("Error obteniendo imagen!.", error);
+                });
+            })
+            .catch(function(error) {
+              console.log("Error subiendo imagen!.");
+            });
+        }
+      }
     },
     cerrarModal() {
       this.editarBtn = false;
@@ -825,7 +890,6 @@ export default {
       if (this.a5 === true) {
         areaOrg.push("Otra");
       }
-
       firebase
         .firestore()
         .collection("Actor")
