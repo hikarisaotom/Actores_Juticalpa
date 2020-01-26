@@ -1,25 +1,32 @@
 <template>
   <div class="organizaciones">
-    <!--Agregar Organizacion-->
     <br />
-    <div class="row" v-show="bandera_Log==true">
-      <div class="col s12">
-        <a class="waves-light btn-small green" @click="agregarOrganizacion()">
-          <i class="material-icons left">add_box</i>
-          Agregar Organización
-        </a>
-      </div>
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">mode_edit</i>
+      </a>
+      <ul>
+        <li>
+          <a class="btn-floating green" @click="agregarOrganizacion();">
+            <i class="material-icons">add</i>
+          </a>
+        </li>
+      </ul>
     </div>
 
     <!--Cards de las organizaciones-->
     <div class="row">
       <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.id">
         <div class="card">
-          <div
-            id="img_org"
-            class="card-image"
-            v-bind:style="{ backgroundImage: 'url(' + organizacion.url_img + ')'}"
-          >
+          <div class="card-image">
+            <img
+              :src="organizacion.url_img"
+              style="display: block;
+              margin-left: auto;
+              margin-right: auto;
+              width: 100%;
+              height: 150px"
+            />
             <a
               @click="organizacion_actual=organizacion; mostrarOrganizacion()"
               class="btn-floating halfway-fab waves-effect waves-light red"
@@ -65,7 +72,7 @@
             <a
               class="waves-effect waves-light btn orange left"
               href="#"
-              @click="editar_Organizacion()"
+              @click="editar_Organizacion(); edicion=true"
               v-if="edit==true"
             >
               <i class="material-icons white-text left">edit</i>
@@ -73,7 +80,12 @@
             </a>
           </div>
           <div class="cols s6 m6 l6">
-            <a class="waves-effect waves-light btn red right" href="#" v-if="edit==true">
+            <a
+              class="waves-effect waves-light btn red right"
+              href="#"
+              @click="delete_Organizacion()"
+              v-if="edit==true"
+            >
               <i class="material-icons white-text right">delete_forever</i>
               <span class="white-text">Eliminar</span>
             </a>
@@ -81,11 +93,7 @@
         </div>
         <div class="row">
           <div class="cols s12">
-            <a
-              v-if="edit==false"
-              class="waves-light btn-small green btn-block"
-              @click="guardar_Cambios()"
-            >
+            <a v-if="edit==false" class="waves-light btn-small green btn-block" @click="ejecutar()">
               <i class="material-icons left">save</i>
               Guardar
               <i class="material-icons right">save</i>
@@ -124,17 +132,28 @@
 
             <!--Imagen-->
             <div class="card col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
-              <div
-                class="card-image waves-effect waves-block waves-light"
-                :style="{ backgroundImage: 'url(' + url_img + ')', height:'200px'}"
-                id="img_org"
-              ></div>
+              <div class="card-image waves-effect waves-block waves-light">
+                <a href="#" @click="openIMG()">
+                  <img
+                    class="materialboxed"
+                    :src="url_img"
+                    style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 100%;
+                  height: 300px"
+                  />
+                </a>
+              </div>
               <div class="card-content" v-show="editarBtn">
                 <a href="#" @click="openFileSelector()">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
                 <a href="#">
-                  <i class="material-icons red-text right" @click="url_img=''">delete_forever</i>
+                  <i
+                    class="material-icons red-text right"
+                    @click="url_img='https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'"
+                  >delete_forever</i>
                 </a>
                 <br />
               </div>
@@ -529,6 +548,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
+    edicion: false,
     loader: false,
     active: "deactive",
     t0: false,
@@ -652,33 +672,54 @@ export default {
     openFileSelector() {
       document.getElementById("file-input").click();
     },
+    openIMG() {
+      var elems = document.querySelectorAll(".materialboxed");
+      var instances = M.Materialbox.init(elems);
+      instances.forEach(e => {
+        e.open();
+      });
+    },
     changeImg() {
       var file = this.$refs.myFiles.files[0];
       this.url_img = URL.createObjectURL(file);
     },
     deleteIMG() {
-      if (this.organizacion_actual.url_img != "") {
-        // Delete the file
+      // Delete the file
+      if (
+        this.organizacion_actual.url_img ===
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+      ) {
+        this.guardar_Cambios();
+      } else {
+        console.log("Entra Borrar IMG");
         var storage = firebase.storage();
         const u = this.organizacion_actual.url_img;
+        console.log(u);
         var desertRef = storage.refFromURL(u);
         desertRef
           .delete()
-          .then(function() {
+          .then(() => {
             console.log("Borrado");
-            this.url_img = "";
+            this.guardar_Cambios();
           })
-          .catch(function(error) {
-            console.log("Uh-oh, an error occurred!");
+          .catch(error => {
+            console.log("Uh-oh, an error occurred!", error);
+            this.loader = false;
+            M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
           });
       }
     },
     editarImg() {
-      if (this.url_img != "") {
-        var file = this.$refs.myFiles.files[0];
-        if (typeof file === "undefined") {
-          this.url_img = organizacion_actual.url_img;
+      this.loader = true;
+      if (this.url_img != this.organizacion_actual.url_img) {
+        if (
+          this.url_img ===
+          "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+        ) {
+          this.deleteIMG();
         } else {
+          console.log("Entra IF");
+          var file = this.$refs.myFiles.files[0];
           var storage = firebase.storage();
           var storageRef = storage.ref();
           storageRef
@@ -690,19 +731,27 @@ export default {
                 .getDownloadURL()
                 .then(url => {
                   this.url_img = url;
-                  console.log("Imagen guardada con link: ", url);
+                  this.deleteIMG();
                 })
-                .catch(function(error) {
+                .catch(error => {
                   console.log("Error obteniendo imagen!.", error);
+                  this.loader = false;
+                  M.toast({
+                    html: "Actualización no realizada. Intente de Nuevo."
+                  });
                 });
             })
             .catch(function(error) {
               console.log("Error subiendo imagen!.");
             });
         }
+      } else {
+        console.log("Entra ELSE");
+        this.guardar_Cambios();
       }
     },
     cerrarModal() {
+      this.loader = false;
       this.editarBtn = false;
       this.editar = true;
       this.edit = false;
@@ -785,6 +834,7 @@ export default {
       this.tipo_organizacion = this.organizacion_actual.tipo_organizacion;
       this.ubicacion = this.organizacion_actual.ubicacion;
       this.url_img = this.organizacion_actual.url_img;
+      console.log(this.url_img);
       //Selección de los tipos de organización
       if (
         this.tipo_organizacion.includes(
@@ -836,6 +886,11 @@ export default {
     },
     agregarOrganizacion() {
       this.abrirModal();
+      this.edicion = false;
+      this.editar = false;
+      this.editarBtn = true;
+      this.url_img =
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg";
     },
     editar_Organizacion() {
       this.editar = false;
@@ -844,7 +899,6 @@ export default {
     },
     guardar_Cambios() {
       //tipo de organizacion
-      this.loader = true;
       var tipoOrg = [];
       if (this.t0 === true) {
         tipoOrg.push("Gobierno central (secretaria de estado)");
@@ -938,7 +992,7 @@ export default {
         })
         .catch(error => {
           this.loader = false;
-          console.error("Error updating product: ", error);
+          M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
         });
     },
     delete_elemento(elemento, opcion) {
@@ -981,6 +1035,171 @@ export default {
         this.socio_en_municipio = "";
         M.toast({ html: "Agregado." });
       }
+    },
+    delete_Organizacion() {
+      this.loader = true;
+      /*Al eliminar la organizacion, no se borra la imagen HACERLO DESPUES*/
+      firebase
+        .firestore()
+        .collection("Actor")
+        .doc(this.organizacion_actual.id)
+        .delete()
+        .then(error => {
+          this.organizaciones.splice(
+            this.organizaciones.indexOf(this.organizacion_actual),
+            1
+          );
+          this.loader = false;
+          M.toast({ html: "Organización eliminada." });
+          this.cerrarModal();
+        })
+        .catch(error => {
+          this.loader = false;
+          M.toast({ html: "Error eliminando Organización." });
+          this.cerrarModal();
+        });
+    },
+    ejecutar() {
+      if (this.edicion == true) {
+        this.editarImg();
+      } else {
+        this.addOrganizacion();
+      }
+    },
+    addOrganizacion() {
+      this.loader = true;
+      //tipo de organizacion
+      var tipoOrg = [];
+      if (this.t0 === true) {
+        tipoOrg.push("Gobierno central (secretaria de estado)");
+      }
+      if (this.t1 === true) {
+        tipoOrg.push("Gobierno Local (Municipalidad)");
+      }
+      if (this.t2 === true) {
+        tipoOrg.push("Micro y pequeña empresa");
+      }
+      if (this.t3 === true) {
+        tipoOrg.push("Cooperativa");
+      }
+      if (this.t4 === true) {
+        tipoOrg.push("Centro Educativo Público");
+      }
+      if (this.t5 === true) {
+        tipoOrg.push("Centro Educativo Privado");
+      }
+      if (this.t6 === true) {
+        tipoOrg.push(
+          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
+        );
+      }
+
+      /*área de trabajo */
+      var areaOrg = [];
+      if (this.a0 === true) {
+        areaOrg.push("Económica");
+      }
+      if (this.a1 === true) {
+        areaOrg.push("Social/Cultural");
+      }
+      if (this.a2 === true) {
+        areaOrg.push("Educativa");
+      }
+      if (this.a3 === true) {
+        areaOrg.push("Salud");
+      }
+      if (this.a4 === true) {
+        areaOrg.push("Ambiental");
+      }
+      if (this.a5 === true) {
+        areaOrg.push("Otra");
+      }
+      if (
+        this.url_img !=
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+      ) {
+        var file = this.$refs.myFiles.files[0];
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+        storageRef
+          .child("organizaciones_img/" + file.name)
+          .put(file)
+          .then(() => {
+            storageRef
+              .child("organizaciones_img/" + file.name)
+              .getDownloadURL()
+              .then(url => {
+                this.url_img = url;
+                this.add(areaOrg, tipoOrg);
+              })
+              .catch(error => {
+                console.log("Error obteniendo imagen!.", error);
+                this.loader = false;
+                M.toast({
+                  html: "Actualización no realizada. Intente de Nuevo."
+                });
+              });
+          })
+          .catch(function(error) {
+            console.log("Error subiendo imagen!.");
+          });
+      } else {
+        this.add(areaOrg, tipoOrg);
+      }
+    },
+    add(areaOrg, tipoOrg) {
+      firebase
+        .firestore()
+        .collection("Actor")
+        .add({
+          nombre: this.nombre,
+          area_trabajo: areaOrg,
+          descripcion: this.descripcion,
+          email_encargado: this.email_encargado,
+          email_institucion: this.email_institucion,
+          funciones_en_municipio: this.funciones_en_municipio,
+          logros: this.logros,
+          proyectos: this.proyectos,
+          representante: this.representante,
+          socios: this.socios,
+          telefono: this.telefono,
+          telefono_representante: this.telefono_representante,
+          tipo_organizacion: tipoOrg,
+          ubicacion: this.ubicacion,
+          url_img: this.url_img
+        })
+        .then(doc => {
+          this.edit = true;
+          this.editar = true;
+          this.editarBtn = false;
+          /*organizacion actual*/
+          this.organizacion_actual.id = doc.id;
+          this.organizacion_actual.nombre = this.nombre;
+          this.organizacion_actual.area_trabajo = areaOrg;
+          this.organizacion_actual.descripcion = this.descripcion;
+          this.organizacion_actual.email_encargado = this.email_encargado;
+          this.organizacion_actual.email_institucion = this.email_encargado;
+          this.organizacion_actual.funciones_en_municipio = this.funciones_en_municipio;
+          this.organizacion_actual.logros = this.logros;
+          this.organizacion_actual.proyectos = this.proyectos;
+          this.organizacion_actual.representante = this.representante;
+          this.organizacion_actual.socios = this.socios;
+          this.organizacion_actual.telefono = this.telefono;
+          this.organizacion_actual.telefono_representante = this.telefono_representante;
+          this.organizacion_actual.tipo_organizacion = tipoOrg;
+          this.organizacion_actual.ubicacion = this.ubicacion;
+          this.organizacion_actual.url_img = this.url_img;
+          this.organizaciones.push(this.organizacion_actual);
+          this.cerrarModal();
+          console.log("Organization successfully updated!");
+          this.loader = false;
+          M.toast({ html: "Organización agregada correctamente." });
+        })
+        .catch(error => {
+          console.log("Error Agregando Organización. Intente de Nuevo.", error);
+          this.loader = false;
+          M.toast({ html: "Error Agregando Organización. Intente de Nuevo." });
+        });
     }
   }
 };

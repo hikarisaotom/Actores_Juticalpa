@@ -10,7 +10,7 @@ export default {
 
 <style scoped>
 .loader {
-  font-size: 10px;
+  
   margin: 50px auto;
   text-indent: -9999em;
   width: 11em;

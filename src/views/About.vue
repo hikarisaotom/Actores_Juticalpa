@@ -1,50 +1,106 @@
 <template>
   <div class="about letra">
-    <!-- Modal Trigger -->
-    <a v-show="bandera_Log==true"
-      class="waves-effect waves-light btn modal-trigger"
-      href="#crear_noticia"
-      style="float:right"
-    >Agregar imagen</a>
+    <div class="fixed-action-btn" v-show="bandera_Log==true">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">add_circle_outline</i>
+      </a>
+      <ul>
+        <li></li>
+        <li>
+          <a class="btn-floating blue">
+            <i
+              class="material-icons tooltipped modal-trigger"
+              data-position="left"
+              data-tooltip="Agregar Imagen"
+              href="#crear_noticia"
+            >add</i>
+          </a>
+          <br />
+          <a class="btn-floating green">
+            <i
+              v-show="bandera_Log==true"
+              style="float:right"
+              class="material-icons tooltipped"
+              data-position="left"
+              data-tooltip="Editar contenido"
+              @click="Contenido_viejo = Contenido, Bandera_Mostrar = false"
+            >create</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <center>
-      <h2>Con el apoyo de:</h2>
+      <h2>
+        <b>Con el apoyo de:</b>
+      </h2>
     </center>
-    <div class="carousel white">
+
+    <div class="carousel color2">
       <a class="carousel-item" href="#one!">
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-1].url" />
       </a>
-      <a class="carousel-item" href="#one3!">
+      <a class="carousel-item" href="#one1!">
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-2].url" />
       </a>
-      <a class="carousel-item" href="#one1!">
+      <a class="carousel-item" href="#one2!">
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-3].url" />
       </a>
-      <a class="carousel-item" href="#one2!">
+      <a class="carousel-item" href="#one3!">
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-4].url" />
+      </a>
+      <a class="carousel-item" href="#one4!">
+        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-5].url" />
       </a>
     </div>
     <br />
+    <i
+      v-show="bandera_Log==true"
+      style="float:right"
+      class="material-icons"
+      data-position="left"
+      data-tooltip="Editar"
+      @click="Contenido_viejo = Contenido, Bandera_Mostrar = false"
+    >create</i>
+
+    <br />
+
     <center>
-      <i v-show="bandera_Log==true"
-        style="float:right"
-        class="material-icons"
-        @click="(Contenido_viejo = Contenido), (Bandera_Mostrar = false)"
-      >create</i>
+      <center>
+        <a
+          v-show="Bandera_Mostrar == false"
+          class="waves-effect waves-light btn red"
+          @click="(Contenido = Contenido_viejo), (Bandera_Mostrar = true)"
+        >
+          <i class="material-icons left">cancel</i>
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a
+          v-show="Bandera_Mostrar == false"
+          class="waves-effect waves-light btn"
+          @click="Update_Contenido()"
+        >
+          <i class="material-icons right">save</i>
+        </a>
+      </center>
       <div class="input-field col s8 contenido">
-        <div v-show="Bandera_Mostrar == true">{{ Contenido }}</div>
+        <div v-show="Bandera_Mostrar == true">
+          <textarea
+            rows="60"
+            cols="90"
+            class="textarea_contenido tamano_contenido"
+            readonly
+            style="border: none;"
+            v-model="Contenido"
+            disabled
+          ></textarea>
+        </div>
         <div v-show="Bandera_Mostrar == false">
-          <textarea rows="60" cols="90" class="textarea_contenido" heigth v-model="Contenido"></textarea>
-          <center>
-            <a
-              class="waves-effect waves-light btn red"
-              @click="(Contenido = Contenido_viejo), (Bandera_Mostrar = true)"
-            >
-              <i class="material-icons left">cloud</i>Cancelar
-            </a>
-            <a class="waves-effect waves-light btn" @click="Update_Contenido()">
-              <i class="material-icons right">cloud</i>Guardar
-            </a>
-          </center>
+          <textarea
+            rows="60"
+            cols="90"
+            class="textarea_contenido tamano_contenido"
+            v-model="Contenido"
+          ></textarea>
         </div>
       </div>
     </center>
@@ -117,16 +173,20 @@ export default {
       Imagen: "http://www.globalservex.es/upload/news/news_12.png",
       Contenido: "hola",
       Contenido_viejo: "",
-     ID: "",
-      Imagenes: ["http://www.globalservex.es/upload/news/news_12.png",
+      ID: "",
+      Imagenes: [
         "http://www.globalservex.es/upload/news/news_12.png",
         "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png"],
-    
+        "http://www.globalservex.es/upload/news/news_12.png",
+        "http://www.globalservex.es/upload/news/news_12.png",
+        "http://www.globalservex.es/upload/news/news_12.png",
+        "http://www.globalservex.es/upload/news/news_12.png",
+        "http://www.globalservex.es/upload/news/news_12.png"
+      ]
     };
-  },computed: {
+  },
+  computed: {
     ...mapState(["bandera_Log"])
- 
   },
   components: {
     firebase,
@@ -139,10 +199,11 @@ export default {
       var elems = document.querySelectorAll(".carousel");
       var instances = M.Carousel.init(elems);
     });
-
     var instance = M.Carousel.init({
       fullWidth: true
     });
+    var elems = document.querySelectorAll(".materialboxed");
+    var instances = M.Materialbox.init(elems);
   },
   methods: {
     Update_Contenido() {
@@ -165,7 +226,6 @@ export default {
           } else {
             M.toast({ html: "La imagen ha sido subida exitosamente." });
           }
-
           this.Imagen = "http://www.globalservex.es/upload/news/news_12.png";
         })
         .catch(error => {
@@ -193,7 +253,6 @@ export default {
                 });
                 console.log("PUSHEADO: ", this.Imagenes);
                 this.validation = "";
-           
                 this.Update_Contenido();
                 //FIN DE ATUALIZAR INFO
               })
@@ -244,17 +303,27 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Gelasio&display=swap");
+.color2 {
+  background-color: rgba(255, 255, 255, 0.6);
+}
 .letra {
   font-family: "Gelasio", serif;
 }
 .contenido {
   text-align: justify;
   font-size: 20px;
-  width: 80%;
 }
 .textarea_contenido {
+  background-color: rgba(255, 255, 255, 0.8);
   height: 400px;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  font-family: "Gelasio", serif;
+  color: black;
+  font-size: 17pt;
+}
+.tamano_contenido {
+  width: 80%;
+  margin-left: 10%;
 }
 </style>
