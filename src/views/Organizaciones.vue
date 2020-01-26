@@ -1,49 +1,32 @@
 <template>
   <div class="organizaciones">
     <br />
-  
-    <!--Cards inicial para agregar-->
-    <div class="row" v-show="bandera_Log==true">
-      <div class="col s12 m3 l2">
-        <div class="card">
-          <div
-            id="img_org"
-            class="card-image"
-            v-bind:style="{ backgroundImage: 'url(https://drogaspoliticacultura.net/wp-content/uploads/2017/09/placeholder-user.jpg)'}"
-          >
-            <a
-              @click="agregarOrganizacion()"
-              class="btn-floating halfway-fab waves-effect waves-light red"
-            >
-              <i class="material-icons">add</i>
-            </a>
-          </div>
-          <div class="card-content">
-            <span class="flow-text">Nuevo</span>
-          </div>
-        </div>
-      </div>
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">mode_edit</i>
+      </a>
+      <ul>
+        <li>
+          <a class="btn-floating green" @click="agregarOrganizacion();">
+            <i class="material-icons">add</i>
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <!-- Barra de busqueda por nombre -->
-    <div class="row">
-      <div class="col s6">
-        <div class="input-field">
-          <i class="material-icons prefix">search</i>
-          <input type="text" id="busqueda" v-model="filter_organizacion" />
-          <label :class="active" for="nombre_org">Buscar</label>
-        </div>
-      </div>
-    </div>
     <!--Cards de las organizaciones-->
     <div class="row">
-      <div class="col s12 m3 l2" v-for="organizacion in filter" :key="organizacion.id">
+      <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.id">
         <div class="card">
-          <div
-            id="img_org"
-            class="card-image"
-            v-bind:style="{ backgroundImage: 'url(' + organizacion.url_img + ')'}"
-          >
+          <div class="card-image">
+            <img
+              :src="organizacion.url_img"
+              style="display: block;
+              margin-left: auto;
+              margin-right: auto;
+              width: 100%;
+              height: 150px"
+            />
             <a
               @click="organizacion_actual=organizacion; mostrarOrganizacion()"
               class="btn-floating halfway-fab waves-effect waves-light red"
@@ -57,6 +40,18 @@
         </div>
       </div>
     </div>
+
+    <!--Input File-->
+    <input
+      id="file-input"
+      :disabled="editarBtn==false"
+      type="file"
+      ref="myFiles"
+      @change="changeImg()"
+      name="name"
+      accept="image/x-png, image/gif, image/jpeg"
+      style="display: none;"
+    />
 
     <!--Modal de Organizacion-->
     <div id="modal_org" class="modal bottom-sheet">
@@ -73,46 +68,34 @@
             </nav>
           </div>
           <br />
-          <div class="cols s6 m6 l6"  v-show="bandera_Log==true">
+          <div class="cols s6 m6 l6">
             <a
               class="waves-effect waves-light btn orange left"
               href="#"
-              @click="editar_Organizacion()"
+              @click="editar_Organizacion(); edicion=true"
               v-if="edit==true"
             >
               <i class="material-icons black-text left">edit</i>
               <span class="black-text">Editar</span>
             </a>
           </div>
-          <div class="cols s6 m6 l6" v-show="bandera_Log==true">
-            <a  class="waves-effect waves-light btn red right" href="#" v-if="edit==true">
-              <i class="material-icons black-text right">delete_forever</i>
-              <span class="black-text">Eliminar</span>
+          <div class="cols s6 m6 l6">
+            <a
+              class="waves-effect waves-light btn red right"
+              href="#"
+              @click="delete_Organizacion()"
+              v-if="edit==true"
+            >
+              <i class="material-icons white-text right">delete_forever</i>
+              <span class="white-text">Eliminar</span>
             </a>
           </div>
         </div>
         <div class="row">
           <div class="cols s12">
-            <a
-              v-if="edit==false && agregar_Organizacion==false"
-              class="waves-light btn-small green btn-block"
-              @click="guardar_Cambios()"
-            >
+            <a v-if="edit==false" class="waves-light btn-small green btn-block" @click="ejecutar()">
               <i class="material-icons left">save</i>
               Guardar
-              <i class="material-icons right">save</i>
-            </a>
-          </div>
-
-          <!-- agregar organizacion -->
-          <div class="cols s12">
-            <a
-              v-if="agregar_Organizacion==true"
-              class="waves-light btn-small green btn-block"
-              @click="Agregar()"
-            >
-              <i class="material-icons left">save</i>
-              Agregar
               <i class="material-icons right">save</i>
             </a>
           </div>
@@ -160,17 +143,28 @@
 
             <!--Imagen-->
             <div class="card col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
-              <div
-                class="card-image waves-effect waves-block waves-light"
-                :style="{ backgroundImage: 'url(' + url_img + ')', height:'200px'}"
-                id="img_org"
-              ></div>
-              <div class="card-content" v-show="editarBtn || agregar_Organizacion">
-                <a href="#">
+              <div class="card-image waves-effect waves-block waves-light">
+                <a href="#" @click="openIMG()">
+                  <img
+                    class="materialboxed"
+                    :src="url_img"
+                    style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 100%;
+                  height: 300px"
+                  />
+                </a>
+              </div>
+              <div class="card-content" v-show="editarBtn">
+                <a href="#" @click="openFileSelector()">
                   <i class="material-icons orange-text left">edit</i>
                 </a>
                 <a href="#">
-                  <i class="material-icons red-text right">delete_forever</i>
+                  <i
+                    class="material-icons red-text right"
+                    @click="url_img='https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'"
+                  >delete_forever</i>
                 </a>
                 <br />
               </div>
@@ -377,18 +371,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
-                    <a
-                      href="#!"
-                      v-show="editarBtn || agregar_Organizacion"
-                      @click="delete_elemento(funcion, 1)"
-                    >
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(funcion, 1)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{funcion}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn || agregar_Organizacion">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -420,18 +410,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
-                    <a
-                      href="#!"
-                      v-show="editarBtn || agregar_Organizacion"
-                      @click="delete_elemento(logro, 2)"
-                    >
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(logro, 2)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{logro}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn || agregar_Organizacion">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     
@@ -469,11 +455,7 @@
                   :key="proyecto.nombre_proyecto"
                 >
                   <span class="badge">
-                    <a
-                      href="#!"
-                      v-show="editarBtn || agregar_Organizacion"
-                      @click="delete_elemento(proyecto, 3)"
-                    >
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(proyecto, 3)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
@@ -483,7 +465,7 @@
                   {{proyecto.descripción_proyecto}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn || agregar_Organizacion">
+              <table width="100%" v-show="editarBtn">
                 <td width="47%">
                   <div class="input-field">
                     <input
@@ -528,18 +510,14 @@
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
                   <span class="badge">
-                    <a
-                      href="#!"
-                      v-show="editarBtn || agregar_Organizacion"
-                      @click="delete_elemento(socio, 4)"
-                    >
+                    <a href="#!" v-show="editarBtn" @click="delete_elemento(socio, 4)">
                       <i class="red-text material-icons right">delete_forever</i>
                     </a>
                   </span>
                   {{socio}}
                 </p>
               </div>
-              <table width="100%" v-show="editarBtn || agregar_Organizacion">
+              <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
                     <input
@@ -575,6 +553,7 @@
 
 <script>
 import loading from "../components/Loading.vue";
+import "firebase/storage"; // <----
 import { firebase } from "../firebase";
 import { firestore } from "../firebase";
 import { mask } from "vue-the-mask";
@@ -582,7 +561,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
-    filter_organizacion: "",
+    edicion: false,
     loader: false,
     active: "deactive",
     t0: false,
@@ -598,6 +577,7 @@ export default {
     a3: false,
     a4: false,
     a5: false,
+
     //Datos de organizaicon - organizaciones
     organizaciones: [],
     organizacion_actual: {
@@ -639,48 +619,29 @@ export default {
     tipo_organizacion: [],
     ubicacion: "",
     url_img: "",
-    contrasena: "",
-
-    /*areglos auxiliares*/
-    tipoOrg: [],
-    areaOrg: [],
-
     /*banderas*/
     editar: true,
     editarBtn: false,
-    edit: false,
-    agregar_Organizacion: false
+    edit: false
   }),
+  computed: {
+    ...mapState(["bandera_Log"])
+  },
   components: {
     firebase,
     firestore,
     loading
   },
   directives: { mask },
-  computed: {
-    ...mapState(["bandera_Log"]),
-    filter: function() {
-      return this.organizaciones.filter(organizacion => {
-        return organizacion.nombre
-          .toUpperCase()
-          .match(this.filter_organizacion.toUpperCase());
-      });
-    }
-  },
   mounted: function() {
     M.AutoInit();
     //Hace que el Modal1 no se cierre si da click afuera
     var m = M.Modal.getInstance(modal_org);
     m.options.dismissible = false;
     this.getOrganizaciones();
-    /*MOSTRAR Y OCULTAR...NO SE POR QUE NO AGARRA LOS DEL STATE */
-
-    
-  
   },
   methods: {
     getOrganizaciones: function() {
-      this.organizaciones = [];
       this.loader = true;
       firestore
         .collection("Actor")
@@ -721,9 +682,89 @@ export default {
     abrirModal() {
       M.Modal.getInstance(modal_org).open();
     },
+    openFileSelector() {
+      document.getElementById("file-input").click();
+    },
+    openIMG() {
+      var elems = document.querySelectorAll(".materialboxed");
+      var instances = M.Materialbox.init(elems);
+      instances.forEach(e => {
+        e.open();
+      });
+    },
+    changeImg() {
+      var file = this.$refs.myFiles.files[0];
+      this.url_img = URL.createObjectURL(file);
+    },
+    deleteIMG() {
+      // Delete the file
+      if (
+        this.organizacion_actual.url_img ===
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+      ) {
+        this.guardar_Cambios();
+      } else {
+        console.log("Entra Borrar IMG");
+        var storage = firebase.storage();
+        const u = this.organizacion_actual.url_img;
+        console.log(u);
+        var desertRef = storage.refFromURL(u);
+        desertRef
+          .delete()
+          .then(() => {
+            console.log("Borrado");
+            this.guardar_Cambios();
+          })
+          .catch(error => {
+            console.log("Uh-oh, an error occurred!", error);
+            this.loader = false;
+            M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
+          });
+      }
+    },
+    editarImg() {
+      this.loader = true;
+      if (this.url_img != this.organizacion_actual.url_img) {
+        if (
+          this.url_img ===
+          "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+        ) {
+          this.deleteIMG();
+        } else {
+          console.log("Entra IF");
+          var file = this.$refs.myFiles.files[0];
+          var storage = firebase.storage();
+          var storageRef = storage.ref();
+          storageRef
+            .child("organizaciones_img/" + file.name)
+            .put(file)
+            .then(() => {
+              storageRef
+                .child("organizaciones_img/" + file.name)
+                .getDownloadURL()
+                .then(url => {
+                  this.url_img = url;
+                  this.deleteIMG();
+                })
+                .catch(error => {
+                  console.log("Error obteniendo imagen!.", error);
+                  this.loader = false;
+                  M.toast({
+                    html: "Actualización no realizada. Intente de Nuevo."
+                  });
+                });
+            })
+            .catch(function(error) {
+              console.log("Error subiendo imagen!.");
+            });
+        }
+      } else {
+        console.log("Entra ELSE");
+        this.guardar_Cambios();
+      }
+    },
     cerrarModal() {
-      this.filter_organizacion = "";
-      this.agregar_Organizacion = false;
+      this.loader = false;
       this.editarBtn = false;
       this.editar = true;
       this.edit = false;
@@ -753,7 +794,6 @@ export default {
     mostrarOrganizacion() {
       this.active = "active";
       this.editarBtn = false;
-      this.agregar_Organizacion = false;
       this.editar = true;
       this.edit = true;
       this.abrirModal();
@@ -807,6 +847,7 @@ export default {
       this.tipo_organizacion = this.organizacion_actual.tipo_organizacion;
       this.ubicacion = this.organizacion_actual.ubicacion;
       this.url_img = this.organizacion_actual.url_img;
+      console.log(this.url_img);
       //Selección de los tipos de organización
       if (
         this.tipo_organizacion.includes(
@@ -857,41 +898,72 @@ export default {
       });
     },
     agregarOrganizacion() {
-      this.a0 = false;
-      this.a1 = false;
-      this.a2 = false;
-      this.a3 = false;
-      this.a4 = false;
-      this.a5 = false;
-      this.t0 = false;
-      this.t1 = false;
-      this.t2 = false;
-      this.t3 = false;
-      this.t4 = false;
-      this.t5 = false;
-      this.t6 = false;
-      this.agregar_Organizacion = true;
-      this.editar = false;
       this.abrirModal();
+      this.edicion = false;
+      this.editar = false;
+      this.editarBtn = true;
+      this.url_img =
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg";
     },
     editar_Organizacion() {
       this.editar = false;
       this.editarBtn = true;
-      this.agregar_Organizacion = false;
       this.edit = false;
     },
     guardar_Cambios() {
-      this.loader = true;
-      // arreglos para tipo y area de la organización
-      this.Arreglos();
+      //tipo de organizacion
+      var tipoOrg = [];
+      if (this.t0 === true) {
+        tipoOrg.push("Gobierno central (secretaria de estado)");
+      }
+      if (this.t1 === true) {
+        tipoOrg.push("Gobierno Local (Municipalidad)");
+      }
+      if (this.t2 === true) {
+        tipoOrg.push("Micro y pequeña empresa");
+      }
+      if (this.t3 === true) {
+        tipoOrg.push("Cooperativa");
+      }
+      if (this.t4 === true) {
+        tipoOrg.push("Centro Educativo Público");
+      }
+      if (this.t5 === true) {
+        tipoOrg.push("Centro Educativo Privado");
+      }
+      if (this.t6 === true) {
+        tipoOrg.push(
+          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
+        );
+      }
 
+      /*área de trabajo */
+      var areaOrg = [];
+      if (this.a0 === true) {
+        areaOrg.push("Económica");
+      }
+      if (this.a1 === true) {
+        areaOrg.push("Social/Cultural");
+      }
+      if (this.a2 === true) {
+        areaOrg.push("Educativa");
+      }
+      if (this.a3 === true) {
+        areaOrg.push("Salud");
+      }
+      if (this.a4 === true) {
+        areaOrg.push("Ambiental");
+      }
+      if (this.a5 === true) {
+        areaOrg.push("Otra");
+      }
       firebase
         .firestore()
         .collection("Actor")
         .doc(this.organizacion_actual.id)
         .update({
           nombre: this.nombre,
-          area_trabajo: this.areaOrg,
+          area_trabajo: areaOrg,
           descripcion: this.descripcion,
           email_encargado: this.email_encargado,
           email_institucion: this.email_institucion,
@@ -902,7 +974,7 @@ export default {
           socios: this.socios,
           telefono: this.telefono,
           telefono_representante: this.telefono_representante,
-          tipo_organizacion: this.tipoOrg,
+          tipo_organizacion: tipoOrg,
           ubicacion: this.ubicacion,
           url_img: this.url_img
         })
@@ -912,7 +984,7 @@ export default {
           this.editarBtn = false;
           /*organizacion actual*/
           this.organizacion_actual.nombre = this.nombre;
-          this.organizacion_actual.area_trabajo = this.areaOrg;
+          this.organizacion_actual.area_trabajo = areaOrg;
           this.organizacion_actual.descripcion = this.descripcion;
           this.organizacion_actual.email_encargado = this.email_encargado;
           this.organizacion_actual.email_institucion = this.email_encargado;
@@ -923,7 +995,7 @@ export default {
           this.organizacion_actual.socios = this.socios;
           this.organizacion_actual.telefono = this.telefono;
           this.organizacion_actual.telefono_representante = this.telefono_representante;
-          this.organizacion_actual.tipo_organizacion = this.tipoOrg;
+          this.organizacion_actual.tipo_organizacion = tipoOrg;
           this.organizacion_actual.ubicacion = this.ubicacion;
           this.organizacion_actual.url_img = this.url_img;
 
@@ -933,7 +1005,7 @@ export default {
         })
         .catch(error => {
           this.loader = false;
-          console.error("Error updating product: ", error);
+          M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
         });
     },
     delete_elemento(elemento, opcion) {
@@ -977,18 +1049,124 @@ export default {
         M.toast({ html: "Agregado." });
       }
     },
-    Agregar() {
+    delete_Organizacion() {
       this.loader = true;
-      // arreglos para tipo y area de la organización
-      this.Arreglos();
+      /*Al eliminar la organizacion, no se borra la imagen HACERLO DESPUES*/
+      firebase
+        .firestore()
+        .collection("Actor")
+        .doc(this.organizacion_actual.id)
+        .delete()
+        .then(error => {
+          this.organizaciones.splice(
+            this.organizaciones.indexOf(this.organizacion_actual),
+            1
+          );
+          this.loader = false;
+          M.toast({ html: "Organización eliminada." });
+          this.cerrarModal();
+        })
+        .catch(error => {
+          this.loader = false;
+          M.toast({ html: "Error eliminando Organización." });
+          this.cerrarModal();
+        });
+    },
+    ejecutar() {
+      if (this.edicion == true) {
+        this.editarImg();
+      } else {
+        this.addOrganizacion();
+      }
+    },
+    addOrganizacion() {
+      this.loader = true;
+      //tipo de organizacion
+      var tipoOrg = [];
+      if (this.t0 === true) {
+        tipoOrg.push("Gobierno central (secretaria de estado)");
+      }
+      if (this.t1 === true) {
+        tipoOrg.push("Gobierno Local (Municipalidad)");
+      }
+      if (this.t2 === true) {
+        tipoOrg.push("Micro y pequeña empresa");
+      }
+      if (this.t3 === true) {
+        tipoOrg.push("Cooperativa");
+      }
+      if (this.t4 === true) {
+        tipoOrg.push("Centro Educativo Público");
+      }
+      if (this.t5 === true) {
+        tipoOrg.push("Centro Educativo Privado");
+      }
+      if (this.t6 === true) {
+        tipoOrg.push(
+          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
+        );
+      }
 
+      /*área de trabajo */
+      var areaOrg = [];
+      if (this.a0 === true) {
+        areaOrg.push("Económica");
+      }
+      if (this.a1 === true) {
+        areaOrg.push("Social/Cultural");
+      }
+      if (this.a2 === true) {
+        areaOrg.push("Educativa");
+      }
+      if (this.a3 === true) {
+        areaOrg.push("Salud");
+      }
+      if (this.a4 === true) {
+        areaOrg.push("Ambiental");
+      }
+      if (this.a5 === true) {
+        areaOrg.push("Otra");
+      }
+      if (
+        this.url_img !=
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+      ) {
+        var file = this.$refs.myFiles.files[0];
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+        storageRef
+          .child("organizaciones_img/" + file.name)
+          .put(file)
+          .then(() => {
+            storageRef
+              .child("organizaciones_img/" + file.name)
+              .getDownloadURL()
+              .then(url => {
+                this.url_img = url;
+                this.add(areaOrg, tipoOrg);
+              })
+              .catch(error => {
+                console.log("Error obteniendo imagen!.", error);
+                this.loader = false;
+                M.toast({
+                  html: "Actualización no realizada. Intente de Nuevo."
+                });
+              });
+          })
+          .catch(function(error) {
+            console.log("Error subiendo imagen!.");
+          });
+      } else {
+        this.add(areaOrg, tipoOrg);
+      }
+    },
+    add(areaOrg, tipoOrg) {
       firebase
         .firestore()
         .collection("Actor")
         .add({
           nombre: this.nombre,
-          contrasena: this.contrasena,
-          area_trabajo: this.areaOrg,
+          area_trabajo: areaOrg,
           descripcion: this.descripcion,
           email_encargado: this.email_encargado,
           email_institucion: this.email_institucion,
@@ -999,87 +1177,42 @@ export default {
           socios: this.socios,
           telefono: this.telefono,
           telefono_representante: this.telefono_representante,
-          tipo_organizacion: this.tipoOrg,
+          tipo_organizacion: tipoOrg,
           ubicacion: this.ubicacion,
           url_img: this.url_img
         })
         .then(doc => {
-          this.organizaciones.push({
-            nombre: this.nombre,
-            area_trabajo: this.areaOrg,
-            descripcion: this.descripcion,
-            email_encargado: this.email_encargado,
-            email_institucion: this.email_institucion,
-            funciones_en_municipio: this.funciones_en_municipio,
-            logros: this.logros,
-            proyectos: this.proyectos,
-            representante: this.representante,
-            socios: this.socios,
-            telefono: this.telefono,
-            telefono_representante: this.telefono_representante,
-            tipo_organizacion: this.tipoOrg,
-            ubicacion: this.ubicacion,
-            url_img: this.url_img
-          });
-
-          this.organizaciones.sort((a, b) =>
-            a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
-          );
-
+          this.edit = true;
+          this.editar = true;
+          this.editarBtn = false;
+          /*organizacion actual*/
+          this.organizacion_actual.id = doc.id;
+          this.organizacion_actual.nombre = this.nombre;
+          this.organizacion_actual.area_trabajo = areaOrg;
+          this.organizacion_actual.descripcion = this.descripcion;
+          this.organizacion_actual.email_encargado = this.email_encargado;
+          this.organizacion_actual.email_institucion = this.email_encargado;
+          this.organizacion_actual.funciones_en_municipio = this.funciones_en_municipio;
+          this.organizacion_actual.logros = this.logros;
+          this.organizacion_actual.proyectos = this.proyectos;
+          this.organizacion_actual.representante = this.representante;
+          this.organizacion_actual.socios = this.socios;
+          this.organizacion_actual.telefono = this.telefono;
+          this.organizacion_actual.telefono_representante = this.telefono_representante;
+          this.organizacion_actual.tipo_organizacion = tipoOrg;
+          this.organizacion_actual.ubicacion = this.ubicacion;
+          this.organizacion_actual.url_img = this.url_img;
+          this.organizaciones.push(this.organizacion_actual);
+          this.cerrarModal();
+          console.log("Organization successfully updated!");
           this.loader = false;
-          M.toast({ html: "Organización Agregada correctamente." });
+          M.toast({ html: "Organización agregada correctamente." });
         })
-        .catch(function(error) {
-          console.error("Error adding Organization: ", error);
-          M.toast({ html: "Error Agregando Orden." });
+        .catch(error => {
+          console.log("Error Agregando Organización. Intente de Nuevo.", error);
+          this.loader = false;
+          M.toast({ html: "Error Agregando Organización. Intente de Nuevo." });
         });
-    },
-    Arreglos() {
-      this.tipoOrg = [];
-      if (this.t0 === true) {
-        this.tipoOrg.push("Gobierno central (secretaria de estado)");
-      }
-      if (this.t1 === true) {
-        this.tipoOrg.push("Gobierno Local (Municipalidad)");
-      }
-      if (this.t2 === true) {
-        this.tipoOrg.push("Micro y pequeña empresa");
-      }
-      if (this.t3 === true) {
-        this.tipoOrg.push("Cooperativa");
-      }
-      if (this.t4 === true) {
-        this.tipoOrg.push("Centro Educativo Público");
-      }
-      if (this.t5 === true) {
-        this.tipoOrg.push("Centro Educativo Privado");
-      }
-      if (this.t6 === true) {
-        this.tipoOrg.push(
-          "Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)"
-        );
-      }
-
-      /*área de trabajo */
-      this.areaOrg = [];
-      if (this.a0 === true) {
-        this.areaOrg.push("Económica");
-      }
-      if (this.a1 === true) {
-        this.areaOrg.push("Social/Cultural");
-      }
-      if (this.a2 === true) {
-        this.areaOrg.push("Educativa");
-      }
-      if (this.a3 === true) {
-        this.areaOrg.push("Salud");
-      }
-      if (this.a4 === true) {
-        this.areaOrg.push("Ambiental");
-      }
-      if (this.a5 === true) {
-        this.areaOrg.push("Otra");
-      }
     }
   }
 };
