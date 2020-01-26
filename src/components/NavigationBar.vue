@@ -4,12 +4,11 @@
       <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:100px;">
           <!--p class="black-text">Bienvenido: {{usuario}}</p-->
-   <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
-          <a  >
+          <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
+          <a class="brand-logo center">
             <b>Plataforma de Actores de Juticalpa</b>
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-           
             <li>
               <a
                 v-show="bandera_Log==false"
@@ -51,17 +50,16 @@
 
     <!-- Modal Structure -->
     <div id="login" class="modal texto background2">
-      <div class="modal-content ">
+      <div class="modal-content">
         <div class="col s12 z-depth-6 card-panel login-opaco">
           <form class="login-form">
             <div class="row"></div>
             <div class="row">
-              <div class="input-field  col s12 m12 l12">
-                 <center>
-                 
-                   <b> <h3 class="blue-text ">Log in</h3></b>
-                  
-                  
+              <div class="input-field col s12 m12 l12">
+                <center>
+                  <b>
+                    <h3 class="blue-text">Log in</h3>
+                  </b>
                 </center>
                 <center>
                   <!--img
@@ -70,14 +68,19 @@
                     height="40%"
                   /-->
                 </center>
-               
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">mail_outline</i>
                 <input class="validate" id="email" v-model="email" type="email" />
-                <label for="email" style="font-size:20px;" class="blue-text" data-error="wrong" data-success="right">Email</label>
+                <label
+                  for="email"
+                  style="font-size:20px;"
+                  class="blue-text"
+                  data-error="wrong"
+                  data-success="right"
+                >Email</label>
               </div>
             </div>
             <div class="row">
@@ -153,7 +156,6 @@ export default {
   },
   methods: {
     ...mapMutations(["cambiar_bandera"]),
-
 
     ChangeBackground() {
       var x = document.getElementById("navigation_bar_logo");
@@ -246,7 +248,7 @@ export default {
       window.localStorage.removeItem("Organizacion");
       window.localStorage.removeItem("login");
       this.usuario = "invitado";
-      this.bandera_Log=false;
+      this.bandera_Log = false;
       console.log("SALIENDO LA BANDERA DEBERIA SER FALSE");
       this.$store.commit("cambiar_bandera", false);
       M.toast({
@@ -301,7 +303,7 @@ export default {
                   console.log("ENTRA");
                   window.localStorage.setItem("Role", doc.data().Role);
                   this.usuario = doc.data().nombre;
-                  this.bandera_Log=true;
+                  this.bandera_Log = true;
                   window.localStorage.setItem("usuario", doc.data().nombre);
                   window.localStorage.setItem(
                     "Organizacion",
@@ -309,7 +311,7 @@ export default {
                   );
                   window.localStorage.setItem("login", true);
                   console.log("SE AUTENTICO DEBERIA SER TRUE");
-                   this.$store.commit("cambiar_bandera", true);
+                  this.$store.commit("cambiar_bandera", true);
                   M.toast({ html: "Bienvenido" });
                   M.Modal.getInstance(login).close();
                   this.email = "";
@@ -474,7 +476,6 @@ export default {
     M.AutoInit();
     this.ChangeBackground();
     this.traer();
-    
 
     /*
  var m = M.Modal.getInstance(modal_restablecer_password);
@@ -487,14 +488,13 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Gelasio&display=swap");
-@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
 
 .letra {
   font-family: "Gelasio", serif;
 }
-.enfasis{
-
-font-size: 20px;
+.enfasis {
+  font-size: 20px;
 }
 #navigation_bar_logo {
   transition: background 1s;
@@ -508,13 +508,12 @@ font-size: 20px;
   overflow: auto;
   /*background-color:#f3f3e3 ;*/
   background-image: url(https://avante.biz/wp-content/uploads/Minimal-Wallpaper/Minimal-Wallpaper-001.jpg);
- 
 }
-.background2{
+.background2 {
   background-image: url(https://diarioroatan.com/wp-content/uploads/2019/10/asas-187.jpg);
 }
-.login-opaco{
-   background-color: rgba(255, 255, 255, 0.7);
+.login-opaco {
+  background-color: rgba(255, 255, 255, 0.7);
 }
 .x {
   -moz-box-shadow: inset 0 0 10px #000000;
@@ -525,12 +524,12 @@ font-size: 20px;
 @import url("https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
 #login-page {
-   font-family: "Gelasio", serif;
+  font-family: "Gelasio", serif;
   width: 500px;
 }
 
 .card {
-   font-family: "Gelasio", serif;
+  font-family: "Gelasio", serif;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -548,6 +547,4 @@ font-size: 20px;
 .arriba {
   z-index: -1;
 }
-
-
 </style>

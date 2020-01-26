@@ -15,7 +15,7 @@
               href="#crear_noticia"
             >add</i>
           </a>
-          <br>
+          <br />
           <a class="btn-floating green">
             <i
               v-show="bandera_Log==true"
@@ -30,12 +30,13 @@
       </ul>
     </div>
 
-    
     <center>
-      <h2><b>Con el apoyo de:</b></h2>
+      <h2>
+        <b>Con el apoyo de:</b>
+      </h2>
     </center>
 
-    <div class="carousel  color2">
+    <div class="carousel color2">
       <a class="carousel-item" href="#one!">
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-1].url" />
       </a>
@@ -52,38 +53,54 @@
         <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-5].url" />
       </a>
     </div>
-    <br>
-<i
-              v-show="bandera_Log==true"
-              style="float:right"
-              class="material-icons"
-              data-position="left"
-              data-tooltip="Editar"
-              @click="Contenido_viejo = Contenido, Bandera_Mostrar = false"
-            >create</i>
-          
+    <br />
+    <i
+      v-show="bandera_Log==true"
+      style="float:right"
+      class="material-icons"
+      data-position="left"
+      data-tooltip="Editar"
+      @click="Contenido_viejo = Contenido, Bandera_Mostrar = false"
+    >create</i>
+
     <br />
 
     <center>
-        <center>
-            <a v-show="Bandera_Mostrar == false"
-              class="waves-effect waves-light btn red"
-              @click="(Contenido = Contenido_viejo), (Bandera_Mostrar = true)"
-            >
-              <i class="material-icons left">cancel</i>
-            </a> &nbsp;&nbsp;&nbsp;&nbsp;
-            <a v-show="Bandera_Mostrar == false"
-            class="waves-effect waves-light btn" @click="Update_Contenido()">
-              <i class="material-icons right">save</i>
-            </a>
-          </center>
+      <center>
+        <a
+          v-show="Bandera_Mostrar == false"
+          class="waves-effect waves-light btn red"
+          @click="(Contenido = Contenido_viejo), (Bandera_Mostrar = true)"
+        >
+          <i class="material-icons left">cancel</i>
+        </a> &nbsp;&nbsp;&nbsp;&nbsp;
+        <a
+          v-show="Bandera_Mostrar == false"
+          class="waves-effect waves-light btn"
+          @click="Update_Contenido()"
+        >
+          <i class="material-icons right">save</i>
+        </a>
+      </center>
       <div class="input-field col s8 contenido">
-        <div v-show="Bandera_Mostrar == true" >
-          <textarea rows="60" cols="90" class="textarea_contenido tamano_contenido" readonly  style="border: none;" v-model="Contenido" disabled></textarea>
+        <div v-show="Bandera_Mostrar == true">
+          <textarea
+            rows="60"
+            cols="90"
+            class="textarea_contenido tamano_contenido"
+            readonly
+            style="border: none;"
+            v-model="Contenido"
+            disabled
+          ></textarea>
         </div>
         <div v-show="Bandera_Mostrar == false">
-          <textarea rows="60" cols="90" class="textarea_contenido tamano_contenido"  v-model="Contenido" ></textarea>
-        
+          <textarea
+            rows="60"
+            cols="90"
+            class="textarea_contenido tamano_contenido"
+            v-model="Contenido"
+          ></textarea>
         </div>
       </div>
     </center>
@@ -182,11 +199,9 @@ export default {
       var elems = document.querySelectorAll(".carousel");
       var instances = M.Carousel.init(elems);
     });
-
     var instance = M.Carousel.init({
       fullWidth: true
     });
-
     var elems = document.querySelectorAll(".materialboxed");
     var instances = M.Materialbox.init(elems);
   },
@@ -211,7 +226,6 @@ export default {
           } else {
             M.toast({ html: "La imagen ha sido subida exitosamente." });
           }
-
           this.Imagen = "http://www.globalservex.es/upload/news/news_12.png";
         })
         .catch(error => {
@@ -239,7 +253,6 @@ export default {
                 });
                 console.log("PUSHEADO: ", this.Imagenes);
                 this.validation = "";
-
                 this.Update_Contenido();
                 //FIN DE ATUALIZAR INFO
               })
@@ -290,8 +303,8 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Gelasio&display=swap");
-.color2{
-background-color: rgba(255, 255, 255, 0.6);
+.color2 {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .letra {
   font-family: "Gelasio", serif;
@@ -306,10 +319,9 @@ background-color: rgba(255, 255, 255, 0.6);
   overflow-y: scroll;
   scroll-behavior: smooth;
   font-family: "Gelasio", serif;
-color: black;
-font-size: 17pt;
+  color: black;
+  font-size: 17pt;
 }
-
 .tamano_contenido {
   width: 80%;
   margin-left: 10%;
