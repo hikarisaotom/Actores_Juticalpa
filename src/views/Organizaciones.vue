@@ -492,6 +492,7 @@
                       id="funcion_org"
                       type="text"
                       class="materialize-textarea white-text"
+                      @keyup.enter="agregar_elemento(1)"
                     />
                     <label for="funcion_org">Nueva Función</label>
                   </div>
@@ -531,6 +532,7 @@
                       id="logro_org"
                       type="text"
                       class="materialize-textarea white-text"
+                      @keyup.enter="agregar_elemento(2)"
                     />
                     <label for="logro_org">Nuevo Logro</label>
                   </div>
@@ -588,6 +590,7 @@
                       id="proyecto_orgD"
                       type="text"
                       class="materialize-textarea white-text"
+                      @keyup.enter="agregar_elemento(3)"
                     />
                     <label for="proyecto_orgD">Descripción Proyecto</label>
                   </div>
@@ -629,6 +632,7 @@
                       id="socio_org"
                       type="text"
                       class="materialize-textarea white-text"
+                      @keyup.enter="agregar_elemento(4)"
                     />
                     <label for="socio_org">Nuevo Socio</label>
                   </div>
