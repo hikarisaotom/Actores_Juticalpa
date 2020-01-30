@@ -14,9 +14,48 @@
       </ul>
     </div>
 
+    <!-- Barra de busqueda por nombre -->
+    <div class="row">
+      <div class="col s6">
+        <div class="input-field">
+          <i class="material-icons prefix">search</i>
+          <input type="text" id="busqueda" v-model="filter_organizacion" />
+          <label :class="active" for="nombre_org">Buscar</label>
+        </div>
+      </div>
+
+      <div class="col s1">
+        <br />
+        <label>
+          <input name="group1" type="radio" value="2" v-model="tipo_gubernamental" />
+          <span>
+            <b>Todos</b>
+          </span>
+        </label>
+      </div>
+      <div class="col s2">
+        <br />
+        <label>
+          <input name="group1" type="radio" value="0" v-model="tipo_gubernamental" />
+          <span>
+            <b>Gubernamentales</b>
+          </span>
+        </label>
+      </div>
+      <div class="col s2">
+        <br />
+        <label>
+          <input name="group1" type="radio" value="1" v-model="tipo_gubernamental" />
+          <span>
+            <b>No Gubernamentales</b>
+          </span>
+        </label>
+      </div>
+    </div>
+
     <!--Cards de las organizaciones-->
     <div class="row">
-      <div class="col s12 m3 l2" v-for="organizacion in organizaciones" :key="organizacion.id">
+      <div class="col s12 m4 l3" v-for="organizacion in filter" :key="organizacion.id">
         <div class="card">
           <div class="card-image">
             <img
@@ -34,8 +73,8 @@
               <i class="material-icons">remove_red_eye</i>
             </a>
           </div>
-          <div class="card-content">
-            <span class="flow-text">{{organizacion.nombre}}</span>
+          <div class="card-content center" style="height:100px">
+            <span style="font-size:2vw;" class="flow-text center">{{organizacion.nombre}}</span>
           </div>
         </div>
       </div>
@@ -180,6 +219,32 @@
                   />
                   <label :class="active" for="descripcion">Descripcion</label>
                 </div>
+                <form action="#">
+                  <label style="color:white; font-size:15px">
+                    <b>Tipo:</b>
+                  </label>
+                  <label style="color:white; font-size:15px">
+                    <input
+                      :disabled="editar"
+                      name="group2"
+                      type="radio"
+                      value="0"
+                      v-model="tipo_gubernamentalN"
+                    />
+                    <span>Gubernamental</span>
+                  </label>
+                  &nbsp; &nbsp;
+                  <label style="color:white; font-size:15px">
+                    <input
+                      :disabled="editar"
+                      name="group2"
+                      type="radio"
+                      value="1"
+                      v-model="tipo_gubernamentalN"
+                    />
+                    <span>No Gubernamental</span>
+                  </label>
+                </form>
               </div>
             </div>
 
@@ -600,6 +665,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data: () => ({
     //Elementos de Interacción
+    filter_organizacion: "",
     edicion: false,
     loader: false,
     active: "deactive",
@@ -658,13 +724,35 @@ export default {
     tipo_organizacion: [],
     ubicacion: "",
     url_img: "",
+
+    /*para ver dato*/
+    tipo_gubernamental: "",
+    /*cuando se agrega uno nuevo*/
+    tipo_gubernamentalN: "",
+
     /*banderas*/
     editar: true,
     editarBtn: false,
     edit: false
   }),
   computed: {
-    ...mapState(["bandera_Log"])
+    ...mapState(["bandera_Log"]),
+
+    filter: function() {
+      return this.organizaciones.filter(organizacion => {
+        if (
+          (organizacion.tipo_gubernamental == "Gubernamental" &&
+            this.tipo_gubernamental == 0) ||
+          (organizacion.tipo_gubernamental == "No Gubernamental" &&
+            this.tipo_gubernamental == 1) ||
+          this.tipo_gubernamental == 2
+        ) {
+          return organizacion.nombre
+            .toUpperCase()
+            .match(this.filter_organizacion.toUpperCase());
+        }
+      });
+    }
   },
   components: {
     firebase,
@@ -674,6 +762,7 @@ export default {
   directives: { mask },
   mounted: function() {
     M.AutoInit();
+    this.tipo_gubernamental = 2;
     //Hace que el Modal1 no se cierre si da click afuera
     var m = M.Modal.getInstance(modal_org);
     m.options.dismissible = false;
@@ -706,7 +795,8 @@ export default {
               telefono_representante: doc.data().telefono_representante,
               tipo_organizacion: doc.data().tipo_organizacion,
               ubicacion: doc.data().ubicacion,
-              url_img: doc.data().url_img
+              url_img: doc.data().url_img,
+              tipo_gubernamental: doc.data().tipo_gubernamental
             });
             //console.log(this.organizaciones[this.organizaciones.length - 1]);
             this.organizaciones.sort((a, b) =>
@@ -805,6 +895,7 @@ export default {
       }
     },
     cerrarModal() {
+      this.filter_organizacion = "";
       this.t0 = false;
       this.t1 = false;
       this.t2 = false;
@@ -850,6 +941,13 @@ export default {
       this.editarBtn = false;
       this.editar = true;
       this.edit = true;
+
+      if (this.organizacion_actual.tipo_gubernamental == "Gubernamental") {
+        this.tipo_gubernamentalN = 0;
+      } else if (this.organizacion_actual.tipo_gubernamental == "No Gubernamental") {
+        this.tipo_gubernamentalN = 1;
+      }
+
       this.abrirModal();
       this.id = this.organizacion_actual.id;
       this.nombre = this.organizacion_actual.nombre;
@@ -952,6 +1050,7 @@ export default {
       });
     },
     agregarOrganizacion() {
+      this.tipo_gubernamentalN=0; 
       this.abrirModal();
       this.edicion = false;
       this.editar = false;
@@ -1011,6 +1110,14 @@ export default {
       if (this.a5 === true) {
         areaOrg.push("Otra");
       }
+
+      var tipoGuber = "";
+      if (this.tipo_gubernamentalN == 0) {
+        tipoGuber = "Gubernamental";
+      } else if (this.tipo_gubernamentalN == 1) {
+        tipoGuber = "No Gubernamental";
+      }
+
       firebase
         .firestore()
         .collection("Actor")
@@ -1030,7 +1137,8 @@ export default {
           telefono_representante: this.telefono_representante,
           tipo_organizacion: tipoOrg,
           ubicacion: this.ubicacion,
-          url_img: this.url_img
+          url_img: this.url_img,
+          tipo_gubernamental: tipoGuber
         })
         .then(() => {
           this.edit = true;
@@ -1052,6 +1160,9 @@ export default {
           this.organizacion_actual.tipo_organizacion = tipoOrg;
           this.organizacion_actual.ubicacion = this.ubicacion;
           this.organizacion_actual.url_img = this.url_img;
+          this.organizacion_actual.tipo_gubernamental = tipoGuber;
+
+          this.tipo_gubernamentalN = 0;
 
           console.log("Organization successfully updated!");
           this.loader = false;
@@ -1254,6 +1365,14 @@ export default {
       }
     },
     add(areaOrg, tipoOrg) {
+      var tipoGuber = "";
+      if (this.tipo_gubernamentalN == 0) {
+        tipoGuber = "Gubernamental";
+      } else if (this.tipo_gubernamentalN == 1) {
+        tipoGuber = "No Gubernamental";
+      }
+
+      console.log("thidsiadio ", this.tipo_gubernamentalN);
       firebase
         .firestore()
         .collection("Actor")
@@ -1272,7 +1391,8 @@ export default {
           telefono_representante: this.telefono_representante,
           tipo_organizacion: tipoOrg,
           ubicacion: this.ubicacion,
-          url_img: this.url_img
+          url_img: this.url_img,
+          tipo_gubernamental: tipoGuber
         })
         .then(doc => {
           this.edit = true;
@@ -1294,9 +1414,14 @@ export default {
             telefono_representante: this.telefono_representante,
             tipo_organizacion: tipoOrg,
             ubicacion: this.ubicacion,
-            url_img: this.url_img
+            url_img: this.url_img,
+            tipo_gubernamental: tipoGuber
           });
           this.cerrarModal();
+          this.organizaciones.sort((a, b) =>
+            a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
+          );
+          this.tipo_gubernamentalN = 0;
           console.log("Organization successfully updated!");
           this.loader = false;
           M.toast({ html: "Organización agregada correctamente." });
