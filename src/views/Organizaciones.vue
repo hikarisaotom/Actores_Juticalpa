@@ -116,7 +116,7 @@
         <div class="row">
           <div class="cols s12 m12 l12">
             <nav>
-              <div class="nav-wrapper grey darken-3">
+              <div class="nav-wrapper black">
                 <a href="#" class="brand-logo">{{nombre}}</a>
               </div>
             </nav>
@@ -129,8 +129,8 @@
               @click="editar_Organizacion(); edicion=true"
               v-if="edit==true"
             >
-              <i class="material-icons white-text left">edit</i>
-              <span class="white-text">Editar</span>
+              <i class="material-icons black-text left">edit</i>
+              <span class="black-text">Editar</span>
             </a>
           </div>
           <div class="cols s6 m6 l6">
@@ -156,27 +156,38 @@
         <div class="row">
           <div class="row">
             <!--Nombre y Descripcion-->
-            <div class="card blue-grey darken-1 col s12 m6 l6 z-depth-5" id="nombre_desc">
-              <div class="card-content white-text">
+            <div class="card  white col s12 m6 l6 z-depth-5" id="nombre_desc">
+              <div class="card-content black-text">
                 <div class="input-field">
-                  <i class="material-icons prefix">face</i>
+                  <i class="material-icons prefix black-text">face</i>
                   <input
                     :disabled="editar"
                     v-model="nombre"
                     id="nombre_org"
                     type="text"
-                    class="materialize-textarea white-text"
+                    class="materialize-textarea black-text"
                   />
-                  <label :class="active" for="nombre_org">Nombre de la Institución</label>
+                  <label :class="active"  for="nombre_org">Nombre de la Institución</label>
+                </div>
+                <div class="input-field" v-show="agregar_Organizacion==true">
+                  <i class="material-icons prefix black-text">lock</i>
+                  <input
+                    :disabled="editar"
+                    v-model="contrasena"
+                    id="contrasena_org"
+                    type="password"
+                    class="materialize-textarea black-text"
+                  />
+                  <label :class="active" for="nombre_org">Contraseña</label>
                 </div>
                 <div class="input-field">
-                  <i class="material-icons prefix">chrome_reader_mode</i>
+                  <i class="material-icons prefix black-text">chrome_reader_mode</i>
                   <textarea
                     :disabled="editar"
                     v-model="descripcion"
                     id="descripcion"
                     type="text"
-                    class="materialize-textarea white-text"
+                    class="materialize-textarea black-text"
                   />
                   <label :class="active" for="descripcion">Descripcion</label>
                 </div>
@@ -213,83 +224,83 @@
           </div>
 
           <!--DATOS GENERALES-->
-          <div class="card grey darken-3 col s12 m12 l12 z-depth-5">
+          <div class="card white col s12 m12 l12 z-depth-5">
             <div class="card-content">
-              <span class="card-title white-text">Datos Generales</span>
+              <span class="card-title green-text">Datos Generales</span>
               <!--Ubicación de Institución-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">location_on</i>
+                <i class="material-icons black-text prefix">location_on</i>
                 <textarea
                   :disabled="editar"
                   v-model="ubicacion"
                   id="ubicacion_org"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="ubicacion_org">Ubicación de la Institución</label>
               </div>
 
               <!--Teléfono Fijo o Celular de Institución-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">local_phone</i>
+                <i class="material-icons black-text prefix">local_phone</i>
                 <input
                   :disabled="editar"
                   v-model="telefono"
                   id="telefono_org"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="telefono_org">Teléfono de la Institución</label>
               </div>
 
               <!--E-mail de Institución-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">email</i>
+                <i class="material-icons black-text prefix">email</i>
                 <input
                   :disabled="editar"
                   v-model="email_institucion"
                   id="email_org"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="email_org">E-mail de la Institución</label>
               </div>
 
               <!--Representante/Gerente-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">face</i>
+                <i class="material-icons black-text prefix">face</i>
                 <input
                   :disabled="editar"
                   v-model="representante"
                   id="nombre_rep"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="nombre_rep">Representante/Gerente</label>
               </div>
 
               <!--Teléfono Representante/Gerente-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">contact_phone</i>
+                <i class="material-icons black-text prefix">contact_phone</i>
                 <input
                   :disabled="editar"
                   v-model="telefono_representante"
                   id="tel_rep"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="tel_rep">Teléfono Representante/Gerente</label>
               </div>
 
               <!--E-mail Representante/Gerente-->
               <div class="input-field">
-                <i class="material-icons white-text prefix">contact_mail</i>
+                <i class="material-icons black-text prefix">contact_mail</i>
                 <input
                   :disabled="editar"
                   v-model="email_encargado"
                   id="email_rep"
                   type="text"
-                  class="materialize-textarea white-text"
+                  class="materialize-textarea black-text"
                 />
                 <label :class="active" for="email_rep">E-mail Representante/Gerente</label>
               </div>
@@ -298,53 +309,53 @@
 
           <div class="row">
             <!--Tipos de Organización-->
-            <div class="card grey darken-3 col s12 m6 l6 z-depth-5">
+            <div class="card white col s12 m6 l6 z-depth-5">
               <div class="card-content">
-                <span class="card-title white-text">Tipo de Organización</span>
+                <span class="card-title green-text">Tipo de Organización</span>
                 <!--Ubicación de Institución-->
                 <div align="left">
                   <form action="#">
                     <p>
                       <label>
                         <input v-model="t0" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Gobierno central (secretaria de estado)</span>
+                        <span class="black-text">Gobierno central (secretaria de estado)</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t1" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Gobierno Local (Municipalidad)</span>
+                        <span class="black-text">Gobierno Local (Municipalidad)</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t2" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Micro y pequeña empresa</span>
+                        <span class="black-text">Micro y pequeña empresa</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t3" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Cooperativa</span>
+                        <span class="black-text">Cooperativa</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t4" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Centro Educativo Público</span>
+                        <span class="black-text">Centro Educativo Público</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t5" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Centro Educativo Privado</span>
+                        <span class="black-text">Centro Educativo Privado</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="t6" type="checkbox" :disabled="editar" />
                         <span
-                          class="white-text"
+                          class="black-text"
                         >Asociación de productores/empresarios/pobladores (cámaras de comercio, cámaras de turismo, patronatos)</span>
                       </label>
                     </p>
@@ -354,46 +365,46 @@
             </div>
 
             <!--Área de Trabajo-->
-            <div class="card grey darken-3 col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
+            <div class="card white col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
               <div class="card-content">
-                <span class="card-title white-text">Área de Trabajo</span>
+                <span class="card-title green-text">Área de Trabajo</span>
                 <!--Ubicación de Institución-->
                 <div align="left">
                   <form action="#">
                     <p>
                       <label>
                         <input v-model="a0" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Económica</span>
+                        <span class="black-text">Económica</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="a1" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Social/Cultural</span>
+                        <span class="black-text">Social/Cultural</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="a2" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Educativa</span>
+                        <span class="black-text">Educativa</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="a3" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Salud</span>
+                        <span class="black-text">Salud</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="a4" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Ambiental</span>
+                        <span class="black-text">Ambiental</span>
                       </label>
                     </p>
                     <p>
                       <label>
                         <input v-model="a5" type="checkbox" :disabled="editar" />
-                        <span class="white-text">Otra</span>
+                        <span class="black-text">Otra</span>
                       </label>
                     </p>
                   </form>
@@ -406,9 +417,9 @@
           </div>
 
           <!--Funciones en Municipio-->
-          <div class="card grey darken-3 col s12 m12 l12 z-depth-5">
+          <div class="card white col s12 m12 l12 z-depth-5">
             <div class="card-content">
-              <span class="card-title white-text">Funciones en el Municipio</span>
+              <span class="card-title green-text">Funciones en el Municipio</span>
               <div class="collection">
                 <p class="collection-item" v-for="funcion in funciones_en_municipio" :key="funcion">
                   <span class="badge">
@@ -426,7 +437,7 @@
                       v-model="funcion_en_municipio"
                       id="funcion_org"
                       type="text"
-                      class="materialize-textarea white-text"
+                      class="materialize-textarea black-text"
                     />
                     <label for="funcion_org">Nueva Función</label>
                   </div>
@@ -434,7 +445,7 @@
                 <td width="5%>">
                   <a href="#!" @click="agregar_elemento(1)">
                     <i
-                      class="white-text material-icons right tooltipped"
+                      class="green-text material-icons right tooltipped"
                       data-position="top"
                       data-tooltip="Agregar Nueva Función"
                     >add_box</i>
@@ -445,9 +456,9 @@
           </div>
 
           <!--Logros en Municipio-->
-          <div class="card grey darken-3 col s12 m12 l12 z-depth-5">
+          <div class="card white col s12 m12 l12 z-depth-5">
             <div class="card-content">
-              <span class="card-title white-text">Logros Importantes en el Municipio</span>
+              <span class="card-title green-text">Logros Importantes en el Municipio</span>
               <div class="collection">
                 <p class="collection-item" v-for="logro in logros" :key="logro">
                   <span class="badge">
@@ -461,19 +472,21 @@
               <table width="100%" v-show="editarBtn">
                 <td width="95%">
                   <div class="input-field">
+                    
                     <input
                       v-model="logro_en_municipio"
                       id="logro_org"
                       type="text"
-                      class="materialize-textarea white-text"
+                      class="materialize-textarea black-text"
                     />
                     <label for="logro_org">Nuevo Logro</label>
                   </div>
                 </td>
                 <td width="5%>" @click="agregar_elemento(2)">
-                  <a href="#!">
+
+                   <a href="#!" >
                     <i
-                      class="white-text material-icons right tooltipped"
+                      class="green-text material-icons right tooltipped"
                       data-position="top"
                       data-tooltip="Agregar Nuevo Logro"
                     >add_box</i>
@@ -484,9 +497,9 @@
           </div>
 
           <!--Proyectos en Municipio-->
-          <div class="card grey darken-3 col s12 m12 l12 z-depth-5">
+          <div class="card white col s12 m12 l12 z-depth-5">
             <div class="card-content">
-              <span class="card-title white-text">Proyectos Desarrollándose en el Municipio</span>
+              <span class="card-title green-text">Proyectos Desarrollándose en el Municipio</span>
               <div class="collection">
                 <p
                   class="collection-item"
@@ -511,7 +524,7 @@
                       v-model="proyecto_en_municipio"
                       id="proyecto_org"
                       type="text"
-                      class="materialize-textarea white-text"
+                      class="materialize-textarea black-text"
                     />
                     <label for="proyecto_org">Nombre Proyecto</label>
                   </div>
@@ -522,7 +535,7 @@
                       v-model="proyecto_en_municipioD"
                       id="proyecto_orgD"
                       type="text"
-                      class="materialize-textarea white-text"
+                      class="materialize-textarea black-text"
                     />
                     <label for="proyecto_orgD">Descripción Proyecto</label>
                   </div>
@@ -530,7 +543,7 @@
                 <td width="6%>">
                   <a href="#!" @click="agregar_elemento(3)">
                     <i
-                      class="white-text material-icons right tooltipped"
+                      class="green-text material-icons right tooltipped"
                       data-position="top"
                       data-tooltip="Agregar Nuevo Proyecto"
                     >add_box</i>
@@ -541,10 +554,10 @@
           </div>
 
           <!--Socios en Municipio-->
-          <div class="card grey darken-3 col s12 m12 l12 z-depth-5">
+          <div class="card white col s12 m12 l12 z-depth-5">
             <div class="card-content">
               <span
-                class="card-title white-text"
+                class="card-title green-text"
               >Socios Estratégicos con los que Coordina Actividades en el Municipio</span>
               <div class="collection">
                 <p class="collection-item" v-for="socio in socios" :key="socio">
@@ -563,7 +576,7 @@
                       v-model="socio_en_municipio"
                       id="socio_org"
                       type="text"
-                      class="materialize-textarea white-text"
+                      class="materialize-textarea black-text"
                     />
                     <label for="socio_org">Nuevo Socio</label>
                   </div>
@@ -571,7 +584,7 @@
                 <td width="5%>">
                   <a href="#!" @click="agregar_elemento(4)">
                     <i
-                      class="white-text material-icons right tooltipped"
+                      class="green-text material-icons right tooltipped"
                       data-position="top"
                       data-tooltip="Agregar Nuevo Socio"
                     >add_box</i>

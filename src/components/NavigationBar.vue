@@ -11,18 +11,21 @@
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li>
               <a
-                v-show="bandera_Log==false"
+                v-show="bandera_Log == false"
                 class="waves-effect waves-light modal-trigger enfasis"
                 href="#login"
-              >Log In</a>
+                >Log In</a
+              >
               <a
-                v-show="bandera_Log==true"
+                v-show="bandera_Log == true"
                 class="waves-effect waves-light"
                 @click="sign_out()"
-              >Log out</a>
+                >Log out</a
+              >
             </li>
           </ul>
         </div>
+       
         <div class="nav-content">
           <ul class="tabs tabs-transparent">
             <li class="tab">
@@ -73,14 +76,20 @@
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">mail_outline</i>
-                <input class="validate" id="email" v-model="email" type="email" />
+                <input
+                  class="validate"
+                  id="email"
+                  v-model="email"
+                  type="email"
+                />
                 <label
                   for="email"
                   style="font-size:20px;"
                   class="blue-text"
                   data-error="wrong"
                   data-success="right"
-                >Email</label>
+                  >Email</label
+                >
               </div>
             </div>
             <div class="row">
@@ -94,17 +103,167 @@
                   type="password"
                   v-on:keyup.enter="Sign_in"
                 />
-                <label class="blue-text" style="font-size:20px;" for="password">Password</label>
+                <label class="blue-text" style="font-size:20px;" for="password"
+                  >Password</label
+                >
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12">
-                <a class="btn waves-effect waves-light col s12 blue" @click="Sign_in()">Log in</a>
+                <a
+                  class="btn waves-effect waves-light col s12 blue"
+                  @click="Sign_in()"
+                  >Log in</a
+                >
               </div>
             </div>
           </form>
+          <center>
+            <a href="#" class="blue-text flagmostrar">
+              <b
+                class="modal-trigger"
+                href="#modal_restablecer_password"
+                @click="limpiar()"
+              >
+                <h5>¿Olvido su contraseña?</h5>
+              </b>
+            </a>
+          </center>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal_restablecer_password" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <form id="app" action method="post">
+          <h4 class="orange-text">Restablecer contraseña</h4>
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">mail_outline</i>
+              <input
+                disabled
+                class="validate"
+                id="restablecer_email"
+                v-model="email"
+                type="email"
+                v-on:keyup.enter="find_employee"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <table width="100%">
+              <td width="95%">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">lock</i>
+                  <input
+                    id="nuevo_password"
+                    type="password"
+                    class="validate"
+                    oncopy="return false"
+                    onpaste="return false"
+                    v-model="nuevo_password"
+                    v-on:keyup.enter="find_employee"
+                  />
+                  <label :class="active" for="nuevo_password">
+                    <b class="orange-text">Nuevo Password</b>
+                  </label>
+                </div>
+              </td>
+              <td width="5%" @click="show_password('nuevo_password')">
+                <a href="#">
+                  <i class="material-icons left">remove_red_eye</i>
+                </a>
+              </td>
+            </table>
+          </div>
+          <div class="row">
+            <table width="100%">
+              <td width="95%">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">lock</i>
+                  <input
+                    id="nuevo_password_copia"
+                    type="password"
+                    class="validate"
+                    oncopy="return false"
+                    onpaste="return false"
+                    v-model="nuevo_password_copia"
+                    v-on:keyup.enter="find_employee"
+                  />
+                  <label :class="active" for="nuevo_password_copia">
+                    <b class="orange-text">Nuevo Password</b>
+                  </label>
+                </div>
+              </td>
+              <td width="5%" @click="show_password('nuevo_password_copia')">
+                <a href="#">
+                  <i class="material-icons left">remove_red_eye</i>
+                </a>
+              </td>
+            </table>
+          </div>
+          <!-- RECUPERAR CONTRASEÑA FORM -->
+          <div class="row">
+            <div class="col s12">
+              <div class="card red darken-2" v-if="validation != ''">
+                <div class="card-content white-text">{{ validation }}</div>
+                <div class="card-action">
+                  <a href="#" @click="validation = ''">Aceptar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <center>
+          <a
+            class="waves-light btn col s12 green accent-3"
+            @click="find_employee()"
+          >
+            <i class="material-icons left">save</i>
+            Cambiar
+          </a>
+        </center>
+      </div>
+
+      <div class="modal-footer">
+        <a
+          @click="salir()"
+          class="modal-close white-text red lighten-1 btn-flat"
+          >Salir</a
+        >
+      </div>
+    </div>
+
+    <!-- CODIGO DE RECUPERACION -->
+    <div id="modal_update" class="modal">
+      <div class="modal-content">
+        <h4>
+          <b class="orange-text">Confirmación:</b>
+        </h4>
+        <p>Ingrese el codigo de verificación en la caja de texto:</p>
+        <center>
+          <!--h4 oncopy="return false" onpaste="return false">{{ unic_key }}</h4-->
+            <a v-show="mostrar_boton==true" class="green btn-flat white-text" @click="enviar(),mostrar_boton=false"
+            >ENVIAR</a
+          >
+          <input
+            width="40%"
+            oncopy="return false"
+            onpaste="return false"
+            type="text"
+            v-model="codigo_validacion"
+            id="codigo_validacion"
+            v-on:keyup.enter="update_password"
+          />
+          <a class="green btn-flat white-text" @click="update_password()"
+            >Aceptar</a
+          >
+        </center>
+      </div>
+      <div class="modal-footer">
+        <a class="red btn-flat white-text" @click="salir2()">Salir</a>
       </div>
     </div>
   </div>
@@ -133,15 +292,17 @@ export default {
     restablecer_email: "",
     identificacion: "",
     nuevo_password: "",
+    selected_employee: {},
     nuevo_password_copia: "",
-    selected_employee: "",
+    selected_: "",
     unic_key: "",
     codigo_validacion: "",
     num_intento: 0,
     role: "",
     usuario: "",
     organizacion: "",
-    bandera_Log: false
+    bandera_Log: false,
+    mostrar_boton:false
   }),
   components: {
     firebase,
@@ -175,25 +336,9 @@ export default {
       var re = /^(?=.*[0-9])[a-zA-Z0-9]{8,16}$/;
       return re.test(String(pass));
     },
-
-    encryption: function(pass) {
-      let key = this.$CryptoJS.enc.Hex.stringify("santaburga1234");
-      let iv = this.$CryptoJS.enc.Hex.stringify("keyIVSantaBurga");
-      let encryptionPass = this.$CryptoJS.AES.encrypt(pass, key, { iv: iv });
-      return encryptionPass.toString();
-    },
-    decryption: function(pass) {
-      let key = this.$CryptoJS.enc.Hex.stringify("santaburga1234");
-      let iv = this.$CryptoJS.enc.Hex.stringify("keyIVSantaBurga");
-      let decryptionPass = this.$CryptoJS.AES.decrypt(pass, key, {
-        iv: iv
-      }).toString(this.$CryptoJS.enc.Latin1);
-      return decryptionPass;
-    },
     validate_form: function() {
       if (
-        this.restablecer_email === "" ||
-        this.identificacion === "" ||
+        this.email === "" ||
         this.nuevo_password === "" ||
         this.nuevo_password_copia === ""
       ) {
@@ -295,10 +440,7 @@ export default {
 
             querySnapshot.docs.forEach(doc => {
               if (this.email === doc.data().email_encargado) {
-                if (
-                  this.password ===
-                  /*this.decryption(*/ doc.data().contrasena /*)*/
-                ) {
+                if (this.password === doc.data().contrasena) {
                   found = true;
                   console.log("ENTRA");
                   window.localStorage.setItem("Role", doc.data().Role);
@@ -350,15 +492,26 @@ export default {
       if (this.unic_key == this.codigo_validacion) {
         firebase
           .firestore()
-          .collection("EMPLOYEE")
+          .collection("Actor")
           .doc(this.selected_employee.ID)
           .update({
-            NAME: this.selected_employee.data.NAME,
-            SURNAME: this.selected_employee.data.SURNAME,
-            ROLE: this.selected_employee.data.ROLE,
-            ID_NUMBER: this.selected_employee.data.ID_NUMBER,
-            E_MAIL: this.selected_employee.data.E_MAIL,
-            PASSWORD: this.encryption(this.nuevo_password)
+            /* area_trabajo:this.selected_employee.data.area_trabajo,
+            descripcion:this.selected_employee.data.descripcion,
+            email_encargado:this.selected_employee.data.email_encargado,
+            email_institucion:this.selected_employee.data.email_institucion,
+            funciones_en_municipio:this.selected_employee.data.funciones_en_municipio,
+            logros:this.selected_employee.data.logros,
+            nombre:this.selected_employee.data.nombre,
+            proyectos:this.selected_employee.data.proyectos,
+            representante:this.selected_employee.data.representante,
+            socios:this.selected_employee.data.socios,
+            telefono:this.selected_employee.data.telefono,
+            telefono_representante:this.selected_employee.data.telefono_representante,
+            tipo_organizacion:this.selected_employee.data.tipo_organizacion,
+            ubicacion:this.selected_employee.data.ubicacion,
+            url_img:this.selected_employee.data.url_img,*/
+
+            contrasena: this.nuevo_password
           })
           .then(() => {
             console.log("Employee successfully updated!");
@@ -383,31 +536,31 @@ export default {
         this.unic_key = "";
         this.codigo_validacion = "";
         this.generate_code();
-        this.enviar();
+       this.enviar();
       }
     },
     find_employee: function() {
       if (this.validate_form()) {
         firebase
           .firestore()
-          .collection("EMPLOYEE")
+          .collection("Actor")
           .get()
           .then(querySnapshot => {
             var found = false;
             var key = "";
             querySnapshot.docs.forEach(doc => {
-              if (this.restablecer_email === doc.data().E_MAIL) {
-                if (
-                  this.identificacion.replace(/[^\w\s]/gi, "") ===
-                  doc.data().ID_NUMBER
-                ) {
-                  found = true;
-                  this.selected_employee = { ID: doc.id, data: doc.data() };
-                  this.generate_code();
-                  this.enviar();
-                  M.Modal.getInstance(modal_update).open();
-                  return true;
-                }
+              if (this.email === doc.data().email_encargado) {
+                found = true;
+                
+                this.selected_employee = { ID: doc.id, data: doc.data() };
+                
+                this.unic_key = "";
+                this.codigo_validacion = "";
+                this.mostrar_boton=true;
+                this.generate_code();
+                M.Modal.getInstance(modal_update).open();
+                
+                return true;
               }
             });
             if (!found) {
@@ -432,8 +585,8 @@ export default {
       return false;
     },
     generate_code() {
-      var chars = "0123456789abcdefABCDEF?¿:;_-GIJKLMNOPQRSTUVWXYZ";
-      var lon = 10;
+      var chars = "0123456789abcdefABCDEFGIJKLMNOPQRSTUVWXYZ";
+      var lon = 5;
       var code = "";
       var x = 0;
       for (x = 0; x < lon; x++) {
@@ -441,21 +594,22 @@ export default {
         code += chars.substr(rand, 1);
       }
       this.unic_key = code;
+     
     },
 
-    enviar() {
+  enviar() {
       let data = {
-        to_email: this.restablecer_email,
-        code: this.unic_key
+      to_email: this.email,
+      code:this.unic_key
       };
 
-      emailjs.send("gmail", "recuperacion_password", data).then(
+      emailjs.send("gmail", "template_i8sJz3O3", data).then(
         function(response) {
           if (response.text === "OK") {
-            M.toast({
-              html:
-                "El codigo se ha enviado exitosamente a su bandeja de entrada"
-            });
+           M.toast({
+                  html:
+                    "El codigo se ha enviado exitosamente a su bandeja de entrada"
+                });
           }
           console.log(
             "SUCCESS. status=%d, text=%s",
@@ -465,12 +619,14 @@ export default {
         },
         function(err) {
           M.toast({
-            html: "Se ha producido un error, el mensaje no se ha enviado"
-          });
+                  html:
+                    "Se ha producido un error, el mensaje no se ha enviado"
+                });
           console.log("FAILED. error=", err);
         }
       );
     }
+  
   },
   mounted: function() {
     M.AutoInit();
