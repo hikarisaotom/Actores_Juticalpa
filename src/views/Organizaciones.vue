@@ -53,12 +53,66 @@
       style="display: none;"
     />
 
+    <!-- Modal Eliminar Organización -->
+    <div id="modalDelete" class="modal">
+      <div class="modal-content">
+        <h4>Eliminar Organización?</h4>
+        <p>Si elimina la organización, ésta no se podrá recuperar.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect red btn left">Cancelar</a>
+        <a
+          href="#!"
+          class="waves-effect green btn modal-close"
+          @click="delete_Organizacion()"
+        >Aceptar</a>
+      </div>
+    </div>
+
     <!--Modal de Organizacion-->
     <div id="modal_org" class="modal bottom-sheet">
       <div class="modal-content" v-if="loader==true">
         <loading></loading>
       </div>
       <div class="modal-content" v-if="loader==false">
+        <!--BOTONES FLOTANTES-->
+        <!--div class="fixed-action-btn">
+          <a class="btn-floating btn-large purple darken-3">
+            <i class="large material-icons">menu</i>
+          </a>
+          <ul>
+            <li>
+              <a class="btn-floating red" @click="cerrarModal()">
+                <i class="material-icons">close</i>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a
+                class="btn-floating yellow"
+                @click="editar_Organizacion(); edicion=true"
+                v-if="edit==true"
+              >
+                <i class="material-icons">edit</i>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a class="btn-floating red" @click="delete_Organizacion()" v-if="edit==true">
+                <i class="material-icons">delete_forever</i>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a class="btn-floating green" @click="ejecutar()" v-if="edit==false">
+                <i class="material-icons">save</i>
+              </a>
+            </li>
+          </ul>
+        </div-->
         <div class="row">
           <div class="cols s12 m12 l12">
             <nav>
@@ -81,9 +135,8 @@
           </div>
           <div class="cols s6 m6 l6">
             <a
-              class="waves-effect waves-light btn red right"
-              href="#"
-              @click="delete_Organizacion()"
+              class="waves-effect waves-light btn red right modal-trigger"
+              href="#modalDelete"
               v-if="edit==true"
             >
               <i class="material-icons white-text right">delete_forever</i>
@@ -133,9 +186,8 @@
             <!--Imagen-->
             <div class="card col s12 m5 l5 offset-m1 offset-l1 z-depth-5">
               <div class="card-image waves-effect waves-block waves-light">
-                <a href="#" @click="openIMG()">
+                <a href="#">
                   <img
-                    class="materialboxed"
                     :src="url_img"
                     style="display: block;
                   margin-left: auto;
@@ -239,7 +291,7 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="email_rep">Teléfono Representante/Gerente</label>
+                <label :class="active" for="email_rep">E-mail Representante/Gerente</label>
               </div>
             </div>
           </div>
@@ -625,6 +677,8 @@ export default {
     //Hace que el Modal1 no se cierre si da click afuera
     var m = M.Modal.getInstance(modal_org);
     m.options.dismissible = false;
+    var m1 = M.Modal.getInstance(modalDelete);
+    m1.options.dismissible = false;
     this.getOrganizaciones();
   },
   methods: {
@@ -709,7 +763,7 @@ export default {
           });
       }
     },
-    editarImg() {
+    editarOrg() {
       this.loader = true;
       if (this.url_img != this.organizacion_actual.url_img) {
         if (
@@ -751,6 +805,19 @@ export default {
       }
     },
     cerrarModal() {
+      this.t0 = false;
+      this.t1 = false;
+      this.t2 = false;
+      this.t3 = false;
+      this.t4 = false;
+      this.t5 = false;
+      this.t6 = false;
+      this.a0 = false;
+      this.a1 = false;
+      this.a2 = false;
+      this.a3 = false;
+      this.a4 = false;
+      this.a5 = false;
       this.loader = false;
       this.editarBtn = false;
       this.editar = true;
@@ -1038,30 +1105,69 @@ export default {
     },
     delete_Organizacion() {
       this.loader = true;
-      /*Al eliminar la organizacion, no se borra la imagen HACERLO DESPUES*/
-      firebase
-        .firestore()
-        .collection("Actor")
-        .doc(this.organizacion_actual.id)
-        .delete()
-        .then(error => {
-          this.organizaciones.splice(
-            this.organizaciones.indexOf(this.organizacion_actual),
-            1
-          );
-          this.loader = false;
-          M.toast({ html: "Organización eliminada." });
-          this.cerrarModal();
-        })
-        .catch(error => {
-          this.loader = false;
-          M.toast({ html: "Error eliminando Organización." });
-          this.cerrarModal();
-        });
+      if (
+        this.organizacion_actual.url_img ===
+        "https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg"
+      ) {
+        firebase
+          .firestore()
+          .collection("Actor")
+          .doc(this.organizacion_actual.id)
+          .delete()
+          .then(error => {
+            this.organizaciones.splice(
+              this.organizaciones.indexOf(this.organizacion_actual),
+              1
+            );
+            this.loader = false;
+            M.toast({ html: "Organización eliminada." });
+            this.cerrarModal();
+          })
+          .catch(error => {
+            this.loader = false;
+            M.toast({ html: "Error eliminando Organización." });
+            this.cerrarModal();
+          });
+      } else {
+        console.log("Entra Borrar IMG");
+        var storage = firebase.storage();
+        const u = this.organizacion_actual.url_img;
+        console.log(u);
+        var desertRef = storage.refFromURL(u);
+        desertRef
+          .delete()
+          .then(() => {
+            console.log("Borrado");
+            firebase
+              .firestore()
+              .collection("Actor")
+              .doc(this.organizacion_actual.id)
+              .delete()
+              .then(error => {
+                this.organizaciones.splice(
+                  this.organizaciones.indexOf(this.organizacion_actual),
+                  1
+                );
+                this.loader = false;
+                M.toast({ html: "Organización eliminada." });
+                this.cerrarModal();
+              })
+              .catch(error => {
+                this.loader = false;
+                M.toast({ html: "Error eliminando Organización." });
+                this.cerrarModal();
+              });
+          })
+          .catch(error => {
+            console.log("Uh-oh, an error occurred!", error);
+            this.loader = false;
+            M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
+          });
+      }
     },
     ejecutar() {
       if (this.edicion == true) {
-        this.editarImg();
+        this.editarOrg();
       } else {
         this.addOrganizacion();
       }
@@ -1172,24 +1278,24 @@ export default {
           this.edit = true;
           this.editar = true;
           this.editarBtn = false;
-          /*organizacion actual*/
-          this.organizacion_actual.id = doc.id;
-          this.organizacion_actual.nombre = this.nombre;
-          this.organizacion_actual.area_trabajo = areaOrg;
-          this.organizacion_actual.descripcion = this.descripcion;
-          this.organizacion_actual.email_encargado = this.email_encargado;
-          this.organizacion_actual.email_institucion = this.email_encargado;
-          this.organizacion_actual.funciones_en_municipio = this.funciones_en_municipio;
-          this.organizacion_actual.logros = this.logros;
-          this.organizacion_actual.proyectos = this.proyectos;
-          this.organizacion_actual.representante = this.representante;
-          this.organizacion_actual.socios = this.socios;
-          this.organizacion_actual.telefono = this.telefono;
-          this.organizacion_actual.telefono_representante = this.telefono_representante;
-          this.organizacion_actual.tipo_organizacion = tipoOrg;
-          this.organizacion_actual.ubicacion = this.ubicacion;
-          this.organizacion_actual.url_img = this.url_img;
-          this.organizaciones.push(this.organizacion_actual);
+          this.organizaciones.push({
+            id: doc.id,
+            nombre: this.nombre,
+            area_trabajo: areaOrg,
+            descripcion: this.descripcion,
+            email_encargado: this.email_encargado,
+            email_institucion: this.email_institucion,
+            funciones_en_municipio: this.funciones_en_municipio,
+            logros: this.logros,
+            proyectos: this.proyectos,
+            representante: this.representante,
+            socios: this.socios,
+            telefono: this.telefono,
+            telefono_representante: this.telefono_representante,
+            tipo_organizacion: tipoOrg,
+            ubicacion: this.ubicacion,
+            url_img: this.url_img
+          });
           this.cerrarModal();
           console.log("Organization successfully updated!");
           this.loader = false;
