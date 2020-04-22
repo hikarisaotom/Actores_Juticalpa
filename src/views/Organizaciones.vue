@@ -1,7 +1,7 @@
 <template>
   <div class="organizaciones">
     <br />
-    <div class="fixed-action-btn">
+    <div class="fixed-action-btn" v-show="bandera_Log==true">
       <a class="btn-floating btn-large red">
         <i class="large material-icons">mode_edit</i>
       </a>
@@ -168,7 +168,7 @@
               @click="editar_Organizacion(); edicion=true"
               v-if="edit==true"
             >
-              <i class="material-icons white-text left">edit</i>
+              <i  class="material-icons white-text left">edit</i>
               <span class="white-text">Editar</span>
             </a>
           </div>
@@ -742,6 +742,7 @@ export default {
   }),
   computed: {
     ...mapState(["bandera_Log"]),
+    
 
     filter: function() {
       return this.organizaciones.filter(organizacion => {

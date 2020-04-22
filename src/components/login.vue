@@ -1,13 +1,16 @@
 <template>
   <div id="login-page" class="row">
-
     <div class="col s12 z-depth-6 card-panel arriba">
       <form class="login-form">
         <div class="row"></div>
         <div class="row">
           <div class="input-field brown-text col s12 m12 l12 login-text">
             <center>
-              <img src="https://cdn.jwplayer.com/v2/media/BMGOAvuU/poster.jpg?width=720" width="30%" height="40%" />
+              <img
+                src="https://cdn.jwplayer.com/v2/media/BMGOAvuU/poster.jpg?width=720"
+                width="30%"
+                height="40%"
+              />
             </center>
             <center>
               <label>
@@ -46,14 +49,12 @@
       </form>
     </div>
     <center>
-      <a href="#"   class="brown-text flagmostrar">
+      <a href="#" class="brown-text flagmostrar">
         <b
           class="modal-trigger"
           href="#modal_restablecer_password"
           @click=" limpiar()"
         >¿Restablecer contraseña?</b>
-       
-
       </a>
     </center>
     <!-- Modal Structure -->
@@ -78,7 +79,13 @@
           <div class="row">
             <div class="input-field col s12">
               <i class="material-icons prefix">lock_outline</i>
-              <input id="id_number" type="tel" v-model="identificacion" v-mask="'####-####-#####'" v-on:keyup.enter="find_employee" />
+              <input
+                id="id_number"
+                type="tel"
+                v-model="identificacion"
+                v-mask="'####-####-#####'"
+                v-on:keyup.enter="find_employee"
+              />
               <label for="identificacion">Número de Identidad</label>
             </div>
           </div>
@@ -196,44 +203,29 @@
 <script src="https://cdn.emailjs.com/dist/email.js" type="text/javascript"></script>
 
 <script>
-window.addEventListener('offline', function(e) { 
-  console.log('offline, ocultando funcionalidades');
- //document.getElementById("flagmostrar").style.visibility = "hidden"
-for (let el of document.querySelectorAll('.flagmostrar')) el.style.visibility = 'hidden';
-
- });
- window.addEventListener('online', function(e) { 
-   console.log('online recobrando funcionalidades');
+window.addEventListener("offline", function(e) {
+  console.log("offline, ocultando funcionalidades");
+  //document.getElementById("flagmostrar").style.visibility = "hidden"
+  for (let el of document.querySelectorAll(".flagmostrar"))
+    el.style.visibility = "hidden";
+});
+window.addEventListener("online", function(e) {
+  console.log("online recobrando funcionalidades");
   //document.getElementById("flagmostrar").style.visibility = "visible";
-for (let el of document.querySelectorAll('.flagmostrar')) el.style.visibility = 'visible';
+  for (let el of document.querySelectorAll(".flagmostrar"))
+    el.style.visibility = "visible";
+});
 
-    });
-
-/*window.addEventListener('offline', function(e) { 
-  console.log('offline');
- });
-
-window.addEventListener('online', function(e) { console.log('online'); });*/
-/*$(window).on('beforeunload', function(){
-         
-    if (navigator.onLine) {
-    } else {
-     
-       return "Good bye";
-    }
-    
-})*/
-window.onbeforeunload = function(){
+window.onbeforeunload = function() {
   if (navigator.onLine) {
-  console.log('online');
-} else {
-  console.log('offline');
-    return 'Are you sure you want to leave?';
+    console.log("online");
+  } else {
+    console.log("offline");
+    return "Are you sure you want to leave?";
   }
 };
 
-
-import { firebase,database } from "../firebase";
+import { firebase, database } from "../firebase";
 //import { database } from "../firebase";
 import { mapState, mapMutations } from "vuex";
 import { mask } from "vue-the-mask";
@@ -256,25 +248,24 @@ export default {
       num_intento: 0
     };
   },
-   components:{
-     firebase,
-     database
-   },
+  components: {
+    firebase,
+    database
+  },
   directives: { mask },
   computed: {
     ...mapState(["NAME"]),
     ...mapState(["Bandera"])
   },
   methods: {
-  
-     beforePageDestroyed: function (event) {
-       alert("NO HAY ESCAPE, BUAJAJA!!");
+    beforePageDestroyed: function(event) {
+      alert("NO HAY ESCAPE, BUAJAJA!!");
     },
     validatePassword: function(pass) {
       var re = /^(?=.*[0-9])[a-zA-Z0-9]{8,16}$/;
       return re.test(String(pass));
     },
-   
+
     encryption: function(pass) {
       let key = this.$CryptoJS.enc.Hex.stringify("santaburga1234");
       let iv = this.$CryptoJS.enc.Hex.stringify("keyIVSantaBurga");
@@ -355,41 +346,42 @@ export default {
         this.password = "";
       } else {
         console.log(this.email, "=>", this.password);
-       database.collection("Actor")
+        database
+          .collection("Actor")
           .get()
           .then(querySnapshot => {
             var found = false;
 
             querySnapshot.docs.forEach(doc => {
               if (this.email === doc.data().email_encargado) {
-                if (this.password === /*this.decryption(*/doc.data().contrasena/*)*/) {
+                if (
+                  this.password ===
+                  /*this.decryption(*/ doc.data().contrasena /*)*/
+                ) {
                   found = true;
-                   console.log("ENTRA");
-                  window.localStorage.setItem("NAME", doc.data().NAME);
-                
-                 
-                    M.toast({ html: "Bienvenido" });
-                    localStorage.setItem("token", "abc");
-                    (async () => {
-                      let promise = new Promise((resolve, reject) => {
-                        setTimeout(() => resolve("done!"), 1000);
-                      });
-                      let result = await promise;
 
-                      this.$router.push("/about");
-                      console.log("ENTRANDO.....");
-                                           this.$store.commit("get_data", null);
-                    })();
-                  
+                  window.localStorage.setItem("NAME", doc.data().NAME);
+                  M.toast({ html: "Bienvenido" });
+                  localStorage.setItem("token", "abc");
+                  (async () => {
+                    let promise = new Promise((resolve, reject) => {
+                      setTimeout(() => resolve("done!"), 1000);
+                    });
+                    let result = await promise;
+
+                    this.$router.push("/about");
+                    console.log("ENTRANDO.....");
+                    this.$store.commit("get_data", null);
+                  })();
                 } else {
                 }
               } else {
               }
-            });//NO
+            }); //NO
 
             if (!found) {
               this.password = "";
-               console.log("NO ENTRA");
+              console.log("NO ENTRA");
               M.toast({ html: "Datos incorrectos" });
             } else {
             }
@@ -440,7 +432,7 @@ export default {
         this.unic_key = "";
         this.codigo_validacion = "";
         this.generate_code();
-         this.enviar();
+        this.enviar();
       }
     },
     find_employee: function() {
@@ -466,10 +458,8 @@ export default {
                   return true;
                 }
               }
-            
             });
             if (!found) {
-             
               //this.password = "";
               M.toast({ html: "Datos incorrectos" });
               this.num_intento = this.num_intento + 1;
@@ -504,38 +494,39 @@ export default {
 
     enviar() {
       let data = {
-      to_email: this.restablecer_email,
-      code:this.unic_key
+        to_email: "plataforma.actores.juticalpa@gmail.com",
+        code: this.unic_key
       };
 
-      emailjs.send("gmail", "recuperacion_password", data).then(
-        function(response) {
-          if (response.text === "OK") {
-           M.toast({
-                  html:
-                    "El codigo se ha enviado exitosamente a su bandeja de entrada"
-                });
+      if (this.restablecer_email == "admin@plataforma.org") {
+        emailjs.send("gmail", "recuperacion_password", data).then(
+          function(response) {
+            if (response.text === "OK") {
+              M.toast({
+                html:
+                  "El codigo se ha enviado exitosamente a su bandeja de entrada"
+              });
+            }
+            console.log(
+              "SUCCESS. status=%d, text=%s",
+              response.status,
+              response.text
+            );
+          },
+          function(err) {
+            M.toast({
+              html: "Se ha producido un error, el mensaje no se ha enviado"
+            });
+            console.log("FAILED. error=", err);
           }
-          console.log(
-            "SUCCESS. status=%d, text=%s",
-            response.status,
-            response.text
-          );
-        },
-        function(err) {
-          M.toast({
-                  html:
-                    "Se ha producido un error, el mensaje no se ha enviado"
-                });
-          console.log("FAILED. error=", err);
-        }
-      );
+        );
+      }
     }
   },
 
   mounted: function() {
-       M.AutoInit();
- 
+    M.AutoInit();
+
     //Hace que el modal de restablecer contrasena no se cierre si da click afuera
     var m = M.Modal.getInstance(modal_restablecer_password);
     m.options.dismissible = false;
@@ -572,10 +563,7 @@ document.addEventListener("DOMContentLoaded", function() {
   font-family: "Press Start 2P", cursive;
 }
 
-.arriba{
-
-  z-index:-1;
+.arriba {
+  z-index: -1;
 }
-
-
 </style>
