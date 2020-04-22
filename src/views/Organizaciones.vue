@@ -204,6 +204,7 @@
                     v-model="nombre"
                     id="nombre_org"
                     type="text"
+                    pattern="[A-Za-z0-9_-]{1,15}"
                     class="materialize-textarea white-text"
                   />
                   <label :class="active" for="nombre_org">Nombre de la Institución</label>
@@ -894,8 +895,25 @@ export default {
             });
         }
       } else {
-        console.log("Entra ELSE");
-        this.guardar_Cambios();
+        console.log("nombre ", this.nombre);
+
+        if(this.nombre != ""){
+          if(this.Validaciones() == true){
+            console.log("Entra ELSE");
+            this.guardar_Cambios();
+          }else{
+            this.loader = false;
+            M.toast({
+            html: "El nombre no debe tener caracteres especiales."
+          });
+          }
+        }else{
+          this.loader = false;
+          M.toast({
+            html: "Debe ingresar un nombre de organización."
+          });
+
+        }
       }
     },
     cerrarModal() {
@@ -1365,7 +1383,24 @@ export default {
             console.log("Error subiendo imagen!.");
           });
       } else {
-        this.add(areaOrg, tipoOrg);
+        console.log("nombre ", this.nombre);
+        if(this.nombre != ""){
+          if(this.Validaciones() == true){
+            this.add(areaOrg, tipoOrg);
+          }else{
+            this.loader = false;
+            M.toast({
+            html: "El nombre no debe tener caracteres especiales."
+          });
+          }
+
+        }else{
+          this.loader = false;
+          M.toast({
+            html: "Debe ingresar un nombre de organización."
+          });
+
+        }
       }
     },
     add(areaOrg, tipoOrg) {
@@ -1435,6 +1470,24 @@ export default {
           this.loader = false;
           M.toast({ html: "Error Agregando Organización. Intente de Nuevo." });
         });
+    },
+
+    Validaciones(){
+      for(let i=0; i<this.nombre.length; i++){
+          if( !((this.nombre.charCodeAt(i) >= 48 && this.nombre.charCodeAt(i) <=57)
+              || (this.nombre.charCodeAt(i) >= 65 && this.nombre.charCodeAt(i) <=90)
+              || (this.nombre.charCodeAt(i) >= 97 && this.nombre.charCodeAt(i) <=122)
+              || (this.nombre.charCodeAt(i) >= 160 && this.nombre.charCodeAt(i) <=163)
+              || this.nombre[i] == 'á'  || this.nombre[i] == 'é' || this.nombre[i] == 'í'
+              || this.nombre[i] == 'ó'  || this.nombre[i] == 'ú'
+              || this.nombre[i] == 'Á'  || this.nombre[i] == 'É' || this.nombre[i] == 'Í'
+              || this.nombre[i] == 'Ó'  || this.nombre[i] == 'Ú'
+              || this.nombre.charCodeAt(i) == 45  || this.nombre.charCodeAt(i) ==32)){
+            return false;
+          }
+      }
+      return true;
+      
     }
   }
 };
