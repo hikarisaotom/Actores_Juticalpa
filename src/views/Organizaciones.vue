@@ -893,6 +893,7 @@ export default {
             })
             .catch(function(error) {
               console.log("Error subiendo imagen!.");
+              this.loader = false;
             });
         }
       } else {
