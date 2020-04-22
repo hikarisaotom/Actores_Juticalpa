@@ -1,8 +1,8 @@
 <template>
   <div class="letra">
     <div>
-      <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
-        <div class="nav-wrapper" style="height:100px;">
+      <nav class="nav-extended indigo darken-4 z-depth-3" id="navigation_bar_logo">
+        <div class="nav-wrapper" style="height:50px;">
           <!--p class="black-text">Bienvenido: {{usuario}}</p-->
           <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
           <a class="brand-logo center">
@@ -12,20 +12,20 @@
             <li>
               <a
                 v-show="bandera_Log == false"
-                class="waves-effect waves-light modal-trigger enfasis"
+                class="waves-effect white-text waves-teal btn-flat modal-trigger enfasis"
+                style="heigth:25px; width:100px; font-size: 13px"
                 href="#login"
-                >Log In</a
-              >
+              >Log in</a>
               <a
                 v-show="bandera_Log == true"
-                class="waves-effect waves-light"
+                class="waves-effect white-text waves-teal btn-flat"
+                style="heigth:25px; width:100px; font-size: 13px"
                 @click="sign_out()"
-                >Log out</a
-              >
+              >Log out</a>
             </li>
           </ul>
         </div>
-       
+
         <div class="nav-content">
           <ul class="tabs tabs-transparent">
             <li class="tab">
@@ -76,20 +76,14 @@
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">mail_outline</i>
-                <input
-                  class="validate"
-                  id="email"
-                  v-model="email"
-                  type="email"
-                />
+                <input class="validate" id="email" v-model="email" type="email" />
                 <label
                   for="email"
                   style="font-size:20px;"
                   class="blue-text"
                   data-error="wrong"
                   data-success="right"
-                  >Email</label
-                >
+                >Email</label>
               </div>
             </div>
             <div class="row">
@@ -103,29 +97,19 @@
                   type="password"
                   v-on:keyup.enter="Sign_in"
                 />
-                <label class="blue-text" style="font-size:20px;" for="password"
-                  >Password</label
-                >
+                <label class="blue-text" style="font-size:20px;" for="password">Password</label>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12">
-                <a
-                  class="btn waves-effect waves-light col s12 blue"
-                  @click="Sign_in()"
-                  >Log in</a
-                >
+                <a class="btn waves-effect waves-light col s12 blue" @click="Sign_in()">Log in</a>
               </div>
             </div>
           </form>
           <center>
             <a href="#" class="blue-text flagmostrar">
-              <b
-                class="modal-trigger"
-                href="#modal_restablecer_password"
-                @click="limpiar()"
-              >
+              <b class="modal-trigger" href="#modal_restablecer_password" @click="limpiar()">
                 <h5>¿Olvido su contraseña?</h5>
               </b>
             </a>
@@ -217,10 +201,7 @@
           </div>
         </form>
         <center>
-          <a
-            class="waves-light btn col s12 green accent-3"
-            @click="find_employee()"
-          >
+          <a class="waves-light btn col s12 green accent-3" @click="find_employee()">
             <i class="material-icons left">save</i>
             Cambiar
           </a>
@@ -228,11 +209,7 @@
       </div>
 
       <div class="modal-footer">
-        <a
-          @click="salir()"
-          class="modal-close white-text red lighten-1 btn-flat"
-          >Salir</a
-        >
+        <a @click="salir()" class="modal-close white-text red lighten-1 btn-flat">Salir</a>
       </div>
     </div>
 
@@ -245,9 +222,11 @@
         <p>Ingrese el codigo de verificación en la caja de texto:</p>
         <center>
           <!--h4 oncopy="return false" onpaste="return false">{{ unic_key }}</h4-->
-            <a v-show="mostrar_boton==true" class="green btn-flat white-text" @click="enviar(),mostrar_boton=false"
-            >ENVIAR</a
-          >
+          <a
+            v-show="mostrar_boton==true"
+            class="green btn-flat white-text"
+            @click="enviar(),mostrar_boton=false"
+          >ENVIAR</a>
           <input
             width="40%"
             oncopy="return false"
@@ -257,9 +236,7 @@
             id="codigo_validacion"
             v-on:keyup.enter="update_password"
           />
-          <a class="green btn-flat white-text" @click="update_password()"
-            >Aceptar</a
-          >
+          <a class="green btn-flat white-text" @click="update_password()">Aceptar</a>
         </center>
       </div>
       <div class="modal-footer">
@@ -279,11 +256,7 @@ import { mask } from "vue-the-mask";
 export default {
   name: "navigation_bar",
   data: () => ({
-    bgArray: [
-      "https://www.itl.cat/pngfile/big/106-1060019_get-it-now-lord-shiva-facebook-cover-page.jpg",
-      "http://staticpopopics.popopics.com/uploads/original/beautiful-hd-wallpaper-for-facebook-cover.jpg",
-      "https://beinglol.com/media/facebook-cover/Sunset-facebook-covers-3236.jpeg"
-    ],
+    bgArray: ["#035C85", "#8816C5", "#55C86A", "#000000"],
     i: 0,
     email: "",
     password: "",
@@ -302,7 +275,7 @@ export default {
     usuario: "",
     organizacion: "",
     bandera_Log: false,
-    mostrar_boton:false
+    mostrar_boton: false
   }),
   components: {
     firebase,
@@ -320,14 +293,14 @@ export default {
 
     ChangeBackground() {
       var x = document.getElementById("navigation_bar_logo");
-      x.style.backgroundImage = "url(" + this.bgArray[this.i] + ")";
+      x.style.backgroundColor = this.bgArray[this.i];
       this.i = this.i + 1;
       setInterval(() => {
         if (this.i == this.bgArray.length) {
           this.i = 0;
         }
         var x = document.getElementById("navigation_bar_logo");
-        x.style.backgroundImage = "url(" + this.bgArray[this.i] + ")";
+        x.style.backgroundColor = this.bgArray[this.i];
         this.i = this.i + 1;
       }, 10000);
     },
@@ -536,7 +509,7 @@ export default {
         this.unic_key = "";
         this.codigo_validacion = "";
         this.generate_code();
-       this.enviar();
+        this.enviar();
       }
     },
     find_employee: function() {
@@ -551,15 +524,15 @@ export default {
             querySnapshot.docs.forEach(doc => {
               if (this.email === doc.data().email_encargado) {
                 found = true;
-                
+
                 this.selected_employee = { ID: doc.id, data: doc.data() };
-                
+
                 this.unic_key = "";
                 this.codigo_validacion = "";
-                this.mostrar_boton=true;
+                this.mostrar_boton = true;
                 this.generate_code();
                 M.Modal.getInstance(modal_update).open();
-                
+
                 return true;
               }
             });
@@ -594,22 +567,21 @@ export default {
         code += chars.substr(rand, 1);
       }
       this.unic_key = code;
-     
     },
 
-  enviar() {
+    enviar() {
       let data = {
-      to_email: this.email,
-      code:this.unic_key
+        to_email: this.email,
+        code: this.unic_key
       };
 
       emailjs.send("gmail", "template_i8sJz3O3", data).then(
         function(response) {
           if (response.text === "OK") {
-           M.toast({
-                  html:
-                    "El codigo se ha enviado exitosamente a su bandeja de entrada"
-                });
+            M.toast({
+              html:
+                "El codigo se ha enviado exitosamente a su bandeja de entrada"
+            });
           }
           console.log(
             "SUCCESS. status=%d, text=%s",
@@ -619,18 +591,16 @@ export default {
         },
         function(err) {
           M.toast({
-                  html:
-                    "Se ha producido un error, el mensaje no se ha enviado"
-                });
+            html: "Se ha producido un error, el mensaje no se ha enviado"
+          });
           console.log("FAILED. error=", err);
         }
       );
     }
-  
   },
   mounted: function() {
     M.AutoInit();
-    this.ChangeBackground();
+    //this.ChangeBackground();
     this.traer();
 
     /*

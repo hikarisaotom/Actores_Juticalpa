@@ -168,7 +168,7 @@
               @click="editar_Organizacion(); edicion=true"
               v-if="edit==true"
             >
-              <i  class="material-icons white-text left">edit</i>
+              <i class="material-icons white-text left">edit</i>
               <span class="white-text">Editar</span>
             </a>
           </div>
@@ -196,7 +196,14 @@
           <div class="row">
             <!--Nombre y Descripcion-->
             <div class="card blue-grey darken-1 col s12 m6 l6 z-depth-5" id="nombre_desc">
-              <div class="card-content white-text">
+              <div
+                class="card-content white-text"
+                style="display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                  width: 100%;
+                  height: 300px"
+              >
                 <div class="input-field">
                   <i class="material-icons prefix">face</i>
                   <input
@@ -207,8 +214,11 @@
                     pattern="[A-Za-z0-9_-]{1,15}"
                     class="materialize-textarea white-text"
                   />
-                  <label :class="active" for="nombre_org">Nombre de la Institución</label>
+                  <label :class="active" for="nombre_org">
+                    <p style="color:white">Nombre de la Institución</p>
+                  </label>
                 </div>
+                <br />
                 <div class="input-field">
                   <i class="material-icons prefix">chrome_reader_mode</i>
                   <textarea
@@ -218,11 +228,14 @@
                     type="text"
                     class="materialize-textarea white-text"
                   />
-                  <label :class="active" for="descripcion">Descripcion</label>
+                  <label :class="active" style="fo" for="descripcion">
+                    <p style="color:white">Descripción</p>
+                  </label>
                 </div>
+                <br />
                 <form action="#">
                   <label style="color:white; font-size:15px">
-                    <b>Tipo:</b>
+                    <b style="color:white">Tipo:</b>
                   </label>
                   <label style="color:white; font-size:15px">
                     <input
@@ -232,7 +245,7 @@
                       value="0"
                       v-model="tipo_gubernamentalN"
                     />
-                    <span>Gubernamental</span>
+                    <span style="color:white">Gubernamental</span>
                   </label>
                   &nbsp; &nbsp;
                   <label style="color:white; font-size:15px">
@@ -243,7 +256,7 @@
                       value="1"
                       v-model="tipo_gubernamentalN"
                     />
-                    <span>No Gubernamental</span>
+                    <span style="color:white">No Gubernamental</span>
                   </label>
                 </form>
               </div>
@@ -292,7 +305,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="ubicacion_org">Ubicación de la Institución</label>
+                <label :class="active" for="ubicacion_org">
+                  <p style="color:white">Ubicación de la Institución</p>
+                </label>
               </div>
 
               <!--Teléfono Fijo o Celular de Institución-->
@@ -305,7 +320,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="telefono_org">Teléfono de la Institución</label>
+                <label :class="active" for="telefono_org">
+                  <p style="color:white">Teléfono de la Institución</p>
+                </label>
               </div>
 
               <!--E-mail de Institución-->
@@ -318,7 +335,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="email_org">E-mail de la Institución</label>
+                <label :class="active" for="email_org">
+                  <p style="color:white">E-mail de la Institución</p>
+                </label>
               </div>
 
               <!--Representante/Gerente-->
@@ -331,7 +350,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="nombre_rep">Representante/Gerente</label>
+                <label :class="active" for="nombre_rep">
+                  <p style="color:white">Representante/Gerente</p>
+                </label>
               </div>
 
               <!--Teléfono Representante/Gerente-->
@@ -344,7 +365,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="tel_rep">Teléfono Representante/Gerente</label>
+                <label :class="active" for="tel_rep">
+                  <p style="color:white">Teléfono Representante/Gerente</p>
+                </label>
               </div>
 
               <!--E-mail Representante/Gerente-->
@@ -357,7 +380,9 @@
                   type="text"
                   class="materialize-textarea white-text"
                 />
-                <label :class="active" for="email_rep">E-mail Representante/Gerente</label>
+                <label :class="active" for="email_rep">
+                  <p style="color:white">E-mail Representante/Gerente</p>
+                </label>
               </div>
             </div>
           </div>
@@ -495,7 +520,9 @@
                       class="materialize-textarea white-text"
                       @keyup.enter="agregar_elemento(1)"
                     />
-                    <label for="funcion_org">Nueva Función</label>
+                    <label for="funcion_org">
+                      <p style="color:white">Nueva Función</p>
+                    </label>
                   </div>
                 </td>
                 <td width="5%>">
@@ -535,7 +562,9 @@
                       class="materialize-textarea white-text"
                       @keyup.enter="agregar_elemento(2)"
                     />
-                    <label for="logro_org">Nuevo Logro</label>
+                    <label for="logro_org">
+                      <p style="color:white">Nuevo Logro</p>
+                    </label>
                   </div>
                 </td>
                 <td width="5%>" @click="agregar_elemento(2)">
@@ -581,7 +610,9 @@
                       type="text"
                       class="materialize-textarea white-text"
                     />
-                    <label for="proyecto_org">Nombre Proyecto</label>
+                    <label for="proyecto_org">
+                      <p style="color:white">Nombre Proyecto</p>
+                    </label>
                   </div>
                 </td>
                 <td width="47%">
@@ -593,7 +624,9 @@
                       class="materialize-textarea white-text"
                       @keyup.enter="agregar_elemento(3)"
                     />
-                    <label for="proyecto_orgD">Descripción Proyecto</label>
+                    <label for="proyecto_orgD">
+                      <p style="color:white">Descripción Proyecto</p>
+                    </label>
                   </div>
                 </td>
                 <td width="6%>">
@@ -635,7 +668,9 @@
                       class="materialize-textarea white-text"
                       @keyup.enter="agregar_elemento(4)"
                     />
-                    <label for="socio_org">Nuevo Socio</label>
+                    <label for="socio_org">
+                      <p style="color:white">Nuevo Socio</p>
+                    </label>
                   </div>
                 </td>
                 <td width="5%>">
@@ -742,7 +777,6 @@ export default {
   }),
   computed: {
     ...mapState(["bandera_Log"]),
-    
 
     filter: function() {
       return this.organizaciones.filter(organizacion => {
@@ -899,22 +933,21 @@ export default {
       } else {
         console.log("nombre ", this.nombre);
 
-        if(this.nombre != ""){
-          if(this.Validaciones() == true){
+        if (this.nombre != "") {
+          if (this.Validaciones() == true) {
             console.log("Entra ELSE");
             this.guardar_Cambios();
-          }else{
+          } else {
             this.loader = false;
             M.toast({
-            html: "El nombre no debe tener caracteres especiales."
-          });
+              html: "El nombre no debe tener caracteres especiales."
+            });
           }
-        }else{
+        } else {
           this.loader = false;
           M.toast({
             html: "Debe ingresar un nombre de organización."
           });
-
         }
       }
     },
@@ -968,7 +1001,9 @@ export default {
 
       if (this.organizacion_actual.tipo_gubernamental == "Gubernamental") {
         this.tipo_gubernamentalN = 0;
-      } else if (this.organizacion_actual.tipo_gubernamental == "No Gubernamental") {
+      } else if (
+        this.organizacion_actual.tipo_gubernamental == "No Gubernamental"
+      ) {
         this.tipo_gubernamentalN = 1;
       }
 
@@ -1074,7 +1109,7 @@ export default {
       });
     },
     agregarOrganizacion() {
-      this.tipo_gubernamentalN=0; 
+      this.tipo_gubernamentalN = 0;
       this.abrirModal();
       this.edicion = false;
       this.editar = false;
@@ -1386,22 +1421,20 @@ export default {
           });
       } else {
         console.log("nombre ", this.nombre);
-        if(this.nombre != ""){
-          if(this.Validaciones() == true){
+        if (this.nombre != "") {
+          if (this.Validaciones() == true) {
             this.add(areaOrg, tipoOrg);
-          }else{
+          } else {
             this.loader = false;
             M.toast({
-            html: "El nombre no debe tener caracteres especiales."
-          });
+              html: "El nombre no debe tener caracteres especiales."
+            });
           }
-
-        }else{
+        } else {
           this.loader = false;
           M.toast({
             html: "Debe ingresar un nombre de organización."
           });
-
         }
       }
     },
@@ -1474,22 +1507,36 @@ export default {
         });
     },
 
-    Validaciones(){
-      for(let i=0; i<this.nombre.length; i++){
-          if( !((this.nombre.charCodeAt(i) >= 48 && this.nombre.charCodeAt(i) <=57)
-              || (this.nombre.charCodeAt(i) >= 65 && this.nombre.charCodeAt(i) <=90)
-              || (this.nombre.charCodeAt(i) >= 97 && this.nombre.charCodeAt(i) <=122)
-              || (this.nombre.charCodeAt(i) >= 160 && this.nombre.charCodeAt(i) <=163)
-              || this.nombre[i] == 'á'  || this.nombre[i] == 'é' || this.nombre[i] == 'í'
-              || this.nombre[i] == 'ó'  || this.nombre[i] == 'ú'
-              || this.nombre[i] == 'Á'  || this.nombre[i] == 'É' || this.nombre[i] == 'Í'
-              || this.nombre[i] == 'Ó'  || this.nombre[i] == 'Ú'
-              || this.nombre.charCodeAt(i) == 45  || this.nombre.charCodeAt(i) ==32)){
-            return false;
-          }
+    Validaciones() {
+      for (let i = 0; i < this.nombre.length; i++) {
+        if (
+          !(
+            (this.nombre.charCodeAt(i) >= 48 &&
+              this.nombre.charCodeAt(i) <= 57) ||
+            (this.nombre.charCodeAt(i) >= 65 &&
+              this.nombre.charCodeAt(i) <= 90) ||
+            (this.nombre.charCodeAt(i) >= 97 &&
+              this.nombre.charCodeAt(i) <= 122) ||
+            (this.nombre.charCodeAt(i) >= 160 &&
+              this.nombre.charCodeAt(i) <= 163) ||
+            this.nombre[i] == "á" ||
+            this.nombre[i] == "é" ||
+            this.nombre[i] == "í" ||
+            this.nombre[i] == "ó" ||
+            this.nombre[i] == "ú" ||
+            this.nombre[i] == "Á" ||
+            this.nombre[i] == "É" ||
+            this.nombre[i] == "Í" ||
+            this.nombre[i] == "Ó" ||
+            this.nombre[i] == "Ú" ||
+            this.nombre.charCodeAt(i) == 45 ||
+            this.nombre.charCodeAt(i) == 32
+          )
+        ) {
+          return false;
+        }
       }
       return true;
-      
     }
   }
 };

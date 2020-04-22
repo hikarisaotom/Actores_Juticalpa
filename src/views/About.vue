@@ -82,6 +82,7 @@
           <i class="material-icons right">save</i>
         </a>
       </center>
+
       <div class="input-field col s8 contenido">
         <div v-show="Bandera_Mostrar == true">
           <textarea
