@@ -1,8 +1,8 @@
 <template>
   <div class="letra">
     <div>
-      <nav class="nav-extended grey darken-4" id="navigation_bar_logo">
-        <div class="nav-wrapper" style="height:100px;">
+      <nav class="nav-extended indigo darken-4 z-depth-3" id="navigation_bar_logo">
+        <div class="nav-wrapper" style="height:50px;">
           <!--p class="black-text">Bienvenido: {{usuario}}</p-->
           <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
           <a class="brand-logo center">
@@ -12,12 +12,14 @@
             <li>
               <a
                 v-show="bandera_Log == false"
-                class="waves-effect waves-light modal-trigger enfasis"
+                class="waves-effect white-text waves-teal btn-flat modal-trigger enfasis"
+                style="heigth:25px; width:100px; font-size: 13px"
                 href="#login"
-              >Log In</a>
+              >Log in</a>
               <a
                 v-show="bandera_Log == true"
-                class="waves-effect waves-light"
+                class="waves-effect white-text waves-teal btn-flat"
+                style="heigth:25px; width:100px; font-size: 13px"
                 @click="sign_out()"
               >Log out</a>
             </li>
@@ -221,9 +223,9 @@
         <center>
           <!--h4 oncopy="return false" onpaste="return false">{{ unic_key }}</h4-->
           <a
-            v-show="mostrar_boton == true"
+            v-show="mostrar_boton==true"
             class="green btn-flat white-text"
-            @click="enviar(), (mostrar_boton = false)"
+            @click="enviar(),mostrar_boton=false"
           >ENVIAR</a>
           <input
             width="40%"
@@ -254,11 +256,7 @@ import { mask } from "vue-the-mask";
 export default {
   name: "navigation_bar",
   data: () => ({
-    bgArray: [
-      "https://www.itl.cat/pngfile/big/106-1060019_get-it-now-lord-shiva-facebook-cover-page.jpg",
-      "http://staticpopopics.popopics.com/uploads/original/beautiful-hd-wallpaper-for-facebook-cover.jpg",
-      "https://beinglol.com/media/facebook-cover/Sunset-facebook-covers-3236.jpeg"
-    ],
+    bgArray: ["#035C85", "#8816C5", "#55C86A", "#000000"],
     i: 0,
     email: "",
     password: "",
@@ -295,14 +293,14 @@ export default {
 
     ChangeBackground() {
       var x = document.getElementById("navigation_bar_logo");
-      x.style.backgroundImage = "url(" + this.bgArray[this.i] + ")";
+      x.style.backgroundColor = this.bgArray[this.i];
       this.i = this.i + 1;
       setInterval(() => {
         if (this.i == this.bgArray.length) {
           this.i = 0;
         }
         var x = document.getElementById("navigation_bar_logo");
-        x.style.backgroundImage = "url(" + this.bgArray[this.i] + ")";
+        x.style.backgroundColor = this.bgArray[this.i];
         this.i = this.i + 1;
       }, 10000);
     },
@@ -587,7 +585,7 @@ export default {
   },
   mounted: function() {
     M.AutoInit();
-    this.ChangeBackground();
+    //this.ChangeBackground();
     this.traer();
   }
 };
