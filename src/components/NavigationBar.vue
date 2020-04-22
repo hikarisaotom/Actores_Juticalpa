@@ -611,7 +611,6 @@ export default {
 }
 
 #contenido {
-  height: 700px;
   overflow: auto;
   /*background-color:#f3f3e3 ;*/
   background-image: url(https://avante.biz/wp-content/uploads/Minimal-Wallpaper/Minimal-Wallpaper-001.jpg);
