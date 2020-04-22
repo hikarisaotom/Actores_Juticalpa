@@ -20,13 +20,17 @@
         </ul>
       </div>
 
-
- 
     <div v-for="noticia in noticias" :key="noticia.ID">
    <div class="row position">
+     
         <div class="col s10 m10 ">
+          
           <div class="card letra grey lighten-3">
+            
             <div class="card-image white">
+               <a class="btn-flat red-text " v-show="bandera_Log==true" style="float:right;" @click="(ID_BORRAR=noticia.ID),Delete_noticia()">
+<i   class="material-icons">delete</i>
+</a>
               <table width="100%">
                 <td width="30%" height="40%">
                   <img v-bind:src="noticia.Imagen" />
@@ -170,7 +174,8 @@ export default {
       nuevo_titulo: "",
       nuevo_contenido: "",
       validation: "",
-      mostrar_advertencia: false
+      mostrar_advertencia: false,
+      ID_BORRAR:"",
     };
   },computed: {
     ...mapState(["bandera_Log"])
@@ -205,6 +210,22 @@ export default {
       } else {
         return false;
       }
+    },
+    Delete_noticia(){
+      console.log("CAMBIO?",this.ID_BORRAR);
+       firebase
+            .firestore()
+            .collection("Noticias")
+        .doc(this.ID_BORRAR)
+        .delete()
+        .then(error => {
+          M.toast({ html: "Eliminación realizada correctamente." });
+          this.Get_News();
+        })
+        .catch(error => {
+          M.toast({ html: "Error Eliminando Noticia." });
+        });
+    
     },
     Add_Noticia() {
       if (this.validate_form()) {
