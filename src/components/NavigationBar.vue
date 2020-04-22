@@ -14,18 +14,16 @@
                 v-show="bandera_Log == false"
                 class="waves-effect waves-light modal-trigger enfasis"
                 href="#login"
-                >Log In</a
-              >
+              >Log In</a>
               <a
                 v-show="bandera_Log == true"
                 class="waves-effect waves-light"
                 @click="sign_out()"
-                >Log out</a
-              >
+              >Log out</a>
             </li>
           </ul>
         </div>
-       
+
         <div class="nav-content">
           <ul class="tabs tabs-transparent">
             <li class="tab">
@@ -76,20 +74,14 @@
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">mail_outline</i>
-                <input
-                  class="validate"
-                  id="email"
-                  v-model="email"
-                  type="email"
-                />
+                <input class="validate" id="email" v-model="email" type="email" />
                 <label
                   for="email"
                   style="font-size:20px;"
                   class="blue-text"
                   data-error="wrong"
                   data-success="right"
-                  >Email</label
-                >
+                >Email</label>
               </div>
             </div>
             <div class="row">
@@ -103,29 +95,19 @@
                   type="password"
                   v-on:keyup.enter="Sign_in"
                 />
-                <label class="blue-text" style="font-size:20px;" for="password"
-                  >Password</label
-                >
+                <label class="blue-text" style="font-size:20px;" for="password">Password</label>
               </div>
             </div>
 
             <div class="row">
               <div class="input-field col s12">
-                <a
-                  class="btn waves-effect waves-light col s12 blue"
-                  @click="Sign_in()"
-                  >Log in</a
-                >
+                <a class="btn waves-effect waves-light col s12 blue" @click="Sign_in()">Log in</a>
               </div>
             </div>
           </form>
           <center>
             <a href="#" class="blue-text flagmostrar">
-              <b
-                class="modal-trigger"
-                href="#modal_restablecer_password"
-                @click="limpiar()"
-              >
+              <b class="modal-trigger" href="#modal_restablecer_password" @click="limpiar()">
                 <h5>¿Olvido su contraseña?</h5>
               </b>
             </a>
@@ -217,10 +199,7 @@
           </div>
         </form>
         <center>
-          <a
-            class="waves-light btn col s12 green accent-3"
-            @click="find_employee()"
-          >
+          <a class="waves-light btn col s12 green accent-3" @click="find_employee()">
             <i class="material-icons left">save</i>
             Cambiar
           </a>
@@ -228,11 +207,7 @@
       </div>
 
       <div class="modal-footer">
-        <a
-          @click="salir()"
-          class="modal-close white-text red lighten-1 btn-flat"
-          >Salir</a
-        >
+        <a @click="salir()" class="modal-close white-text red lighten-1 btn-flat">Salir</a>
       </div>
     </div>
 
@@ -245,9 +220,11 @@
         <p>Ingrese el codigo de verificación en la caja de texto:</p>
         <center>
           <!--h4 oncopy="return false" onpaste="return false">{{ unic_key }}</h4-->
-            <a v-show="mostrar_boton==true" class="green btn-flat white-text" @click="enviar(),mostrar_boton=false"
-            >ENVIAR</a
-          >
+          <a
+            v-show="mostrar_boton == true"
+            class="green btn-flat white-text"
+            @click="enviar(), (mostrar_boton = false)"
+          >ENVIAR</a>
           <input
             width="40%"
             oncopy="return false"
@@ -257,9 +234,7 @@
             id="codigo_validacion"
             v-on:keyup.enter="update_password"
           />
-          <a class="green btn-flat white-text" @click="update_password()"
-            >Aceptar</a
-          >
+          <a class="green btn-flat white-text" @click="update_password()">Aceptar</a>
         </center>
       </div>
       <div class="modal-footer">
@@ -302,7 +277,7 @@ export default {
     usuario: "",
     organizacion: "",
     bandera_Log: false,
-    mostrar_boton:false
+    mostrar_boton: false
   }),
   components: {
     firebase,
@@ -495,22 +470,6 @@ export default {
           .collection("Actor")
           .doc(this.selected_employee.ID)
           .update({
-            /* area_trabajo:this.selected_employee.data.area_trabajo,
-            descripcion:this.selected_employee.data.descripcion,
-            email_encargado:this.selected_employee.data.email_encargado,
-            email_institucion:this.selected_employee.data.email_institucion,
-            funciones_en_municipio:this.selected_employee.data.funciones_en_municipio,
-            logros:this.selected_employee.data.logros,
-            nombre:this.selected_employee.data.nombre,
-            proyectos:this.selected_employee.data.proyectos,
-            representante:this.selected_employee.data.representante,
-            socios:this.selected_employee.data.socios,
-            telefono:this.selected_employee.data.telefono,
-            telefono_representante:this.selected_employee.data.telefono_representante,
-            tipo_organizacion:this.selected_employee.data.tipo_organizacion,
-            ubicacion:this.selected_employee.data.ubicacion,
-            url_img:this.selected_employee.data.url_img,*/
-
             contrasena: this.nuevo_password
           })
           .then(() => {
@@ -536,7 +495,7 @@ export default {
         this.unic_key = "";
         this.codigo_validacion = "";
         this.generate_code();
-       this.enviar();
+        this.enviar();
       }
     },
     find_employee: function() {
@@ -551,15 +510,15 @@ export default {
             querySnapshot.docs.forEach(doc => {
               if (this.email === doc.data().email_encargado) {
                 found = true;
-                
+
                 this.selected_employee = { ID: doc.id, data: doc.data() };
-                
+
                 this.unic_key = "";
                 this.codigo_validacion = "";
-                this.mostrar_boton=true;
+                this.mostrar_boton = true;
                 this.generate_code();
                 M.Modal.getInstance(modal_update).open();
-                
+
                 return true;
               }
             });
@@ -594,50 +553,42 @@ export default {
         code += chars.substr(rand, 1);
       }
       this.unic_key = code;
-     
     },
 
-  enviar() {
+    enviar() {
       let data = {
-      to_email: this.email,
-      code:this.unic_key
+        to_email: "plataforma.actores.juticalpa@gmail.com",
+        code: this.unic_key
       };
-
-      emailjs.send("gmail", "template_i8sJz3O3", data).then(
-        function(response) {
-          if (response.text === "OK") {
-           M.toast({
-                  html:
-                    "El codigo se ha enviado exitosamente a su bandeja de entrada"
-                });
+      if (this.email == "admin@plataforma.org") {
+        emailjs.send("gmail", "template_i8sJz3O3", data).then(
+          function(response) {
+            if (response.text === "OK") {
+              M.toast({
+                html:
+                  "El codigo se ha enviado exitosamente a su bandeja de entrada"
+              });
+            }
+            console.log(
+              "SUCCESS. status=%d, text=%s",
+              response.status,
+              response.text
+            );
+          },
+          function(err) {
+            M.toast({
+              html: "Se ha producido un error, el mensaje no se ha enviado"
+            });
+            console.log("FAILED. error=", err);
           }
-          console.log(
-            "SUCCESS. status=%d, text=%s",
-            response.status,
-            response.text
-          );
-        },
-        function(err) {
-          M.toast({
-                  html:
-                    "Se ha producido un error, el mensaje no se ha enviado"
-                });
-          console.log("FAILED. error=", err);
-        }
-      );
+        );
+      }
     }
-  
   },
   mounted: function() {
     M.AutoInit();
     this.ChangeBackground();
     this.traer();
-
-    /*
- var m = M.Modal.getInstance(modal_restablecer_password);
-    m.options.dismissible = false;
-    var m1 = M.Modal.getInstance(modal_update);
-    m1.options.dismissible = false;*/
   }
 };
 </script>
