@@ -28,7 +28,7 @@
         <br />
         <label>
           <input name="group1" type="radio" value="2" v-model="tipo_gubernamental" />
-          <span>
+          <span style="color: #3C4043;">
             <b>Todos</b>
           </span>
         </label>
@@ -37,7 +37,7 @@
         <br />
         <label>
           <input name="group1" type="radio" value="0" v-model="tipo_gubernamental" />
-          <span>
+          <span style="color: #3C4043;">
             <b>Gubernamentales</b>
           </span>
         </label>
@@ -46,7 +46,7 @@
         <br />
         <label>
           <input name="group1" type="radio" value="1" v-model="tipo_gubernamental" />
-          <span>
+          <span style="color: #3C4043;">
             <b>No Gubernamentales</b>
           </span>
         </label>
@@ -74,7 +74,7 @@
             </a>
           </div>
           <div class="card-content center" style="height:100px">
-            <span style="font-size:2vw;" class="flow-text center">{{organizacion.nombre}}</span>
+            <span style="font-size:20px;" class="flow-text center">{{organizacion.nombre}}</span>
           </div>
         </div>
       </div>
@@ -818,27 +818,29 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            //console.log(doc.id, " => ", doc.data());
-            this.organizaciones.push({
-              id: doc.id,
-              nombre: doc.data().nombre,
-              area_trabajo: doc.data().area_trabajo,
-              descripcion: doc.data().descripcion,
-              email_encargado: doc.data().email_encargado,
-              email_institucion: doc.data().email_institucion,
-              funciones_en_municipio: doc.data().funciones_en_municipio,
-              logros: doc.data().logros,
-              proyectos: doc.data().proyectos,
-              representante: doc.data().representante,
-              socios: doc.data().socios,
-              telefono: doc.data().telefono,
-              telefono_representante: doc.data().telefono_representante,
-              tipo_organizacion: doc.data().tipo_organizacion,
-              ubicacion: doc.data().ubicacion,
-              url_img: doc.data().url_img,
-              tipo_gubernamental: doc.data().tipo_gubernamental
-            });
-            //console.log(this.organizaciones[this.organizaciones.length - 1]);
+            ////console.log(doc.id, " => ", doc.data());
+            if(doc.data().email_encargado != 'admin@plataforma.org'){
+              this.organizaciones.push({
+                id: doc.id,
+                nombre: doc.data().nombre,
+                area_trabajo: doc.data().area_trabajo,
+                descripcion: doc.data().descripcion,
+                email_encargado: doc.data().email_encargado,
+                email_institucion: doc.data().email_institucion,
+                funciones_en_municipio: doc.data().funciones_en_municipio,
+                logros: doc.data().logros,
+                proyectos: doc.data().proyectos,
+                representante: doc.data().representante,
+                socios: doc.data().socios,
+                telefono: doc.data().telefono,
+                telefono_representante: doc.data().telefono_representante,
+                tipo_organizacion: doc.data().tipo_organizacion,
+                ubicacion: doc.data().ubicacion,
+                url_img: doc.data().url_img,
+                tipo_gubernamental: doc.data().tipo_gubernamental
+              });
+            }
+            ////console.log(this.organizaciones[this.organizaciones.length - 1]);
             this.organizaciones.sort((a, b) =>
               a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
             );
@@ -847,7 +849,7 @@ export default {
         })
         .catch(function(error) {
           this.loader = false;
-          console.log("Error getting Organizaciones: ", error);
+          //console.log("Error getting Organizaciones: ", error);
         });
     },
     abrirModal() {
@@ -875,19 +877,19 @@ export default {
       ) {
         this.guardar_Cambios();
       } else {
-        console.log("Entra Borrar IMG");
+        //console.log("Entra Borrar IMG");
         var storage = firebase.storage();
         const u = this.organizacion_actual.url_img;
-        console.log(u);
+        //console.log(u);
         var desertRef = storage.refFromURL(u);
         desertRef
           .delete()
           .then(() => {
-            console.log("Borrado");
+            //console.log("Borrado");
             this.guardar_Cambios();
           })
           .catch(error => {
-            console.log("Uh-oh, an error occurred!", error);
+            //console.log("Uh-oh, an error occurred!", error);
             this.loader = false;
             M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
           });
@@ -902,7 +904,7 @@ export default {
         ) {
           this.deleteIMG();
         } else {
-          console.log("Entra IF");
+          //console.log("Entra IF");
           var file = this.$refs.myFiles.files[0];
           var storage = firebase.storage();
           var storageRef = storage.ref();
@@ -918,7 +920,7 @@ export default {
                   this.deleteIMG();
                 })
                 .catch(error => {
-                  console.log("Error obteniendo imagen!.", error);
+                  //console.log("Error obteniendo imagen!.", error);
                   this.loader = false;
                   M.toast({
                     html: "Actualización no realizada. Intente de Nuevo."
@@ -926,16 +928,16 @@ export default {
                 });
             })
             .catch(function(error) {
-              console.log("Error subiendo imagen!.");
+              //console.log("Error subiendo imagen!.");
               this.loader = false;
             });
         }
       } else {
-        console.log("nombre ", this.nombre);
+        //console.log("nombre ", this.nombre);
 
         if (this.nombre != "") {
           if (this.Validaciones() == true) {
-            console.log("Entra ELSE");
+            //console.log("Entra ELSE");
             this.guardar_Cambios();
           } else {
             this.loader = false;
@@ -1058,7 +1060,7 @@ export default {
       this.tipo_organizacion = this.organizacion_actual.tipo_organizacion;
       this.ubicacion = this.organizacion_actual.ubicacion;
       this.url_img = this.organizacion_actual.url_img;
-      console.log(this.url_img);
+      //console.log(this.url_img);
       //Selección de los tipos de organización
       if (
         this.tipo_organizacion.includes(
@@ -1223,7 +1225,7 @@ export default {
 
           this.tipo_gubernamentalN = 0;
 
-          console.log("Organization successfully updated!");
+          //console.log("Organization successfully updated!");
           this.loader = false;
           M.toast({ html: "Actualización realizada correctamente." });
         })
@@ -1299,15 +1301,15 @@ export default {
             this.cerrarModal();
           });
       } else {
-        console.log("Entra Borrar IMG");
+        //console.log("Entra Borrar IMG");
         var storage = firebase.storage();
         const u = this.organizacion_actual.url_img;
-        console.log(u);
+        //console.log(u);
         var desertRef = storage.refFromURL(u);
         desertRef
           .delete()
           .then(() => {
-            console.log("Borrado");
+            //console.log("Borrado");
             firebase
               .firestore()
               .collection("Actor")
@@ -1329,7 +1331,7 @@ export default {
               });
           })
           .catch(error => {
-            console.log("Uh-oh, an error occurred!", error);
+            //console.log("Uh-oh, an error occurred!", error);
             this.loader = false;
             M.toast({ html: "Actualización no realizada. Intente de Nuevo." });
           });
@@ -1409,7 +1411,7 @@ export default {
                 this.add(areaOrg, tipoOrg);
               })
               .catch(error => {
-                console.log("Error obteniendo imagen!.", error);
+                //console.log("Error obteniendo imagen!.", error);
                 this.loader = false;
                 M.toast({
                   html: "Actualización no realizada. Intente de Nuevo."
@@ -1417,10 +1419,10 @@ export default {
               });
           })
           .catch(function(error) {
-            console.log("Error subiendo imagen!.");
+            //console.log("Error subiendo imagen!.");
           });
       } else {
-        console.log("nombre ", this.nombre);
+        //console.log("nombre ", this.nombre);
         if (this.nombre != "") {
           if (this.Validaciones() == true) {
             this.add(areaOrg, tipoOrg);
@@ -1446,7 +1448,7 @@ export default {
         tipoGuber = "No Gubernamental";
       }
 
-      console.log("thidsiadio ", this.tipo_gubernamentalN);
+      //console.log("thidsiadio ", this.tipo_gubernamentalN);
       firebase
         .firestore()
         .collection("Actor")
@@ -1496,12 +1498,12 @@ export default {
             a.nombre > b.nombre ? 1 : b.nombre > a.nombre ? -1 : 0
           );
           this.tipo_gubernamentalN = 0;
-          console.log("Organization successfully updated!");
+          //console.log("Organization successfully updated!");
           this.loader = false;
           M.toast({ html: "Organización agregada correctamente." });
         })
         .catch(error => {
-          console.log("Error Agregando Organización. Intente de Nuevo.", error);
+          //console.log("Error Agregando Organización. Intente de Nuevo.", error);
           this.loader = false;
           M.toast({ html: "Error Agregando Organización. Intente de Nuevo." });
         });

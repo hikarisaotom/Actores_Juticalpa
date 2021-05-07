@@ -1,95 +1,110 @@
 <template>
   <div class="about" height="100%">
-        <div class="fixed-action-btn"  v-show="bandera_Log==true">
-        <a class="btn-floating btn-large red">
-          <i class="large material-icons">add_circle_outline</i>
-        </a>
-        <ul>
-          <li></li>
-          <li>
-            <a class="btn-floating blue">
-              <i
-                class="material-icons tooltipped modal-trigger"
-                data-position="left"
-                 data-tooltip="Crear Noticia"
-                href="#crear_noticia"
-               
-              >add</i>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <div class="fixed-action-btn" v-show="bandera_Log == true">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">add_circle_outline</i>
+      </a>
+      <ul>
+        <li></li>
+        <li>
+          <a class="btn-floating blue">
+            <i
+              class="material-icons tooltipped modal-trigger"
+              data-position="left"
+              data-tooltip="Crear Noticia"
+              href="#crear_noticia"
+              >add</i
+            >
+          </a>
+        </li>
+      </ul>
+    </div>
 
     <div v-for="noticia in noticias" :key="noticia.ID">
-   <div class="row position">
-     
-        <div class="col s10 m10 ">
-          
+      <div class="row position">
+        <div class="col s10 m10">
           <div class="card letra grey lighten-3">
-            
             <div class="card-image white">
-               <a class="btn-flat red-text " v-show="bandera_Log==true" style="float:right;" @click="(ID_BORRAR=noticia.ID),Delete_noticia()">
-<i   class="material-icons">delete</i>
-</a>
+              <a
+                class="btn-flat red-text"
+                v-show="bandera_Log == true"
+                style="float: right"
+                @click="(ID_BORRAR = noticia.ID), Delete_noticia()"
+              >
+                <i class="material-icons">delete</i>
+              </a>
               <table width="100%">
                 <td width="30%" height="40%">
                   <img v-bind:src="noticia.Imagen" />
                 </td>
                 <td>
-                   <b> 
-                     <h4 class="extra">{{noticia.Titulo}}</h4>
-                     <p class="blue-text">{{noticia.Autor}}</p></b>
-                  
+                  <b>
+                    <h4 class="extra">{{ noticia.Titulo }}</h4>
+                    <p class="blue-text">{{ noticia.Autor }}</p></b
+                  >
                 </td>
               </table>
             </div>
 
-            <div class="short ">
-              <p class="ellipsis">{{noticia.Contenido}}</p>
+            <div class="short">
+              <p class="ellipsis">{{ noticia.Contenido }}</p>
             </div>
 
             <div align="right">
-             <b> <a
-                @click="noticia_actual=noticia"
-                class="modal-trigger posicion blue-text"
-                href="#noticia" style="font-size:20px;SSS"
-              >Seguir Leyendo....</a></b>
+              <b>
+                <a
+                  @click="noticia_actual = noticia"
+                  class="modal-trigger posicion cyan-text text-darken-4"
+                  href="#noticia"
+                  style="font-size: 20px; margin-right: 5px"
+                  >Seguir Leyendo...</a
+                ></b
+              >
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
     <!--INICIO DEL MODAL DE LAS NOTICIAS-->
     <div id="noticia" class="modal modal-fixed-footer letra tamano_modal">
-      <div class="modal-content ">
-        <h3 class="grey lighten-3">{{noticia_actual.Titulo}}</h3>
-        <p class="tamano2 blue-text">Autor: {{noticia_actual.Autor}}</p>
+      <div class="modal-content">
+        <h3 class="grey lighten-3">{{ noticia_actual.Titulo }}</h3>
+        <p class="tamano2 blue-text">Autor: {{ noticia_actual.Autor }}</p>
         <br />
         <img v-bind:src="noticia_actual.Imagen" width="50%" height="50%" />
         <br />
         <br />
-        <textarea rows="60" cols="90" class="contenido" readonly  style="border: none;" v-model="noticia_actual.Contenido" disabled></textarea>
-
-       
+        <textarea
+          rows="60"
+          cols="90"
+          class="contenido"
+          readonly
+          style="border: none"
+          v-model="noticia_actual.Contenido"
+          disabled
+        ></textarea>
       </div>
       <div class="modal-footer grey lighten-1">
-        <a class="modal-close waves-effect waves-green green btn-flat" style="font-size:20px;"><b>Salir</b></a>
+        <a
+          class="modal-close waves-effect waves-green green btn-flat"
+          style="font-size: 20px"
+          ><b>Salir</b></a
+        >
       </div>
     </div>
 
     <!--INICIO DEL MODAL DE CREAR NOTICIAS-->
     <div id="crear_noticia" class="modal modal-fixed-footer letra">
       <div class="modal-content">
-        <h3 class="grey lighten-3 green-text">Crear Noticia</h3>
+        <h3 class="teal-text text-darken-4">Crear Noticia</h3>
 
         <div class="row">
           <div class="col s12">
-            <div class="card red darken-2" v-if="validation!=''">
-              <div class="card-content white-text">{{validation}}</div>
+            <div class="card red darken-2" v-if="validation != ''">
+              <div class="card-content white-text">{{ validation }}</div>
               <div class="card-action">
-                <a href="#" @click="validation=''">Aceptar</a>
+                <a href="#" @click="validation = ''">Aceptar</a>
               </div>
             </div>
           </div>
@@ -98,14 +113,24 @@
         <!--FORMULARIO DE INFORMACION DE LA NOTICIA-->
         <form class="col s12">
           <div class="row">
-          
-            <div class="input_titulo">
-                <center><h4 class="green-text">Titulo de la Noticia</h4></center>
-          <input id="Titulo" type="text" v-model="nuevo_titulo" class="validate input_titulo" />
+            <div class="input_titulo" style="border: black dashed 2px; padding: 10px;">
+              <center>
+                <h7 class="teal-text text-darken-4">Titulo de la Noticia</h7>
+              </center>
+              <input
+                id="Titulo"
+                type="text"
+                v-model="nuevo_titulo"
+                class="validate input_titulo"
+              />
             </div>
-            <div class="input-field ">
-               <h4 class="green-text">Contenido</h4>
-              <textarea id="Contenido" class="datos " v-model="nuevo_contenido"></textarea>
+            <div class="input-field">
+              <h5 class="teal-text text-darken-4">Contenido</h5>
+              <textarea
+                id="Contenido"
+                class="datos"
+                v-model="nuevo_contenido"
+              ></textarea>
             </div>
           </div>
         </form>
@@ -113,11 +138,11 @@
         <!--IMAGEN DE LA NOTICIA-->
         <label class="active" for="card_img">
           <h5>
-            <b class="green-text ">Imagen</b>
+            <b class="teal-text text-darken-4">Imagen</b>
           </h5>
         </label>
-        <div class="card " id="card_img">
-          <div class="card-image" width="50%" height="50%">
+        <div class="card" id="card_img">
+          <div class="card-image noticia_img" width="50%" height="50%">
             <img
               class="materialboxed"
               @click="open_img()"
@@ -127,8 +152,8 @@
               height="300px"
             />
             <a @click="open_file_selector()">
-              <center class="red-text">
-                <b style="font-size:20px;">Adjuntar Imagen</b>
+              <center class="red-text" style="font-size: 20px;cursor: pointer;text-decoration: underline;">
+                <b style="font-size: 20px">Adjuntar Imagen</b>
               </center>
             </a>
             <input
@@ -138,19 +163,25 @@
               @change="change_img()"
               name="name"
               accept="image/x-png, image/gif, image/jpeg"
-              style="display: none;"
+              style="display: none"
             />
           </div>
         </div>
 
-        <a class="waves-effect waves-light btn-large green" @click=" Add_Noticia()">
+        <a
+          class="waves-effect waves-light btn-large green"
+          @click="Add_Noticia()"
+        >
           <i class="material-icons right">save</i>Guardar
         </a>
       </div>
 
       <div class="modal-footer grey lighten-1">
-          <a class="modal-close waves-effect waves-green green btn-flat white-text" style="font-size:20px;"><b>Salir</b></a>
-        
+        <a
+          class="modal-close waves-effect waves-green green btn-flat white-text"
+          style="font-size: 20px"
+          ><b>Salir</b></a
+        >
       </div>
     </div>
   </div>
@@ -165,7 +196,8 @@ export default {
   name: "noticias",
   data() {
     return {
-      Imagen: "http://www.globalservex.es/upload/news/news_12.png",
+      Imagen:
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/noticias%2Fdefault_noticia.png?alt=media&token=b917c3d0-751f-4171-9233-db8a37bcd340",
       titulo: "",
       contenido: "",
       autor: "",
@@ -175,28 +207,28 @@ export default {
       nuevo_contenido: "",
       validation: "",
       mostrar_advertencia: false,
-      ID_BORRAR:"",
+      ID_BORRAR: "",
     };
-  },computed: {
-    ...mapState(["bandera_Log"])
- 
+  },
+  computed: {
+    ...mapState(["bandera_Log"]),
   },
   components: {
     firebase,
-    database
+    database,
   },
-  mounted: function() {
+  mounted: function () {
     this.Get_News();
     M.AutoInit();
     //Hace que el de las noticias  no se cierre si da click afuera
     var m = M.Modal.getInstance(crear_noticia);
     m.options.dismissible = false;
-     var elems = document.querySelectorAll('.tooltipped');
+    var elems = document.querySelectorAll(".tooltipped");
     var instances = M.Tooltip.init(elems);
   },
 
   methods: {
-    validate_form: function() {
+    validate_form: function () {
       if (this.nuevo_titulo === "") {
         this.validation = "Debe ingresar un Titulo para la noticia. ";
       }
@@ -211,26 +243,26 @@ export default {
         return false;
       }
     },
-    Delete_noticia(){
-      console.log("CAMBIO?",this.ID_BORRAR);
-       firebase
-            .firestore()
-            .collection("Noticias")
+    Delete_noticia() {
+      //console.log("CAMBIO?",this.ID_BORRAR);
+      firebase
+        .firestore()
+        .collection("Noticias")
         .doc(this.ID_BORRAR)
         .delete()
-        .then(error => {
+        .then((error) => {
           M.toast({ html: "Eliminación realizada correctamente." });
           this.Get_News();
         })
-        .catch(error => {
+        .catch((error) => {
           M.toast({ html: "Error Eliminando Noticia." });
         });
-    
     },
     Add_Noticia() {
       if (this.validate_form()) {
         if (
-          this.Imagen != "http://www.globalservex.es/upload/news/news_12.png"
+          this.Imagen !=
+          "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/noticias%2Fdefault_noticia.png?alt=media&token=b917c3d0-751f-4171-9233-db8a37bcd340"
         ) {
           // SUBIO UNA IMAGEN
           var file = this.$refs.myFiles.files[0];
@@ -243,9 +275,9 @@ export default {
               storageRef
                 .child("noticias/" + file.name)
                 .getDownloadURL()
-                .then(url => {
+                .then((url) => {
                   tempUrl = url;
-                  console.log("Imagen guardada con link: ", tempUrl);
+                  //console.log("Imagen guardada con link: ", tempUrl);
 
                   this.validation = "";
 
@@ -257,74 +289,72 @@ export default {
                       Contenido: this.nuevo_contenido,
                       Autor: window.localStorage.getItem("Organizacion"),
                       Imagen: tempUrl,
-                      Fecha: new Date()
+                      Fecha: new Date(),
                     })
-                    .then(doc => {
-                      console.log("categoria ", this.type);
-                      console.log("Agregado con Exito!", doc.id);
+                    .then((doc) => {
+                      //console.log("categoria ", this.type);
+                      //console.log("Agregado con Exito!", doc.id);
                       this.Get_News();
 
-                    M.Modal.getInstance(crear_noticia).close();
+                      M.Modal.getInstance(crear_noticia).close();
                       M.toast({ html: "Noticia Publicada Exitosamente." });
                       this.nuevo_titulo = "";
                       this.nuevo_contenido = "";
                       this.Imagen =
-                        "http://www.globalservex.es/upload/news/news_12.png";
+                        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/noticias%2Fdefault_noticia.png?alt=media&token=b917c3d0-751f-4171-9233-db8a37bcd340";
                     })
-                    .catch(function(error) {
-                      console.log("Error getting Classes: ", error);
+                    .catch(function (error) {
+                      //console.log("Error getting Classes: ", error);
                     });
                 })
-                .catch(function(error) {
-                  console.log("Error obteniendo imagen!.", error);
+                .catch(function (error) {
+                  //console.log("Error obteniendo imagen!.", error);
                 });
             })
-            .catch(function(error) {
-              console.log("Error subiendo imagen!.");
+            .catch(function (error) {
+              //console.log("Error subiendo imagen!.");
             });
         } else {
           // NO SUBIO NINGUNA IMAGEN
-          console.log(
-            "NO SELECCIONO UNA IMAGEN ANTES DE SUBIR, ENTONCES SE PONE POR DEFECTO"
-          );
           firebase
             .firestore()
             .collection("Noticias")
             .add({
               Titulo: this.nuevo_titulo,
               Contenido: this.nuevo_contenido,
-              Autor: window.localStorage.getItem('Organizacion'),
-              Imagen: "http://www.globalservex.es/upload/news/news_12.png",
-              Fecha: new Date()
+              Autor: window.localStorage.getItem("Organizacion"),
+              Imagen:
+                "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/noticias%2Fdefault_noticia.png?alt=media&token=b917c3d0-751f-4171-9233-db8a37bcd340",
+              Fecha: new Date(),
             })
-            .then(doc => {
-              console.log("categoria ", this.type);
-              console.log("Agregado con Exito!", doc.id);
+            .then((doc) => {
+              //console.log("categoria ", this.type);
+              //console.log("Agregado con Exito!", doc.id);
               this.Get_News();
               M.Modal.getInstance(crear_noticia).close();
               M.toast({ html: "Noticia Publicada Exitosamente." });
               this.nuevo_titulo = "";
               this.nuevo_contenido = "";
               this.Imagen =
-                "http://www.globalservex.es/upload/news/news_12.png";
+                "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/noticias%2Fdefault_noticia.png?alt=media&token=b917c3d0-751f-4171-9233-db8a37bcd340";
             })
-            .catch(function(error) {
-              console.log("Error getting Classes: ", error);
+            .catch(function (error) {
+              //console.log("Error getting Classes: ", error);
             });
         }
       }
     },
-    open_file_selector: function() {
+    open_file_selector: function () {
       document.getElementById("file-input").click();
     },
-    change_img: function() {
+    change_img: function () {
       var file = this.$refs.myFiles.files[0];
       this.Imagen = URL.createObjectURL(file);
     },
     open_img() {
       var elems = document.querySelectorAll(".materialboxed");
       var instances = M.Materialbox.init(elems);
-      instances.forEach(e => {
+      instances.forEach((e) => {
         e.open();
       });
     },
@@ -332,29 +362,30 @@ export default {
       this.noticias = [];
       firebase
         .firestore()
-        .collection("Noticias").orderBy("Fecha", "desc")
+        .collection("Noticias")
+        .orderBy("Fecha", "desc")
         .get()
-        .then(snap => {
-          snap.forEach(element => {
+        .then((snap) => {
+          snap.forEach((element) => {
             this.noticias.push({
               ID: element.id,
               Titulo: element.data().Titulo,
               Contenido: element.data().Contenido,
               Autor: element.data().Autor,
-              Imagen: element.data().Imagen
+              Imagen: element.data().Imagen,
             });
           });
         })
-        .catch(function(error) {
-          console.log("Error getting Products: ", error);
+        .catch(function (error) {
+          //console.log("Error getting Products: ", error);
         });
-       /*  _.sortBy(this.products, [
+      /*  _.sortBy(this.products, [
               function(p) {
                 return p.CATEGORY;
               }
             ]);*/
-    }
-  }
+    },
+  },
 };
 </script>
 <style  scoped>
@@ -377,15 +408,15 @@ export default {
   width: 95%;
   margin-left: 2.5%;
   font-size: 24px;
-  color:black;
-    height: 400px;
+  color: black;
+  height: 400px;
   overflow-y: auto;
   scroll-behavior: smooth;
-color: black;
-font-family: "Gelasio", serif;
+  color: black;
+  /*font-family: "Gelasio", serif;*/
 }
 .letra {
-  font-family: "Gelasio", serif;
+  /*font-family: "Gelasio", serif;*/
 }
 
 .tamano2 {
@@ -393,40 +424,44 @@ font-family: "Gelasio", serif;
   color: #616161;
 }
 
-.input_titulo{
- text-align: justify;
- width: 95%;
-  margin-left: 2.5%;
-  font-size: 24px;
-  color:black;
-color: black;
-font-family: "Gelasio", serif;
-}
-
-.datos {
- text-align: justify;
+.input_titulo {
+  text-align: justify;
   width: 95%;
   margin-left: 2.5%;
   font-size: 24px;
-  color:black;
-    height: 400px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-color: black;
-font-family: "Gelasio", serif;
-  
+  color: black;
+  color: black;
+  /*font-family: "Gelasio", serif;*/
 }
 
-.position{
+.datos {
+  text-align: justify;
+  width: 95%;
+  margin-left: 2.5%;
+  font-size: 24px;
+  color: black;
+  height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  color: black;
+  /*font-family: "Gelasio", serif;*/
+}
+
+.position {
   margin-left: 20%;
 }
 
-.extra{
- font-weight : 900;
+.extra {
+  font-weight: 900;
 }
 
-.tamano_modal{
+.tamano_modal {
   width: 70%;
   height: 900px;
+}
+
+.card-image.noticia_img img {
+    width: 300px;
+    margin-left: 25%;
 }
 </style>

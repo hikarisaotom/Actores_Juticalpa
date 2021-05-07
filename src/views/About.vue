@@ -31,26 +31,26 @@
     </div>
 
     <center>
-      <h2>
+      <h2 style="font-size: 35px; margin-left: 75px;">
         <b>Con el apoyo de:</b>
       </h2>
     </center>
-
+    
     <div class="carousel color2">
       <a class="carousel-item" href="#one!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-1].url" />
+        <img width="400px" height="300px" v-bind:src="Imagenes[Imagenes.length-1].url" />
       </a>
       <a class="carousel-item" href="#one1!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-2].url" />
+        <img width="400px" height="300px" v-bind:src="Imagenes[Imagenes.length-2].url" />
       </a>
       <a class="carousel-item" href="#one2!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-3].url" />
+        <img width="400px" height="300px" v-bind:src="Imagenes[Imagenes.length-3].url" />
       </a>
       <a class="carousel-item" href="#one3!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-4].url" />
+        <img width="400px" height="300px" v-bind:src="Imagenes[Imagenes.length-4].url" />
       </a>
       <a class="carousel-item" href="#one4!">
-        <img width="300px" height="300px" v-bind:src="Imagenes[Imagenes.length-5].url" />
+        <img width="400px" height="300px" v-bind:src="Imagenes[Imagenes.length-5].url" />
       </a>
     </div>
     <br />
@@ -128,7 +128,7 @@
               height="300px"
             />
             <a @click="open_file_selector()">
-              <center class="orange-text">
+              <center class="orange-text" style="cursor: pointer; text-decoration: underline;">
                 <b>Adjuntar Imagen</b>
               </center>
             </a>
@@ -152,7 +152,7 @@
       <div class="modal-footer">
         <a
           class="modal-close waves-effect waves-green btn-flat white-text text-accent-4 orange"
-          @click="Imagen = 'http://www.globalservex.es/upload/news/news_12.png'"
+          @click="Imagen = 'https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd'"
         >Salir</a>
       </div>
     </div>
@@ -171,18 +171,18 @@ export default {
   data() {
     return {
       Bandera_Mostrar: true,
-      Imagen: "http://www.globalservex.es/upload/news/news_12.png",
+      Imagen: "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
       Contenido: "hola",
       Contenido_viejo: "",
       ID: "",
       Imagenes: [
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png",
-        "http://www.globalservex.es/upload/news/news_12.png"
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd",
+        "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd"
       ]
     };
   },
@@ -219,7 +219,7 @@ export default {
         .then(() => {
           console.log("Product successfully updated!");
           if (
-            this.Imagen == "http://www.globalservex.es/upload/news/news_12.png"
+            this.Imagen == "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd"
           ) {
             this.Contenido_viejo = "";
             this.Bandera_Mostrar = true;
@@ -227,14 +227,14 @@ export default {
           } else {
             M.toast({ html: "La imagen ha sido subida exitosamente." });
           }
-          this.Imagen = "http://www.globalservex.es/upload/news/news_12.png";
+          this.Imagen = "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd";
         })
         .catch(error => {
           console.error("Error updating product: ", error);
         });
     },
     Add_Img() {
-      if (this.Imagen != "http://www.globalservex.es/upload/news/news_12.png") {
+      if (this.Imagen != "https://firebasestorage.googleapis.com/v0/b/plataforma-actores-juticalpa.appspot.com/o/organizaciones_img%2Fjuticalpa_carrousel.jpeg?alt=media&token=85874480-f62d-475b-ae33-93a054293edd") {
         var file = this.$refs.myFiles.files[0];
         var storageRef = firebase.storage().ref();
         var tempUrl = "";
@@ -304,27 +304,40 @@ export default {
 </script>
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Gelasio&display=swap");
-.color2 {
+/*.color2 {
   background-color: rgba(255, 255, 255, 0.6);
-}
+}*/
 .letra {
-  font-family: "Gelasio", serif;
+  /*font-family: "Gelasio", serif;*/
 }
 .contenido {
   text-align: justify;
   font-size: 20px;
 }
 .textarea_contenido {
-  background-color: rgba(255, 255, 255, 0.8);
-  height: 400px;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  font-family: "Gelasio", serif;
-  color: black;
-  font-size: 17pt;
+    background-color: white;
+    height: 400px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    /*font-family: "Gelasio", serif;*/
+    color: #2c3e50;
+    font-size: 17pt;
+    -webkit-box-shadow: 5px 5px 15px -1px rgb(0 0 0 / 67%);
+    box-shadow: 5px 5px 15px -1px rgb(0 0 0 / 67%);
 }
 .tamano_contenido {
   width: 80%;
   margin-left: 10%;
+}
+.carousel .carousel-item>img {     
+  width: 400px; 
+  background-color: white;
+  -webkit-box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.67);
+  box-shadow: 5px 5px 15px -1px rgba(0,0,0,0.67);
+  padding: 15px;
+}
+.carousel {
+  margin-top: -90px;
+  margin-left: -45px;
 }
 </style>

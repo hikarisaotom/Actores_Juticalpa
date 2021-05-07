@@ -204,13 +204,13 @@
 
 <script>
 window.addEventListener("offline", function(e) {
-  console.log("offline, ocultando funcionalidades");
+  //console.log("offline, ocultando funcionalidades");
   //document.getElementById("flagmostrar").style.visibility = "hidden"
   for (let el of document.querySelectorAll(".flagmostrar"))
     el.style.visibility = "hidden";
 });
 window.addEventListener("online", function(e) {
-  console.log("online recobrando funcionalidades");
+  //console.log("online recobrando funcionalidades");
   //document.getElementById("flagmostrar").style.visibility = "visible";
   for (let el of document.querySelectorAll(".flagmostrar"))
     el.style.visibility = "visible";
@@ -218,9 +218,9 @@ window.addEventListener("online", function(e) {
 
 window.onbeforeunload = function() {
   if (navigator.onLine) {
-    console.log("online");
+    //console.log("online");
   } else {
-    console.log("offline");
+    //console.log("offline");
     return "Are you sure you want to leave?";
   }
 };
@@ -345,7 +345,7 @@ export default {
         });
         this.password = "";
       } else {
-        console.log(this.email, "=>", this.password);
+        //console.log(this.email, "=>", this.password);
         database
           .collection("Actor")
           .get()
@@ -370,7 +370,7 @@ export default {
                     let result = await promise;
 
                     this.$router.push("/about");
-                    console.log("ENTRANDO.....");
+                    //console.log("ENTRANDO.....");
                     this.$store.commit("get_data", null);
                   })();
                 } else {
@@ -381,13 +381,13 @@ export default {
 
             if (!found) {
               this.password = "";
-              console.log("NO ENTRA");
+              //console.log("NO ENTRA");
               M.toast({ html: "Datos incorrectos" });
             } else {
             }
           })
           .catch(function(error) {
-            console.log("Error getting documents: ", error);
+            //console.log("Error getting documents: ", error);
           });
       }
     },
@@ -410,7 +410,7 @@ export default {
             PASSWORD: this.encryption(this.nuevo_password)
           })
           .then(() => {
-            console.log("Employee successfully updated!");
+            //console.log("Employee successfully updated!");
             M.toast({ html: "Actualización realizada correctamente." });
             this.salir2();
             this.num_intento = 0;
@@ -475,7 +475,7 @@ export default {
             }
           })
           .catch(function(error) {
-            console.log("Error getting documents: ", error);
+            //console.log("Error getting documents: ", error);
           });
       } //fin del if
       return false;
@@ -507,17 +507,12 @@ export default {
                   "El codigo se ha enviado exitosamente a su bandeja de entrada"
               });
             }
-            console.log(
-              "SUCCESS. status=%d, text=%s",
-              response.status,
-              response.text
-            );
           },
           function(err) {
             M.toast({
               html: "Se ha producido un error, el mensaje no se ha enviado"
             });
-            console.log("FAILED. error=", err);
+            //console.log("FAILED. error=", err);
           }
         );
       }
@@ -543,12 +538,12 @@ document.addEventListener("DOMContentLoaded", function() {
 @import url("https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
 #login-page {
-  font-family: "Julius Sans One", sans-serif;
+  /*font-family: "Julius Sans One", sans-serif;*/
   width: 500px;
 }
 
 .card {
-  font-family: "Julius Sans One", sans-serif;
+  /*font-family: "Julius Sans One", sans-serif;*/
   position: absolute;
   left: 50%;
   top: 50%;
@@ -560,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 .otra_fuente {
-  font-family: "Press Start 2P", cursive;
+  /*font-family: "Press Start 2P", cursive;*/
 }
 
 .arriba {

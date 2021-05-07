@@ -1,7 +1,7 @@
 <template>
   <div class="letra">
     <div>
-      <nav class="nav-extended indigo darken-4 z-depth-3" id="navigation_bar_logo">
+      <nav class="nav-extended teal darken-4 z-depth-3" id="navigation_bar_logo">
         <div class="nav-wrapper" style="height:50px;">
           <!--p class="black-text">Bienvenido: {{usuario}}</p-->
           <!--a  class="brand-logo" PONER ESTO POR SI SE AGREGA UN LOGO-->
@@ -367,27 +367,27 @@ export default {
       window.localStorage.removeItem("login");
       this.usuario = "invitado";
       this.bandera_Log = false;
-      console.log("SALIENDO LA BANDERA DEBERIA SER FALSE");
+      //console.log("SALIENDO LA BANDERA DEBERIA SER FALSE");
       this.$store.commit("cambiar_bandera", false);
       M.toast({
         html: "Saliendo del sistema..."
       });
     },
     traer() {
-      console.log("VALOR DE LA BANDERA", window.localStorage.getItem("login"));
+      //console.log("VALOR DE LA BANDERA", window.localStorage.getItem("login"));
       if (window.localStorage.getItem("login") == "true") {
         this.role = window.localStorage.getItem("Role");
         this.usuario = window.localStorage.getItem("usuario");
         this.organizacion = window.localStorage.getItem("Organizacion");
         this.bandera_Log = true;
-        console.log("AUTENTICADO, LOS DATOS DEBERIAN SER TRUE");
+        //console.log("AUTENTICADO, LOS DATOS DEBERIAN SER TRUE");
         this.$store.commit("cambiar_bandera", true);
       } else {
         this.role = "invitado";
         this.usuario = "invitado";
         this.organizacion = "invitado";
         this.bandera_Log = false;
-        console.log("SIN AUTENTICAR, LOS DATOS DEBERIAN SER FALSE");
+        //console.log("SIN AUTENTICAR, LOS DATOS DEBERIAN SER FALSE");
         this.$store.commit("cambiar_bandera", false);
       }
     },
@@ -404,7 +404,7 @@ export default {
         });
         this.password = "";
       } else {
-        console.log(this.email, "=>", this.password);
+        //console.log(this.email, "=>", this.password);
         database
           .collection("Actor")
           .get()
@@ -415,7 +415,7 @@ export default {
               if (this.email === doc.data().email_encargado) {
                 if (this.password === doc.data().contrasena) {
                   found = true;
-                  console.log("ENTRA");
+                  //console.log("ENTRA");
                   window.localStorage.setItem("Role", doc.data().Role);
                   this.usuario = doc.data().nombre;
                   this.bandera_Log = true;
@@ -425,7 +425,7 @@ export default {
                     doc.data().nombre
                   );
                   window.localStorage.setItem("login", true);
-                  console.log("SE AUTENTICO DEBERIA SER TRUE");
+                  //console.log("SE AUTENTICO DEBERIA SER TRUE");
                   this.$store.commit("cambiar_bandera", true);
                   M.toast({ html: "Bienvenido" });
                   M.Modal.getInstance(login).close();
@@ -447,13 +447,13 @@ export default {
 
             if (!found) {
               this.password = "";
-              console.log("NO ENTRA");
+              //console.log("NO ENTRA");
               M.toast({ html: "Datos incorrectos" });
             } else {
             }
           })
           .catch(function(error) {
-            console.log("Error getting documents: ", error);
+            //console.log("Error getting documents: ", error);
           });
       }
     },
@@ -471,7 +471,7 @@ export default {
             contrasena: this.nuevo_password
           })
           .then(() => {
-            console.log("Employee successfully updated!");
+            //console.log("Employee successfully updated!");
             M.toast({ html: "Actualización realizada correctamente." });
             this.salir2();
             this.num_intento = 0;
@@ -536,7 +536,7 @@ export default {
             }
           })
           .catch(function(error) {
-            console.log("Error getting documents: ", error);
+            //console.log("Error getting documents: ", error);
           });
       } //fin del if
       return false;
@@ -567,17 +567,12 @@ export default {
                   "El codigo se ha enviado exitosamente a su bandeja de entrada"
               });
             }
-            console.log(
-              "SUCCESS. status=%d, text=%s",
-              response.status,
-              response.text
-            );
           },
           function(err) {
             M.toast({
               html: "Se ha producido un error, el mensaje no se ha enviado"
             });
-            console.log("FAILED. error=", err);
+            //console.log("FAILED. error=", err);
           }
         );
       }
@@ -596,7 +591,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
 
 .letra {
-  font-family: "Gelasio", serif;
+  /*font-family: "Gelasio", serif;*/
 }
 .enfasis {
   font-size: 20px;
@@ -610,11 +605,12 @@ export default {
 
 #contenido {
   overflow: auto;
-  /*background-color:#f3f3e3 ;*/
-  background-image: url(https://avante.biz/wp-content/uploads/Minimal-Wallpaper/Minimal-Wallpaper-001.jpg);
+  background-color:#CFD8DC ;
+  /*background-color: rgba(255, 255, 255, 0.7);*/
 }
 .background2 {
-  background-image: url(https://diarioroatan.com/wp-content/uploads/2019/10/asas-187.jpg);
+  background-color:#CFD8DC ;
+  /*background-image: url(https://diarioroatan.com/wp-content/uploads/2019/10/asas-187.jpg);*/
 }
 .login-opaco {
   background-color: rgba(255, 255, 255, 0.7);
@@ -628,12 +624,12 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
 #login-page {
-  font-family: "Gelasio", serif;
+  /*font-family: "Gelasio", serif;*/
   width: 500px;
 }
 
 .card {
-  font-family: "Gelasio", serif;
+  /*font-family: "Gelasio", serif;*/
   position: absolute;
   left: 50%;
   top: 50%;
@@ -645,7 +641,7 @@ export default {
 }
 
 .otra_fuente {
-  font-family: "Press Start 2P", cursive;
+  /*font-family: "Press Start 2P", cursive;*/
 }
 
 .arriba {
